@@ -1,0 +1,25 @@
+const consentText = `
+
+I am checking this box to acknowledge that I have read and understood the following terms. By checking this box, I allow Reliance Granite and Marble Corporation ("Reliance" or "we" or "our" or "us") to rely on my consent and waive the requirement of an electronic signature for this Waiver and Release indemnity agreement.\n
+I understand that Reliance is located at 50 Boright Avenue, Kenilworth, NJ 07033 ("PREMISES") and operates a wholesale warehouse for natural stone tiles and slabs. The warehouse involves heavy traffic, movement of workers, material-handling equipment, and the presence of heavy and dangerous equipment. The premises may contain debris, sharp or jagged surfaces, and objects that may pose risks.\n
+By entering the premises, I acknowledge the unique risks involved and agree to the following:\n
+1. I will not move around the premises alone/unattended and will ask for help/assistance when handling materials/products and moving about.
+2. I will be vigilant, careful, alert, and aware of ongoing activities and tripping hazards while walking in the premises and between aisles.
+3. I will not use any mobile or electronic device in the premises, as it may hinder my awareness of my surroundings.
+4. Any person under the age of 16 must remain in the waiting area and is strictly prohibited from accessing the warehouse area without permission.
+5. I will avoid confined areas and areas with insufficient or dim lighting.
+6. I will not attempt to lift or move any stones, tiles, or objects.
+7. I will not touch any machines, equipment, or materials in the premises.
+8. I will obey all rules and instructions provided by Reliance staff.
+9. I will ask questions and seek additional safety information when needed.\n
+I understand that checking the acceptance box will be considered my consent and acknowledgment. I further agree that I am solely responsible for any bodily injury, death, loss of personal property, damages, and expenses that may occur while on the premises. I release Reliance from any claims for personal injuries and property damage.\n
+I have read this waiver & release carefully and fully understand its terms. I am aware that by signing it, I waive and release all claims for personal injuries and property damage that I sustain while on the premises. I acknowledge that Reliance has made no warranty, express or implied, regarding the condition of the premises, materials, equipment, or the competency of any person present.\n
+I have had ample opportunity to review this document and ask questions. I fully assume the risks associated with being on the premises. To the fullest extent permitted by New Jersey Law, I agree to hold harmless, release, defend, and indemnify Reliance, its owners, officers, principals, agents, successors, assigns, heirs, employees, volunteers, and independent contractors from any loss, damage, or injuries to persons and property.\n
+This waiver & release covers any and all liability, claims, demands, causes of action, or damages related to or arising from: (a) Reliance or its employees, (b) other individuals present on the premises, or (c) my presence at the premises, including all activities associated with it. I agree not to sue, claim against, attach the property of, or prosecute Reliance for any injury, death, damages, or losses, whether caused by negligence or other acts.\n
+This Contract is legally binding upon me, my spouse, my heirs, assigns, legal guardians, and personal representatives. I acknowledge that this waiver & release is intended to be as broad and inclusive as permitted by the laws of the state of New Jersey, and any dispute arising from it shall be governed by and construed in accordance with New Jersey Law.\n
+If I am a parent/guardian/supervisor/caretaker (of a minor) and checking the box on behalf of a minor, I acknowledge that this waiver & release shall be binding to the fullest extent permitted by law with respect to said minor. The consent of one parent or legal guardian shall be deemed the consent of all persons legally responsible for this individual, even if only one such person signs this Waiver & Release.\n
+I further confirm that I am not under the influence of any medication, alcohol, or controlled substance that would impair my judgment to enter into this Waiver & Release or comply with its terms while on the premises.\n
+By checking the box and accepting this agreement, I confirm that I have read and fully understand this Covenant Not to Sue, Waiver, Release, Informed Consent, Assumption of Risk, and Indemnity Agreement. I acknowledge that I am giving up substantial rights by signing it, and I do so freely and voluntarily without any inducement, assurance, or guarantee being made to me. I intend my acceptance to be a complete and unconditional release of Reliance and all parties mentioned herein to the greatest extent allowed by law. I understand that this is a release of liability, and if I do not understand or agree with its terms, I should not check the box or accept (e-signature) in this document.
+`;
+
+export default consentText;
