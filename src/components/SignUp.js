@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { getCustomersListAPI, signUpAPI } from "../actions";
+import { getCustomersListAPI, setUpRecaptha, signUpAPI } from "../actions";
 import ConsentFormModal from "./ConsentFormModal";
-import { Autocomplete, verify } from "@lob/react-address-autocomplete";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 import cookies from "js-cookie";
+import SignedUpModal from "./SignedUpModal";
+import PhoneInput from "react-phone-number-input";
+import Autocomplete from "react-google-autocomplete";
 
 const languages = [
   {
@@ -63,6 +65,7 @@ const SignUp = (props) => {
   }, []);
 
   // Define state
+  const [id, setId] = useState("");
   const [date, setDate] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -77,6 +80,13 @@ const SignUp = (props) => {
   const [kitchen_and_bath, setKitchen_and_bath] = useState("");
   const [designer_or_architech, setDesigner_or_architech] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+
+  const [flag, setFlag] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [result, setResult] = useState("");
+
+  const [hasSignedUp, setHasSignedUp] = useState(false);
+  const [showSignedUpModal, setShowSignedUpModal] = useState("close");
 
   const handleCheckboxChange = () => {
     setIsNotApplicableFabricator(!isNotApplicableFabricator);
@@ -95,7 +105,7 @@ const SignUp = (props) => {
 
   const [searchValue, setSearchValue] = useState("");
 
-  const LOG_API_KEY = "test_pub_10c62325788364e2f380f56e09041cf";
+  const AUTO_ADDRESS_API_KEY = "AIzaSyDz401kh3HcDHsDIjT4625D5W3wD0YTXTs";
 
   const handleConsentFormClick = (e) => {
     if (e.target !== e.currentTarget) {
@@ -113,6 +123,23 @@ const SignUp = (props) => {
         break;
       default:
         setShowModal("close");
+    }
+  };
+
+  const handleSignedUpModalClick = (e) => {
+    if (e.target !== e.currentTarget) {
+      return;
+    }
+
+    switch (showSignedUpModal) {
+      case "open":
+        setShowSignedUpModal("close");
+        break;
+      case "close":
+        setShowSignedUpModal("open");
+        break;
+      default:
+        setShowSignedUpModal("close");
     }
   };
 
@@ -156,6 +183,10 @@ const SignUp = (props) => {
     };
 
     props.signUp(payload);
+
+    setId(newId);
+
+    setShowSignedUpModal("open");
   };
 
   const handleEmailChange = (e) => {
@@ -179,7 +210,7 @@ const SignUp = (props) => {
     // Regular expression for email validation
     const phoneRegex = /^\d{10}$/;
 
-    if (enteredPhone && !phoneRegex.test(phone)) {
+    if (enteredPhone && !phoneRegex.test(enteredPhone)) {
       setPhoneError(t("phone_error"));
     } else {
       setPhoneError("");
@@ -194,6 +225,33 @@ const SignUp = (props) => {
 
   const showBanner = (message) => {
     alert(message);
+  };
+
+  const getOtp = async (e) => {
+    e.preventDefault();
+    console.log(phone);
+    setPhoneError("");
+    if (phone === "" || phone === undefined)
+      return setPhoneError(t("phone_error"));
+    try {
+      const response = await setUpRecaptha(phone);
+      setResult(response);
+      setFlag(true);
+    } catch (err) {
+      setPhoneError(err.message);
+    }
+  };
+
+  const verifyOtp = async (e) => {
+    e.preventDefault();
+    setPhoneError("");
+    if (otp === "" || otp === null) return;
+    try {
+      await result.confirm(otp);
+      console.log("Verifieddddddd");
+    } catch (err) {
+      setPhoneError(err.message);
+    }
   };
 
   return (
@@ -260,13 +318,17 @@ const SignUp = (props) => {
               onChange={handlePhoneChange}
               required
             />
+            <button onClick={getOtp}>Send OTP</button>
             {phoneError && <ErrorMessage>{phoneError}</ErrorMessage>}
           </Field>
           {/* <Field>
             <h2> {t("address")} </h2>
             <Autocomplete
-              apiKey={LOG_API_KEY}
-              onSelection={(selected) => setSelectedAddress(selected.value)}
+              apiKey={AUTO_ADDRESS_API_KEY}
+              onPlaceSelected={(place) => {
+                console.log(place);
+                setSelectedAddress(place.value);
+              }}
             />
           </Field> */}
           <Field>
@@ -327,6 +389,12 @@ const SignUp = (props) => {
         setInitials={setInitials}
         initialAcceptTerms={acceptTerms} // Pass the acceptTerms state here
         initialInitials={initials} // Pass the initials state here
+      />
+
+      <SignedUpModal
+        showModal={showSignedUpModal}
+        handleCrossClick={handleSignedUpModalClick}
+        id={id}
       />
     </Container>
   );

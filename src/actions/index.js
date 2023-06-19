@@ -11,6 +11,18 @@ import {
   GET_SELECTIONS,
 } from "./actionType";
 
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+
+export function setUpRecaptha(number) {
+  const recaptchaVerifier = new RecaptchaVerifier(
+    "recaptcha-container",
+    {},
+    auth
+  );
+  recaptchaVerifier.render();
+  return signInWithPhoneNumber(auth, number, recaptchaVerifier);
+}
+
 export const setLoading = (status) => ({
   type: SET_LOADING_STATUS,
   status: status,
@@ -54,18 +66,6 @@ export function addCustomerAPI(payload) {
     kitchen_and_bath,
     designer_or_architech,
   } = payload;
-  console.log(
-    date,
-    id,
-    firstName,
-    lastName,
-    email,
-    phone,
-    // selectedAddress,
-    fabricator,
-    kitchen_and_bath,
-    designer_or_architech
-  );
 
   return (dispatch) => {
     db.collection("customers").add({
@@ -84,7 +84,6 @@ export function addCustomerAPI(payload) {
 }
 
 export function getCustomersListAPI() {
-  console.log("Hi getCustomersListAPI call");
   return (dispatch) => {
     db.collection("customers")
       .orderBy("id", "desc")
@@ -96,11 +95,12 @@ export function getCustomersListAPI() {
 }
 
 export function addSelectionsAPI(payload) {
-  const { id, material, size, lot, color } = payload;
+  const { customerId, category, option, size, lot, color } = payload;
   return (dispatch) => {
     db.collection("selection").add({
-      customerId: id,
-      material: material,
+      customerId: customerId,
+      selectedCategory: category,
+      selectedOption: option,
       size: size,
       lot: lot,
       color: color,
@@ -111,10 +111,10 @@ export function addSelectionsAPI(payload) {
 export function getSelectionsAPI(payload) {
   return (dispatch) => {
     db.collection("selection")
-      .where("actor.customerId", "===", payload.id)
+      .where("customerId", "==", payload.customerId) // Use "=="
       .onSnapshot((snapshot) => {
-        payload = snapshot.docs.map((doc) => doc.data());
-        dispatch(getSelections(payload));
+        const data = snapshot.docs.map((doc) => doc.data());
+        dispatch(getSelections(data));
       });
   };
 }

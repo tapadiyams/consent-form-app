@@ -35,7 +35,7 @@ function App(props) {
           <Route path="/view">
             <CustomerList />
           </Route>
-          <Route path="/customer-selection">
+          <Route path="/customer-selection/:id">
             <CustomerSelection />
           </Route>
           <Route path="/customer/:id">

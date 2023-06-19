@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
-import CustomerDetails from "./CustomerDetails";
 import { getCustomersListAPI } from "../actions";
 
 const CustomerList = (props) => {
@@ -10,7 +9,11 @@ const CustomerList = (props) => {
   const history = useHistory(); // Use useHistory hook
 
   useEffect(() => {
-    props.getCustomersList();
+    const fetchData = async () => {
+      await props.getCustomersList(); // Wait for the data to be fetched
+    };
+
+    fetchData();
   }, []);
 
   const handleSearchChange = (e) => {
@@ -24,6 +27,10 @@ const CustomerList = (props) => {
 
   const handleCustomerClick = (customerId) => {
     history.push(`/customer/${customerId}`);
+  };
+
+  const handleCustomerSelectionClick = (customerId) => {
+    history.push(`/customer-selection/${customerId}`);
   };
 
   return (
@@ -44,9 +51,9 @@ const CustomerList = (props) => {
               <TableHeader>First Name</TableHeader>
               <TableHeader>Last Name</TableHeader>
               <TableHeader>Email ID</TableHeader>
-              <TableHeader>Address</TableHeader>
               <TableHeader>Date Visited</TableHeader>
-              <TableHeader>Actions</TableHeader> {/* Added Actions column */}
+              <TableHeader>ID</TableHeader>
+              {/* <TableHeader>Actions</TableHeader>  */}
             </tr>
           </thead>
           <tbody>
@@ -54,6 +61,7 @@ const CustomerList = (props) => {
               const rowNumber = index + 1;
               const isEvenRow = rowNumber % 2 === 0;
               const customerLink = `/customer/${user.id}`;
+              const customerSelectionLink = `/customer-selection/${user.id}`;
 
               return (
                 <tr key={index}>
@@ -75,17 +83,17 @@ const CustomerList = (props) => {
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {user.email}
                   </TableCell>
-                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                    {user.address}
-                  </TableCell>
+
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {user.date}
                   </TableCell>
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                    <PrintButton onClick={() => window.print()}>
-                      &#128438;
-                    </PrintButton>{" "}
-                    {/* Print button */}
+                    <Link
+                      to={customerSelectionLink}
+                      onClick={() => handleCustomerSelectionClick(user.id)} // Call handleCustomerClick function
+                    >
+                      {user.id}
+                    </Link>{" "}
                   </TableCell>
                 </tr>
               );

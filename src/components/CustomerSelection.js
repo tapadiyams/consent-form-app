@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { addSelectionsAPI, getCustomersListAPI } from "../actions";
+import { useParams } from "react-router-dom";
 
 const getMaterialList = {
   marble: ["textile1", "textile2", "textile3"],
@@ -11,17 +13,30 @@ const getMaterialList = {
   cc: ["cc1", "cc2", "cc3"],
 };
 
-const CustomerSelection = () => {
+const CustomerSelection = (props) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      await props.getCustomersList(); // Wait for the data to be fetched
+    };
+
+    fetchData();
+  }, []);
+
+  const { id } = useParams();
+  const customerId = parseInt(id, 10);
+
   const [cartItems, setCartItems] = useState([]);
   const [isCartVisible, setCartVisible] = useState(false);
   const handleAddToCart = (item) => {
     setCartItems([...cartItems, item]);
   };
+
   const handleRemoveFromCart = (index) => {
     const updatedCartItems = [...cartItems];
     updatedCartItems.splice(index, 1);
     setCartItems(updatedCartItems);
   };
+
   const handleToggleCartVisibility = () => {
     setCartVisible(!isCartVisible);
   };
@@ -57,25 +72,22 @@ const CustomerSelection = () => {
   };
 
   const handleAddButtonClick = () => {
-    // Perform desired action when "add" button is clicked
-    console.log("Add button clicked");
-    console.log("Selected category:", selectedCategory);
-    console.log("Selected option:", selectedOption);
-    console.log("Size:", size);
-    console.log("Lot:", lot);
-    console.log("Color:", color);
-
     // Create an object or string with the selected options
     const selectedItem = {
+      customerId: customerId,
       category: selectedCategory,
       option: selectedOption,
-      size,
-      lot,
-      color,
+      size: size,
+      lot: lot,
+      color: color,
     };
+
+    console.log("selectedItem: ", selectedItem);
 
     // Add the selected item to the cartItems array
     setCartItems([...cartItems, selectedItem]);
+    props.addSelection(selectedItem);
+    console.log("cartItems...........:", cartItems);
   };
 
   return (
@@ -190,7 +202,8 @@ const AddButton = styled.button`
 `;
 
 const CartIcon = styled.div`
-  /* Add your styles here */
+  top: 0;
+  right: 0;
 `;
 
 const CartItemCount = styled.span`
@@ -227,15 +240,13 @@ const EmptyCartMessage = styled.p`
 
 const mapStateToProps = (state) => {
   return {
-    // isAdmin: true,
-    // isEmployee: true,
-    // employee: state.userState.employee,
-    // getMaterialList: state.material.materials,
+    customers: state.customerState.customers,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  //   signUp: (payload) => dispatch(signUpAPI(payload)),
+  getCustomersList: () => dispatch(getCustomersListAPI()),
+  addSelection: (selectedItem) => dispatch(addSelectionsAPI(selectedItem)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerSelection);
