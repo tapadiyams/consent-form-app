@@ -14,12 +14,11 @@ const CustomerDetails = (props) => {
   useEffect(() => {
     const fetchData = async (customerId) => {
       await props.getCustomersList(); // Wait for the data to be fetched
-
       await props.getSelections(customerId);
     };
 
     fetchData(customerId);
-  }, [props.getCustomersList()]);
+  }, [customerId, props.getCustomersList, props.getSelections]);
 
   console.log("customer:", customer);
   console.log("selections: ", props.selections);

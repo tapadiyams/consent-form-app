@@ -1,13 +1,4 @@
-import {
-  IS_ADMIN,
-  IS_EMPLOYEE,
-  GET_EMPLOYEES,
-  LOGGED_EMPLOYEE,
-  GET_MATERIAL,
-  SET_LOADING_STATUS,
-  GET_CUSTOMERS,
-  GET_SELECTIONS,
-} from "../actions/actionType";
+import { GET_CUSTOMERS, GET_SELECTIONS } from "../actions/actionType";
 
 const INITIAL_STATE = {
   customers: [],

@@ -14,7 +14,7 @@ const CustomerList = (props) => {
     };
 
     fetchData();
-  }, []);
+  }, [props.getCustomersList()]);
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
@@ -163,10 +163,6 @@ const TableCell = styled.td`
   text-align: center;
   padding: 15px;
   background-color: ${(props) => (props.isEvenRow ? "#B2D3C2" : "transparent")};
-`;
-
-const PrintButton = styled.button`
-  /* Define your print button styles here */
 `;
 
 const mapStateToProps = (state) => {

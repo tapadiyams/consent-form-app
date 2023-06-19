@@ -5,8 +5,6 @@ import {
   LOGGED_EMPLOYEE,
   GET_MATERIAL,
   SET_LOADING_STATUS,
-  GET_CUSTOMERS,
-  GET_SELECTIONS,
 } from "../actions/actionType";
 
 export const initState = {

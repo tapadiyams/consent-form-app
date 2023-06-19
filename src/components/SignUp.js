@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { getCustomersListAPI, setUpRecaptha, signUpAPI } from "../actions";
+import { getCustomersListAPI, signUpAPI } from "../actions";
 import ConsentFormModal from "./ConsentFormModal";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
@@ -59,7 +59,7 @@ const SignUp = (props) => {
       await props.getCustomersList(); // Wait for the data to be fetched
     };
 
-    fetchData();
+    fetchData(props.getCustomersList());
   }, []);
 
   // Define state
@@ -71,7 +71,7 @@ const SignUp = (props) => {
   const [emailError, setEmailError] = useState("");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
-  const [selectedAddress, setSelectedAddress] = useState("");
+  // const [selectedAddress, setSelectedAddress] = useState("");
   const [fabricator, setFabricator] = useState("");
   const [isNotApplicableFabricator, setIsNotApplicableFabricator] =
     useState(false);
@@ -333,7 +333,7 @@ const SignUp = (props) => {
             <Consent>
               <label htmlFor="consentCheckbox">
                 {t("waiver_terms_1")}{" "}
-                <a href="#" onClick={handleConsentFormClick}>
+                <a href="/" onClick={handleConsentFormClick}>
                   {t("waiver_terms_2")}
                 </a>
               </label>
