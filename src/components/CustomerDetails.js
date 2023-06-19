@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
@@ -19,7 +19,7 @@ const CustomerDetails = (props) => {
     };
 
     fetchData(customerId);
-  }, []);
+  }, [props.getCustomersList()]);
 
   console.log("customer:", customer);
   console.log("selections: ", props.selections);

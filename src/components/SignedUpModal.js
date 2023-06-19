@@ -2,8 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import "firebase/compat/firestore";
-import consentText from "./consentText";
-import { withRouter, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const SignedUpModal = (props) => {
   const history = useHistory();

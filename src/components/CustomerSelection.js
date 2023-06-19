@@ -27,9 +27,6 @@ const CustomerSelection = (props) => {
 
   const [cartItems, setCartItems] = useState([]);
   const [isCartVisible, setCartVisible] = useState(false);
-  const handleAddToCart = (item) => {
-    setCartItems([...cartItems, item]);
-  };
 
   const handleRemoveFromCart = (index) => {
     const updatedCartItems = [...cartItems];

@@ -1,22 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 const menu = ["Employee List", "Edit Materials"];
 
 const AdminActions = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(null);
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
-    setSelectedOption(null);
-  };
-
-  const handleOptionSelect = (option) => {
-    setSelectedOption(option);
   };
 
   return (

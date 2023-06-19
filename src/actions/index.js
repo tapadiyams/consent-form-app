@@ -1,10 +1,7 @@
 import { auth, provider, storage } from "../firebase";
 import db from "../firebase";
 import {
-  IS_ADMIN,
-  IS_EMPLOYEE,
   GET_EMPLOYEES,
-  LOGGED_EMPLOYEE,
   GET_MATERIAL,
   SET_LOADING_STATUS,
   GET_CUSTOMERS,
@@ -142,6 +139,9 @@ export function addMaterialAPI(payload) {
     db.collection("customer").add({
       customerId: id,
       material: material,
+      size: size,
+      lot: lot,
+      color: color,
     });
   };
 }

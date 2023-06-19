@@ -7,8 +7,6 @@ import { useTranslation } from "react-i18next";
 import i18next from "i18next";
 import cookies from "js-cookie";
 import SignedUpModal from "./SignedUpModal";
-import PhoneInput from "react-phone-number-input";
-import Autocomplete from "react-google-autocomplete";
 
 const languages = [
   {
@@ -81,11 +79,6 @@ const SignUp = (props) => {
   const [designer_or_architech, setDesigner_or_architech] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  const [flag, setFlag] = useState(false);
-  const [otp, setOtp] = useState("");
-  const [result, setResult] = useState("");
-
-  const [hasSignedUp, setHasSignedUp] = useState(false);
   const [showSignedUpModal, setShowSignedUpModal] = useState("close");
 
   const handleCheckboxChange = () => {
@@ -102,10 +95,6 @@ const SignUp = (props) => {
   const [showModal, setShowModal] = useState("close");
   const [initials, setInitials] = useState(true);
   const [acceptTerms, setAcceptTerms] = useState(false);
-
-  const [searchValue, setSearchValue] = useState("");
-
-  const AUTO_ADDRESS_API_KEY = "AIzaSyDz401kh3HcDHsDIjT4625D5W3wD0YTXTs";
 
   const handleConsentFormClick = (e) => {
     if (e.target !== e.currentTarget) {
@@ -227,33 +216,6 @@ const SignUp = (props) => {
     alert(message);
   };
 
-  const getOtp = async (e) => {
-    e.preventDefault();
-    console.log(phone);
-    setPhoneError("");
-    if (phone === "" || phone === undefined)
-      return setPhoneError(t("phone_error"));
-    try {
-      const response = await setUpRecaptha(phone);
-      setResult(response);
-      setFlag(true);
-    } catch (err) {
-      setPhoneError(err.message);
-    }
-  };
-
-  const verifyOtp = async (e) => {
-    e.preventDefault();
-    setPhoneError("");
-    if (otp === "" || otp === null) return;
-    try {
-      await result.confirm(otp);
-      console.log("Verifieddddddd");
-    } catch (err) {
-      setPhoneError(err.message);
-    }
-  };
-
   return (
     <Container>
       <Nav>
@@ -318,7 +280,7 @@ const SignUp = (props) => {
               onChange={handlePhoneChange}
               required
             />
-            <button onClick={getOtp}>Send OTP</button>
+            {/* <button onClick={getOtp}>Send OTP</button> */}
             {phoneError && <ErrorMessage>{phoneError}</ErrorMessage>}
           </Field>
           {/* <Field>

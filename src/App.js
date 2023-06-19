@@ -1,8 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./components/Home";
-import { useEffect } from "react";
-// import { getUserAuth } from "./actions";
 import { connect } from "react-redux";
 import LogIn from "./components/LogIn";
 import CustomerList from "./components/CustomerList";

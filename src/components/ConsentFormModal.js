@@ -1,7 +1,7 @@
-import styled, { createGlobalStyle } from "styled-components";
 import { connect } from "react-redux";
 import "firebase/compat/firestore";
 import consentText from "./consentText";
+import styled from "styled-components";
 
 const ConsentFormModal = (props) => {
   const reset = (e) => {
@@ -50,7 +50,7 @@ const ConsentFormModal = (props) => {
                 </InputLabel>
               </div>
               <button onClick={(event) => reset(event)}>
-                <img src="/images/close-icon.svg" />
+                <img src="/images/close-icon.svg" alt="" />
               </button>
             </Header>
           </Content>
@@ -171,8 +171,6 @@ const mapStateToProps = (state) => {
   return {};
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  // postArticle: (payload) => dispatch(postArticleAPI(payload)),
-});
+const mapDispatchToProps = (dispatch) => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConsentFormModal);
