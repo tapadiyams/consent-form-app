@@ -1,94 +1,147 @@
 import { auth, provider, storage } from "../firebase";
 import db from "../firebase";
-import { SET_USER, SET_LOADING_STATUS, GET_ARTICLES } from "./actionType";
-
-const ADMIN_COLLECTION = "admins";
-const CUSTOMER_COLLECTION = "customers";
-
-export const setUser = (payload) => ({
-  type: SET_USER,
-  user: payload,
-});
+import {
+  IS_ADMIN,
+  IS_EMPLOYEE,
+  GET_EMPLOYEES,
+  LOGGED_EMPLOYEE,
+  GET_MATERIAL,
+  SET_LOADING_STATUS,
+  GET_CUSTOMERS,
+  GET_SELECTIONS,
+} from "./actionType";
 
 export const setLoading = (status) => ({
   type: SET_LOADING_STATUS,
   status: status,
 });
 
-export const getArticles = (payload) => ({
-  type: GET_ARTICLES,
+export const getEmployees = (payload) => ({
+  type: GET_EMPLOYEES,
   payload: payload,
 });
 
-export function signUpAPI() {
-  return (dispatch) => {
-    auth
-      .signInWithPopup(provider)
-      .then((payload) => {
-        dispatch(setUser(payload.user));
-      })
-      .catch((error) => alert(error.message));
-  };
+export const getMaterials = (payload) => ({
+  type: GET_MATERIAL,
+  payload: payload,
+});
+
+export const getCustomers = (payload) => ({
+  type: GET_CUSTOMERS,
+  payload: payload,
+});
+
+export const getSelections = (payload) => ({
+  type: GET_SELECTIONS,
+  payload: payload,
+});
+
+// customer related actions
+export function signUpAPI(payload) {
+  return addCustomerAPI(payload);
 }
 
-export function getUserAuth() {
+export function addCustomerAPI(payload) {
+  const {
+    date,
+    id,
+    firstName,
+    lastName,
+    email,
+    phone,
+    // selectedAddress,
+    fabricator,
+    kitchen_and_bath,
+    designer_or_architech,
+  } = payload;
+  console.log(
+    date,
+    id,
+    firstName,
+    lastName,
+    email,
+    phone,
+    // selectedAddress,
+    fabricator,
+    kitchen_and_bath,
+    designer_or_architech
+  );
+
   return (dispatch) => {
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        dispatch(setUser(user));
-      }
+    db.collection("customers").add({
+      date: date,
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phone: phone,
+      // address: selectedAddress,
+      fabricator: fabricator,
+      kitchenandbath: kitchen_and_bath,
+      designerorarchitech: designer_or_architech,
     });
   };
 }
 
-export function addCustomerAPI(payload) {
+export function getCustomersListAPI() {
+  console.log("Hi getCustomersListAPI call");
   return (dispatch) => {
-    let payload;
-
-    db.collection("articles")
-      .orderBy("actor.date", "desc")
+    db.collection("customers")
+      .orderBy("id", "desc")
       .onSnapshot((snapshot) => {
-        payload = snapshot.docs.map((doc) => doc.data());
-        dispatch(getArticles(payload));
+        let payload = snapshot.docs.map((doc) => doc.data());
+        dispatch(getCustomers(payload));
       });
   };
 }
 
-export function addAdminAPI(payload) {
+export function addSelectionsAPI(payload) {
+  const { id, material, size, lot, color } = payload;
   return (dispatch) => {
-    let payload;
+    db.collection("selection").add({
+      customerId: id,
+      material: material,
+      size: size,
+      lot: lot,
+      color: color,
+    });
+  };
+}
 
-    db.collection("articles")
-      .orderBy("actor.date", "desc")
+export function getSelectionsAPI(payload) {
+  return (dispatch) => {
+    db.collection("selection")
+      .where("actor.customerId", "===", payload.id)
       .onSnapshot((snapshot) => {
         payload = snapshot.docs.map((doc) => doc.data());
-        dispatch(getArticles(payload));
+        dispatch(getSelections(payload));
       });
   };
 }
 
-export function getCustomersListAPI(payload) {
+// admin related actions
+export function addEmployeeAPI(payload) {
+  const { date, firstName, lastName, email, password, phone, selectedAddress } =
+    payload;
   return (dispatch) => {
-    let payload;
-
-    db.collection("articles")
-      .orderBy("actor.date", "desc")
-      .onSnapshot((snapshot) => {
-        payload = snapshot.docs.map((doc) => doc.data());
-        dispatch(getArticles(payload));
-      });
+    db.collection("customer").add({
+      date: date,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      phone: phone,
+      address: selectedAddress,
+    });
   };
 }
 
-export function getAdminsListAPI(payload) {
+export function addMaterialAPI(payload) {
+  const { id, material, size, lot, color } = payload;
   return (dispatch) => {
-    let payload;
-
-    db.collection("articles")
-      .orderBy("actor.date", "desc")
-      .onSnapshot((snapshot) => {
-        payload = snapshot.docs.map((doc) => doc.data());
-        dispatch(getArticles(payload));
-      });
+    db.collection("customer").add({
+      customerId: id,
+      material: material,
+    });
   };
 }

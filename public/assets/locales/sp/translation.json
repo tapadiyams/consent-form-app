@@ -1,0 +1,16 @@
+{
+    "sign_up_title": "Inscribirse",
+    "first_name": "Nombre de pila",
+    "last_name": "Apellido",
+    "email": "Correo electrónico",
+    "email_error": "Por favor, introduce una dirección de correo electrónico válida",
+    "phone": "Teléfono",
+    "phone_error": "Por favor ingrese un número de teléfono válido",
+    "address": "DIRECCIÓN",
+    "fabricator": "Fabricante",
+    "kitchen_and_bath": "cocina y baño",
+    "designer_or_architech": "Diseño o arquitecto",
+    "waiver_terms_1": "Firma el",
+    "waiver_terms_2": "Acuerdo de indemnización de renuncia y liberación",
+    "not_applicable": "No aplica"
+}

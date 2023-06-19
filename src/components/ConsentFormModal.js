@@ -1,14 +1,23 @@
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { connect } from "react-redux";
 import "firebase/compat/firestore";
 import consentText from "./consentText";
 
 const ConsentFormModal = (props) => {
   const reset = (e) => {
-    props.handleClick(e);
+    props.handleCrossClick(e);
   };
 
+  // To break the statements
   const formattedConsentText = consentText.replace(/\n/g, "<br>");
+
+  const handleCheckboxChange = (e) => {
+    props.setAcceptTerms(e.target.checked);
+  };
+
+  const handleInitialsChange = (e) => {
+    props.setInitials(e.target.value);
+  };
 
   return (
     <>
@@ -17,8 +26,29 @@ const ConsentFormModal = (props) => {
           <Content>
             <Header>
               <h2>Waiver and Release indemnity agreement</h2>
-              {/* <p>{consentText}</p> */}
               <p dangerouslySetInnerHTML={{ __html: formattedConsentText }}></p>
+              <div>
+                <CheckboxLabel>
+                  <CheckboxInput
+                    type="checkbox"
+                    checked={props.acceptTerms}
+                    onChange={handleCheckboxChange}
+                  />
+                  <CheckboxText>
+                    I hereby accept the <strong>terms and conditions</strong>{" "}
+                    written in this consent form
+                  </CheckboxText>
+                </CheckboxLabel>
+                <br />
+                <InputLabel>
+                  Sign with INITIALS
+                  <Input
+                    type="text"
+                    value={props.initials}
+                    onChange={handleInitialsChange}
+                  />
+                </InputLabel>
+              </div>
               <button onClick={(event) => reset(event)}>
                 <img src="/images/close-icon.svg" />
               </button>
@@ -56,6 +86,10 @@ const Content = styled.div`
   margin: 0 auto;
   padding: 20px; /* Add padding for better readability */
 
+  h2 {
+    color: #cca132;
+  }
+
   ::-webkit-scrollbar {
     width: 8px;
   }
@@ -85,6 +119,7 @@ const Header = styled.div`
   p {
     font-size: 16px;
     margin-bottom: 20px;
+    color: black;
   }
 
   button {
@@ -100,10 +135,40 @@ const Header = styled.div`
   }
 `;
 
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const CheckboxInput = styled.input`
+  margin-right: 10px;
+`;
+
+const CheckboxText = styled.span`
+  color: black;
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const InputLabel = styled.label`
+  color: black;
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 20px;
+`;
+
+const Input = styled.input`
+  margin-top: 5px;
+  font-size: 16px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-left: 10px;
+`;
+
 const mapStateToProps = (state) => {
-  return {
-    user: state.userState.user,
-  };
+  return {};
 };
 
 const mapDispatchToProps = (dispatch) => ({

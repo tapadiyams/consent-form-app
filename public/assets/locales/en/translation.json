@@ -1,0 +1,16 @@
+{
+    "sign_up_title": "Sign Up",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "email": "Email",
+    "email_error": "Please enter a valid email address",
+    "phone": "Phone",
+    "phone_error": "Please enter a valid phone number",
+    "address": "Address",
+    "fabricator": "Fabricator",
+    "kitchen_and_bath": "Kitchen And Bath",
+    "designer_or_architech": "Design Or Architect",
+    "waiver_terms_1": "Sign the",
+    "waiver_terms_2": "Waiver and Release indemnity agreement",
+    "not_applicable": "Not applicable"
+}

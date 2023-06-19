@@ -12,7 +12,7 @@ body {
 body,
 html {
   /* // background color for the whole application */
-  background-color: #f5f5f5;
+  background-color: #35363a;
   /* // "box-sizing" - CSS property sets how the total width and height of an element is calculated. "border-box" -  fits within specified size. */
   box-sizing: border-box;
 }
@@ -42,6 +42,7 @@ ul {
   font-size: 100%;
   vertical-align: baseline;
   background: transparent;
+  color: white;
 }
 
 body {

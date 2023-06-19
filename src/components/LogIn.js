@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
 import styled, { keyframes } from "styled-components";
 
 const jump = keyframes`
@@ -83,12 +82,6 @@ function LogIn() {
     console.log(dados);
   };
 
-  //   const handleChange = (e) => {
-  //     e.preventDefault();
-  //     const { name, value } = e.target;
-  //     setDados(Object.assign(dados, { [name]: value }));
-  //   };
-
   const handleChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
@@ -100,8 +93,6 @@ function LogIn() {
 
   return (
     <Container>
-      {/* <GlobalStyle /> */}
-
       <Wrapper>
         <Form onSubmit={handleSubmit}>
           <Input
