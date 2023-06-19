@@ -4,23 +4,23 @@ import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getCustomersListAPI } from "../actions";
 
-const CustomerList = (props) => {
+const CustomerList = ({ customers, getCustomersList }) => {
   const [searchValue, setSearchValue] = useState("");
-  const history = useHistory(); // Use useHistory hook
+  const history = useHistory();
 
   useEffect(() => {
-    const fetchData = async () => {
-      await props.getCustomersList(); // Wait for the data to be fetched
+    const fetchCustomersList = async () => {
+      await getCustomersList(); // Wait for the data to be fetched
     };
 
-    fetchData();
-  }, [props.getCustomersList]);
+    fetchCustomersList();
+  }, [getCustomersList]);
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
   };
 
-  const filteredUsers = props.customers.filter((user) => {
+  const filteredUsers = customers.filter((user) => {
     const fullName = `${user.firstName} ${user.lastName}`;
     return fullName.toLowerCase().includes(searchValue.toLowerCase());
   });

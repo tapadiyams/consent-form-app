@@ -34,7 +34,7 @@ const GlobeIcon = ({ width = 35, height = 35 }) => (
   </svg>
 );
 
-const SignUp = (props) => {
+const SignUp = ({ getCustomersList, customers, signUp }) => {
   // For Language change
   const currentLanguageCode = cookies.get("i18next") || "en";
   const currentLanguage = languages.find((l) => l.code === currentLanguageCode);
@@ -56,11 +56,11 @@ const SignUp = (props) => {
   // Customer list
   useEffect(() => {
     const fetchData = async () => {
-      await props.getCustomersList(); // Wait for the data to be fetched
+      await getCustomersList(); // Wait for the data to be fetched
     };
 
-    fetchData(props.getCustomersList());
-  }, [props.getCustomersList]);
+    fetchData(getCustomersList());
+  }, [getCustomersList]);
 
   // Define state
   const [id, setId] = useState("");
@@ -156,7 +156,7 @@ const SignUp = (props) => {
       return;
     }
 
-    let newId = props.customers?.length > 0 ? props.customers[0].id + 1 : 1;
+    let newId = customers?.length > 0 ? customers[0].id + 1 : 1;
 
     const payload = {
       date: date,
@@ -171,7 +171,7 @@ const SignUp = (props) => {
       designer_or_architech: designer_or_architech,
     };
 
-    props.signUp(payload);
+    signUp(payload);
 
     setId(newId);
 
@@ -333,9 +333,12 @@ const SignUp = (props) => {
             <Consent>
               <label htmlFor="consentCheckbox">
                 {t("waiver_terms_1")}{" "}
-                <a href="#" onClick={handleConsentFormClick}>
+                <ConcentButton
+                  onClick={handleConsentFormClick}
+                  className="link-button"
+                >
                   {t("waiver_terms_2")}
-                </a>
+                </ConcentButton>
               </label>
             </Consent>
           </Field>
@@ -399,6 +402,14 @@ const DropdownButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
+`;
+
+const ConcentButton = styled.button`
+  background-color: transparent;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  color: yellow;
 `;
 
 const DropdownContent = styled.div`

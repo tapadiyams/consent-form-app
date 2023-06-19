@@ -13,14 +13,14 @@ const getMaterialList = {
   cc: ["cc1", "cc2", "cc3"],
 };
 
-const CustomerSelection = (props) => {
+const CustomerSelection = ({ getCustomersList, addSelection }) => {
   useEffect(() => {
     const fetchData = async () => {
-      await props.getCustomersList(); // Wait for the data to be fetched
+      await getCustomersList(); // Wait for the data to be fetched
     };
 
     fetchData();
-  }, [props.getCustomersList]);
+  }, [getCustomersList]);
 
   const { id } = useParams();
   const customerId = parseInt(id, 10);
@@ -83,7 +83,7 @@ const CustomerSelection = (props) => {
 
     // Add the selected item to the cartItems array
     setCartItems([...cartItems, selectedItem]);
-    props.addSelection(selectedItem);
+    addSelection(selectedItem);
     console.log("cartItems...........:", cartItems);
   };
 
