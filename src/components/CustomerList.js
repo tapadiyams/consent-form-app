@@ -14,7 +14,7 @@ const CustomerList = (props) => {
     };
 
     fetchData();
-  }, [props.getCustomersList()]);
+  }, [props.getCustomersList]);
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);

@@ -20,7 +20,7 @@ const CustomerSelection = (props) => {
     };
 
     fetchData();
-  }, []);
+  }, [props.getCustomersList]);
 
   const { id } = useParams();
   const customerId = parseInt(id, 10);

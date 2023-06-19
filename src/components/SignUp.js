@@ -60,7 +60,7 @@ const SignUp = (props) => {
     };
 
     fetchData(props.getCustomersList());
-  }, []);
+  }, [props.getCustomersList]);
 
   // Define state
   const [id, setId] = useState("");
@@ -89,7 +89,7 @@ const SignUp = (props) => {
   useEffect(() => {
     const formattedDate = new Date().toLocaleDateString(); // Get the current date and format it
     setDate(formattedDate); // Set the formatted date to the date state
-  }, []);
+  }, [date]);
 
   // Consent state
   const [showModal, setShowModal] = useState("close");
@@ -333,7 +333,7 @@ const SignUp = (props) => {
             <Consent>
               <label htmlFor="consentCheckbox">
                 {t("waiver_terms_1")}{" "}
-                <a href="/" onClick={handleConsentFormClick}>
+                <a href="#" onClick={handleConsentFormClick}>
                   {t("waiver_terms_2")}
                 </a>
               </label>

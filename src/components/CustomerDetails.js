@@ -4,29 +4,31 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { getCustomersListAPI, getSelectionsAPI } from "../actions";
 
-const CustomerDetails = (props) => {
+const CustomerDetails = ({
+  customers,
+  selections,
+  getCustomersList,
+  getSelections,
+}) => {
   const { id } = useParams();
   const customerId = parseInt(id, 10);
-  const customer = props.customers.find(
-    (customer) => customer.id === customerId
-  );
+  const customer = customers.find((customer) => customer.id === customerId);
 
   useEffect(() => {
     const fetchData = async (customerId) => {
-      await props.getCustomersList(); // Wait for the data to be fetched
-      await props.getSelections(customerId);
+      await getCustomersList(); // Wait for the data to be fetched
+      await getSelections(customerId);
     };
 
     fetchData(customerId);
-  }, [customerId, props.getCustomersList, props.getSelections]);
+  }, [customerId, getCustomersList, getSelections]);
 
   console.log("customer:", customer);
-  console.log("selections: ", props.selections);
+  console.log("selections: ", selections);
 
   if (!customer) {
     return <div>Customer not found</div>;
   }
-
   const handlePrint = () => {
     window.print();
   };
@@ -88,7 +90,7 @@ const CustomerDetails = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.selections.map((selection, index) => {
+          {selections.map((selection, index) => {
             const rowNumber = index + 1;
             const isEvenRow = rowNumber % 2 === 0;
 
