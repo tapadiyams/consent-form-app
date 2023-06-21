@@ -137,7 +137,7 @@ const Content = styled.div`
   height: 100vh;
   background-color: white;
   color: black;
-  margin: auto;
+  margin: 100px;
 `;
 
 const Search = styled.div`

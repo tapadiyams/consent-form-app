@@ -1,4 +1,7 @@
 {
+    "welcome_to_reliance_stone": "Bienvenido a Reliance Stone",
+    "existing_customer": "Cliente existente",
+    "new_customer": "Nueva cliente",
     "sign_up_title": "Inscribirse",
     "first_name": "Nombre de pila",
     "last_name": "Apellido",
@@ -13,4 +16,5 @@
     "waiver_terms_1": "Firma el",
     "waiver_terms_2": "Acuerdo de indemnización de renuncia y liberación",
     "not_applicable": "No aplica"
+
 }

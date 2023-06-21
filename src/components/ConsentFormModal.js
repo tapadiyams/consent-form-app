@@ -41,7 +41,7 @@ const ConsentFormModal = (props) => {
                 </CheckboxLabel>
                 <br />
                 <InputLabel>
-                  Sign with INITIALS
+                  Sign with FULL NAME
                   <Input
                     type="text"
                     value={props.initials}

@@ -1,4 +1,7 @@
 {
+    "welcome_to_reliance_stone": "Welcome to Reliance Stone",
+    "existing_customer": "Existing Customer",
+    "new_customer": "New Customer",
     "sign_up_title": "Sign Up",
     "first_name": "First Name",
     "last_name": "Last Name",
@@ -13,4 +16,5 @@
     "waiver_terms_1": "Sign the",
     "waiver_terms_2": "Waiver and Release indemnity agreement",
     "not_applicable": "Not applicable"
+
 }
