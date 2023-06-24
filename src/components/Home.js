@@ -38,55 +38,126 @@ const Home = (props) => {
   const handleNewCustomerClick = () => {
     history.push("/signup");
     props.setCurrentLanguage(i18n.language);
+    props.setSelectedLanguage(i18n.language);
+  };
+
+  const handleExistingCustomerClick = () => {
+    history.push("/lookup");
+  };
+
+  const handleLoginClick = () => {
+    history.push("/login");
   };
 
   return (
     <Container>
-      <Nav>
-        <a href="/">
-          <img src="/images/reliance-stones-ps-logo.jpg" alt="" />
-        </a>
+      <BackgroundImage src="/images/granite-countertop-1080x600.jpg" alt="" />
+      <ContentWrapper>
+        <Nav>
+          <LoginButton onClick={handleLoginClick}>Log In</LoginButton>
+          <DropdownMenu>
+            <DropdownButton onClick={toggleDropdown}>
+              <GlobeIconWrapper>
+                <GlobeIcon />
+              </GlobeIconWrapper>
+            </DropdownButton>
+            <DropdownContent isOpen={isOpen}>
+              {props.languages.map(({ code, name, country_code }) => (
+                <DropdownMenuItem key={country_code}>
+                  <DropdownItemLink
+                    href="#"
+                    className={
+                      props.currentLanguageCode === code ? "disabled" : ""
+                    }
+                    onClick={() => handleLanguageChange(code)}
+                  >
+                    {name}
+                  </DropdownItemLink>
+                </DropdownMenuItem>
+              ))}
+            </DropdownContent>
+          </DropdownMenu>
+        </Nav>
+        <RelianceImage>
+          <img src="/images/reliancewhite.png" alt="" />
+        </RelianceImage>
 
-        <DropdownMenu>
-          <DropdownButton onClick={toggleDropdown}>
-            <GlobeIconWrapper>
-              <GlobeIcon />
-            </GlobeIconWrapper>
-          </DropdownButton>
-          <DropdownContent isOpen={isOpen}>
-            {props.languages.map(({ code, name, country_code }) => (
-              <DropdownMenuItem key={country_code}>
-                <DropdownItemLink
-                  href="#"
-                  className={
-                    props.currentLanguageCode === code ? "disabled" : ""
-                  }
-                  onClick={() => handleLanguageChange(code)}
-                >
-                  {name}
-                </DropdownItemLink>
-              </DropdownMenuItem>
-            ))}
-          </DropdownContent>
-        </DropdownMenu>
-      </Nav>
-
-      <Section>
-        <Hero>
+        <Section>
           <h1>{t("welcome_to_reliance_stone")}</h1>
-          <img src="/images/mining.png" alt="" />
-        </Hero>
 
-        <ButtonContainer>
-          <Button>{t("existing_customer")}</Button>
-          <Button onClick={handleNewCustomerClick}>{t("new_customer")}</Button>
-        </ButtonContainer>
-      </Section>
+          <ButtonContainer>
+            <Button onClick={handleExistingCustomerClick}>
+              {t("existing_customer")}
+            </Button>
+            <Button onClick={handleNewCustomerClick}>
+              {t("new_customer")}
+            </Button>
+          </ButtonContainer>
+        </Section>
+      </ContentWrapper>
+      <h2> Copyright © 2023 - Reliance Stones</h2>
     </Container>
   );
 };
 
+const Container = styled.div`
+  position: relative; /* Make the container a positioning context */
+
+  h2 {
+    font-size: x-small;
+    text-align: center;
+    font-weight: 100;
+    padding: 20px;
+  }
+`;
+
+const BackgroundImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  object-fit: cover;
+`;
+
+const ContentWrapper = styled.div`
+  position: relative;
+  z-index: 1;
+  height: 100%;
+`;
+
+const Nav = styled.nav`
+  margin: auto;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  padding-top: 10px;
+`;
+
+const LoginButton = styled.button`
+  padding: 10px 20px;
+  font-size: 20px;
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 40px;
+  cursor: pointer;
+  margin-right: 220px;
+
+  /* Some animation */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  &:hover {
+    background-color: grey;
+    color: #cca132;
+    border-color: #cca132;
+  }
+`;
+
 const GlobeIconWrapper = styled.div`
+  margin-right: 150px;
+  padding-top: 10px;
   svg {
     transition: width 0.3s ease, height 0.3s ease, fill 0.3s ease;
   }
@@ -103,15 +174,15 @@ const DropdownMenu = styled.ul`
   display: flex;
   position: absolute;
   top: 0;
-  right: 100px;
   list-style-type: none;
   padding: 0;
   margin: 0;
   gap: 5px;
+  z-index: 1;
 `;
 
 const DropdownButton = styled.button`
-  margin-top: 10px;
+  margin-top: 5px;
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -120,19 +191,16 @@ const DropdownButton = styled.button`
 const DropdownContent = styled.div`
   position: absolute;
   top: 100%;
-  right: 10px;
   display: ${({ isOpen }) => (isOpen ? "block" : "none")};
   background-color: #fff;
-  padding: 8px;
+
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1;
+  box-shadow: 0 20px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const DropdownMenuItem = styled.li`
-  padding: 10px;
   cursor: pointer;
-
+  padding: 10px 20px;
   &:hover {
     background-color: #f0f0f0;
   }
@@ -140,89 +208,37 @@ const DropdownMenuItem = styled.li`
 
 const DropdownItemLink = styled.a`
   color: black;
+  text-decoration: none;
 `;
 
-const Container = styled.div`
-  padding: 0px;
-`;
-
-const Nav = styled.nav`
-  /* max-width: 1128px; */
-  margin: auto;
-  padding: 12px 0 16px;
+const RelianceImage = styled.div`
   display: flex;
-  align-items: center;
-  position: relative;
-  /* justify-content: space-between; */
-  flex-wrap: nowrap;
-  & > a {
-    width: 135px;
-    height: 70px;
+  justify-content: center; /* Align children horizontally */
+  align-items: center; /* Align children vertically */
+  margin-top: 40px;
 
-    @media (max-width: 768px) {
-      padding: 0 5px;
-    }
-    img {
-      width: 250px;
-      height: 250px;
-    }
+  & > img {
+    width: 350px;
+    height: 200px;
   }
 `;
 
 const Section = styled.section`
   display: flex;
-  align-content: start;
+  flex-wrap: wrap;
+  justify-content: center;
   min-height: 700px;
-  padding-bottom: 138px;
-  padding-top: 40px;
+  max-width: 1128px;
   padding: 60px 0;
   position: relative;
-  flex-wrap: wrap;
-  width: 100%;
-  max-width: 1128px;
-  align-items: center;
-  margin: auto;
-  @media (max-width: 768px) {
-    margin: auto;
-    min-height: 0px;
-  }
-`;
 
-const Hero = styled.div`
-  width: 100%;
+  margin: auto;
+
   h1 {
-    padding-bottom: 0;
-    width: 80%;
     font-size: 65px;
     color: #cca132;
     font-weight: 200;
     line-height: 70px;
-    margin-top: 100px;
-
-    @media (max-width: 768px) {
-      text-align: center;
-      font-size: 20px;
-      width: 100%;
-      line-height: 2;
-    }
-  }
-  img {
-    z-index: 1;
-    width: 600px;
-    height: 550px;
-
-    // Position it
-    position: absolute;
-    bottom: -0.2px;
-    right: -100px;
-
-    border-radius: 50%;
-    @media (max-width: 768px) {
-      top: 230px;
-      width: initial;
-      position: initial;
-      height: initial;
-    }
   }
 `;
 
@@ -230,18 +246,18 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   position: absolute;
+  gap: 20px;
+  padding-top: 150px;
 `;
 
 const Button = styled.button`
-  padding: 10px 20px;
   font-size: 30px;
   background-color: #cca132;
   color: #ffffff;
   border: none;
   border-radius: 4px;
-  margin-right: 10px;
   cursor: pointer;
-  padding: 30px;
+  padding: 30px 70px 30px 70px;
 
   // Some animation
   transition: background-color 0.3s ease, color 0.3s ease;

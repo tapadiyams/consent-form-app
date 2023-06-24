@@ -128,10 +128,27 @@ const EmployeeList = () => {
 };
 
 const EditMaterial = () => {
-  const getMaterialList = {
-    marble: ["textile1", "textile2", "textile3"],
-    aa: ["aa1", "aa2", "aa3"],
-    cc: ["cc1", "cc2", "cc3"],
+  const stoneDictionary = {
+    "Alaskan Pure White": {
+      sizes: ["130x65", "127x64", "130x79", "136x77"],
+      thickness: ["2cm", "3cm"],
+      finish: "Polish",
+    },
+    Alberti: {
+      sizes: ["130x65"],
+      thickness: ["3cm"],
+      finish: "Polish",
+    },
+    Alicante: {
+      sizes: ["128X64"],
+      thickness: ["3cm"],
+      finish: "Polish",
+    },
+    "American Falls": {
+      sizes: ["126X63"],
+      thickness: ["3cm"],
+      finish: "Polish",
+    },
   };
 
   return (
@@ -140,49 +157,29 @@ const EditMaterial = () => {
         <thead>
           <tr>
             <th>Material Name</th>
-            <th>List</th>
+            <th>Size</th>
+            <th>Thickness</th>
+            <th>Finish</th>
             <th>Remove</th>
             <th>Edit</th>
           </tr>
         </thead>
         <tbody>
-          {Object.entries(getMaterialList).map(
-            ([materialName, materialList]) => (
-              <tr key={materialName}>
-                <td>{materialName}</td>
-                <td>{materialList.join(", ")}</td>
-                <td>
-                  <button>Remove</button>
-                </td>
-                <td>
-                  <button>Edit</button>
-                </td>
-              </tr>
-            )
-          )}
+          {Object.entries(stoneDictionary).map(([materialName, sizes]) => (
+            <tr key={materialName}>
+              <td>{materialName}</td>
+              <td>{sizes.join(", ")}</td>
+              <td>
+                <button>Remove</button>
+              </td>
+              <td>
+                <button>Edit</button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
       <button>Add New Material</button>
     </div>
   );
 };
-
-// const EmployeeList = ({ }) => {
-//     return (
-//       // list of employee like a table -- first column will be email second password and third column to remove the employee and fourth to edit the email and password
-//       // below that there will be a add button to add new employee and set a password for them
-
-//     );
-//   };
-
-//   const EditMaterial = ({ }) => {
-//     return (
-//       // list of material like a table -- first column name of the material eg marble and second column will be list eg ["textile1", "textile2", "textile3"]
-//       // third column will be to remove them and fourth to edit
-//     //     marble: ["textile1", "textile2", "textile3"],
-//     //     aa: ["aa1", "aa2", "aa3"],
-//     //     cc: ["cc1", "cc2", "cc3"],
-//     //   };
-//       // below that there will be a add button to add new material and list
-//     );
-//   };

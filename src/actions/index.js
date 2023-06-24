@@ -58,8 +58,8 @@ export function addCustomerAPI(payload) {
     lastName,
     email,
     phone,
-    // selectedAddress,
-    fabricator,
+    address,
+    imageURL,
     kitchen_and_bath,
     designer_or_architech,
   } = payload;
@@ -72,8 +72,8 @@ export function addCustomerAPI(payload) {
       lastName: lastName,
       email: email,
       phone: phone,
-      // address: selectedAddress,
-      fabricator: fabricator,
+      address: address,
+      imageURL: imageURL,
       kitchenandbath: kitchen_and_bath,
       designerorarchitech: designer_or_architech,
     });

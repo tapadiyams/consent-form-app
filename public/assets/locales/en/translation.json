@@ -1,20 +1,41 @@
 {
     "welcome_to_reliance_stone": "Welcome to Reliance Stone",
+
     "existing_customer": "Existing Customer",
+
+    "look_up": "Look Up",
+
     "new_customer": "New Customer",
+
     "sign_up_title": "Sign Up",
-    "first_name": "First Name",
-    "last_name": "Last Name",
-    "email": "Email",
+
+    "first_name": "FIRST NAME",
+    "last_name": "LAST NAME",
+
+    "email": "EMAIL",
+    "otp_placeholder":"Enter your email address for the verification",
     "email_error": "Please enter a valid email address",
-    "phone": "Phone",
+
+    "phone": "PHONE",
     "phone_error": "Please enter a valid phone number",
-    "address": "Address",
-    "fabricator": "Fabricator",
-    "kitchen_and_bath": "Kitchen And Bath",
-    "designer_or_architech": "Design Or Architect",
+
+    "address": "ADDRESS",
+    "address_line": "Address line",
+    "apt_no": "Apt / Floor No.",
+    "city": "City",
+    "state": "State",
+    "country": "Country",
+    "zip_code": "Zip Code",
+
+    "fabricator": "FABRICATOR",
+
+    "kitchen_and_bath": "KITCHEN AND BATH",
+
+    "designer_or_architech": "DESIGN / ARCHITECT",
     "waiver_terms_1": "Sign the",
     "waiver_terms_2": "Waiver and Release indemnity agreement",
     "not_applicable": "Not applicable"
-
+    
 }
+
+    

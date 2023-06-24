@@ -17,7 +17,7 @@ const SignedUpModal = (props) => {
         <Container>
           <Content>
             <Header>
-              <h2>You have been successfully Signed Up!</h2>
+              <h2>{props.text}</h2>
               <span>Your id is {props.customer_id}</span>
 
               <button onClick={(event) => reset(event)}>
@@ -117,8 +117,6 @@ const mapStateToProps = (state) => {
   return {};
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  // postArticle: (payload) => dispatch(postArticleAPI(payload)),
-});
+const mapDispatchToProps = (dispatch) => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignedUpModal);

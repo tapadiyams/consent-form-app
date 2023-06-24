@@ -7,10 +7,27 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { addSelectionsAPI, getCustomersListAPI } from "../actions";
 import { useParams } from "react-router-dom";
 
-const getMaterialList = {
-  marble: ["textile1", "textile2", "textile3"],
-  aa: ["aa1", "aa2", "aa3"],
-  cc: ["cc1", "cc2", "cc3"],
+const stoneDictionary = {
+  "Alaskan Pure White": {
+    sizes: ["130x65", "127x64", "130x79", "136x77"],
+    thickness: ["2cm", "3cm"],
+    finish: "Polish",
+  },
+  Alberti: {
+    sizes: ["130x65"],
+    thickness: ["3cm"],
+    finish: "Polish",
+  },
+  Alicante: {
+    sizes: ["128X64"],
+    thickness: ["3cm"],
+    finish: "Polish",
+  },
+  "American Falls": {
+    sizes: ["126X63"],
+    thickness: ["3cm"],
+    finish: "Polish",
+  },
 };
 
 const CustomerSelection = ({ getCustomersList, addSelection }) => {
@@ -79,18 +96,15 @@ const CustomerSelection = ({ getCustomersList, addSelection }) => {
       color: color,
     };
 
-    console.log("selectedItem: ", selectedItem);
-
     // Add the selected item to the cartItems array
     setCartItems([...cartItems, selectedItem]);
     addSelection(selectedItem);
-    console.log("cartItems...........:", cartItems);
   };
 
   return (
     <Container>
       <Menu>
-        {Object.keys(getMaterialList).map((category) => (
+        {Object.keys(stoneDictionary).map((category) => (
           <MenuItem
             key={category}
             onClick={() => handleCategorySelect(category)}
@@ -102,7 +116,7 @@ const CustomerSelection = ({ getCustomersList, addSelection }) => {
 
       {selectedCategory && (
         <Menu>
-          {getMaterialList[selectedCategory].map((option) => (
+          {stoneDictionary[selectedCategory].map((option) => (
             <MenuItem key={option} onClick={() => handleOptionSelect(option)}>
               {option}
             </MenuItem>

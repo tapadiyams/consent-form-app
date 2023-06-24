@@ -6,11 +6,67 @@ import ConsentFormModal from "./ConsentFormModal";
 import SignedUpModal from "./SignedUpModal";
 import emailjs from "@emailjs/browser";
 import { useTranslation } from "react-i18next";
+import AddressFields from "./signUp/Address";
+import Fabricator from "./signUp/Fabricator";
+import KitchenAndBath from "./signUp/KitchenAndBath";
+import Email from "./signUp/Email";
+import Name from "./signUp/Name";
+import DesignOrArchitect from "./signUp/DesignOrArchitect";
 
-const SignUp = ({ getCustomersList, customers, signUp }) => {
+const SignUp = ({ getCustomersList, customers, signUp, selectedLanguage }) => {
+  /*
+   * Define states and constants
+   */
+  // Translation
   const { t } = useTranslation();
 
-  // Customer list
+  const [id, setId] = useState("");
+  const [date, setDate] = useState("");
+  // Name
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  // Email
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [userEnteredOtp, setUserEnteredOtp] = useState("");
+  const [verificationSent, setVerificationSent] = useState(false);
+  const [verificationSuccess, setVerificationSuccess] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  // Phone
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  // Address
+  const [addressLine, setAddressLine] = useState("");
+  const [aptNo, setAptNo] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("USA");
+  const [zipCode, setZipCode] = useState("");
+  // Fabricator
+  const [fabricator, setFabricator] = useState("");
+  const [isNotApplicableFabricator, setIsNotApplicableFabricator] =
+    useState(false);
+  const [f_address, setF_address] = useState("");
+  // Kitchen and Bath
+  const [kitchen_and_bath, setKitchen_and_bath] = useState("");
+  // Designer/Architect
+  const [designer_or_architech, setDesigner_or_architech] = useState("");
+
+  // Consent
+  const [showConsentModal, setShowConsentModal] = useState("close");
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [imageURL, setImageURL] = useState(""); // create a state that will contain our image url
+
+  // SignedUp Successfully
+  const [showSignedUpModal, setShowSignedUpModal] = useState("close");
+
+  /*
+   * Define hooks
+   */
+  useEffect(() => {
+    document.body.dir = selectedLanguage.dir || "ltr";
+  }, [selectedLanguage]);
+
   useEffect(() => {
     const fetchData = async () => {
       await getCustomersList(); // Wait for the data to be fetched
@@ -19,79 +75,27 @@ const SignUp = ({ getCustomersList, customers, signUp }) => {
     fetchData(getCustomersList());
   }, [getCustomersList]);
 
-  // Define state
-  const [id, setId] = useState("");
-  const [date, setDate] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [phone, setPhone] = useState("");
-  const [phoneError, setPhoneError] = useState("");
-  // const [selectedAddress, setSelectedAddress] = useState("");
-  const [fabricator, setFabricator] = useState("");
-  const [isNotApplicableFabricator, setIsNotApplicableFabricator] =
-    useState(false);
-  const [kitchen_and_bath, setKitchen_and_bath] = useState("");
-  const [designer_or_architech, setDesigner_or_architech] = useState("");
-  // const [isOpen, setIsOpen] = useState(false);
-
-  const [showSignedUpModal, setShowSignedUpModal] = useState("close");
-
-  const handleCheckboxChange = () => {
-    setIsNotApplicableFabricator(!isNotApplicableFabricator);
-  };
-
-  // Date
   useEffect(() => {
     const formattedDate = new Date().toLocaleDateString(); // Get the current date and format it
     setDate(formattedDate); // Set the formatted date to the date state
   }, [date]);
 
-  // Consent state
-  const [showModal, setShowModal] = useState("close");
-  const [initials, setInitials] = useState(true);
-  const [acceptTerms, setAcceptTerms] = useState(false);
+  const handlePhoneChange = (e) => {
+    const enteredPhone = e.target.value;
+    setPhone(enteredPhone);
 
-  const handleConsentFormClick = (e) => {
-    if (e.target !== e.currentTarget) {
-      return;
-    }
+    // Regular expression for email validation
+    const phoneRegex = /^\d{10}$/;
 
-    switch (showModal) {
-      case "open":
-        setShowModal("close");
-        setInitials(initials); // Reset initials
-        setAcceptTerms(acceptTerms); // Reset acceptTerms
-        break;
-      case "close":
-        setShowModal("open");
-        break;
-      default:
-        setShowModal("close");
+    if (enteredPhone && !phoneRegex.test(enteredPhone)) {
+      setPhoneError(t("phone_error"));
+    } else {
+      setPhoneError("");
     }
   };
 
-  const handleSignedUpModalClick = (e) => {
-    if (e.target !== e.currentTarget) {
-      return;
-    }
-
-    switch (showSignedUpModal) {
-      case "open":
-        setShowSignedUpModal("close");
-        break;
-      case "close":
-        setShowSignedUpModal("open");
-        break;
-      default:
-        setShowSignedUpModal("close");
-    }
-  };
-
-  // Send a custome email
-  const sendEmail = () => {
-    console.log("Sending an email");
+  // Send a custom email
+  const sendCustomEmail = (id) => {
     emailjs
       .send(
         "service_0cfzkig",
@@ -113,6 +117,43 @@ const SignUp = ({ getCustomersList, customers, signUp }) => {
       );
   };
 
+  const handleConsentFormClick = (e) => {
+    // if (e.target !== e.currentTarget) {
+    //   return;
+    // }
+
+    switch (showConsentModal) {
+      case "open":
+        setShowConsentModal("close");
+        break;
+      case "close":
+        setShowConsentModal("open");
+        setImageURL(imageURL); // Reset initials
+        setAcceptTerms(acceptTerms); // Reset acceptTerms
+        break;
+      default:
+        setShowConsentModal("close");
+    }
+  };
+
+  const handleSignedUpModalClick = (e) => {
+    if (e.target !== e.currentTarget) {
+      return;
+    }
+
+    switch (showSignedUpModal) {
+      case "open":
+        setShowSignedUpModal("close");
+        break;
+      case "close":
+        setShowSignedUpModal("open");
+        break;
+      default:
+        setShowSignedUpModal("close");
+    }
+  };
+
+  // Handle SignUp button
   const handleSignUp = (e) => {
     e.preventDefault();
 
@@ -128,72 +169,77 @@ const SignUp = ({ getCustomersList, customers, signUp }) => {
       showBanner("Email is required.");
       return;
     }
-    // if (!selectedAddress) {
-    //   showBanner("Address is required.");
-    //   return;
-    // }
+    if (!phone) {
+      showBanner("Phone is required.");
+      return;
+    }
+
+    const customerAddress =
+      addressLine +
+      "," +
+      aptNo +
+      "," +
+      city +
+      "," +
+      state +
+      "," +
+      country +
+      "," +
+      zipCode;
+
+    if (!customerAddress) {
+      showBanner("Customer address is required.");
+      return;
+    }
+
     if (!acceptTerms) {
       showBanner("You must accept the terms and conditions.");
+      return;
+    }
+    if (!imageURL) {
+      showBanner("You must sign to accept the waiver.");
+      return;
+    }
+
+    if (!isNotApplicableFabricator || fabricator) {
+      showBanner("Please provide the name of the fabricator.");
+      return;
+    }
+    if (!isNotApplicableFabricator || f_address) {
+      showBanner("Please provide the address of the fabricator.");
       return;
     }
 
     let newId = customers?.length > 0 ? customers[0].id + 1 : 1;
 
-    const payload = {
+    const customerPayload = {
       date: date,
       id: newId,
       firstName: firstName,
       lastName: lastName,
       email: email,
       phone: phone,
-      // address: "selectedAddress",
-      fabricator: fabricator,
+      address: customerAddress,
       kitchen_and_bath: kitchen_and_bath,
       designer_or_architech: designer_or_architech,
+      imageURL: imageURL,
     };
 
-    signUp(payload);
+    // const fabricatorPayload = {
+    //   id: newId,
+    //   fabricator: fabricator,
+    //   fabricatorAddress: f_address,
+    // };
 
+    // Save the payload in the firestore database
+    signUp(customerPayload);
+
+    // Set the new id to the new id
     setId(newId);
 
+    // When the sign up is successful, show the message modal and send the custom email
     setShowSignedUpModal("open");
-
-    // send a custom email
-    sendEmail();
-  };
-
-  const handleEmailChange = (e) => {
-    const enteredEmail = e.target.value;
-    setEmail(enteredEmail);
-
-    // Regular expression for email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (enteredEmail && !emailRegex.test(enteredEmail)) {
-      setEmailError(t("email_error"));
-    } else {
-      setEmailError("");
-    }
-  };
-
-  const handlePhoneChange = (e) => {
-    const enteredPhone = e.target.value;
-    setPhone(enteredPhone);
-
-    // Regular expression for email validation
-    const phoneRegex = /^\d{10}$/;
-
-    if (enteredPhone && !phoneRegex.test(enteredPhone)) {
-      setPhoneError(t("phone_error"));
-    } else {
-      setPhoneError("");
-    }
-  };
-
-  const handleFabricatorChange = (e) => {
-    isNotApplicableFabricator
-      ? setFabricator("N/A")
-      : setFabricator(e.event.value);
+    sendCustomEmail(newId);
   };
 
   const showBanner = (message) => {
@@ -202,138 +248,148 @@ const SignUp = ({ getCustomersList, customers, signUp }) => {
 
   return (
     <Container>
-      <Nav>
-        <Title>{t("sign_up_title")}</Title>
-      </Nav>
+      <BackgroundImage src="/images/granite-countertop-1080x600.jpg" alt="" />
+      <ContentWrapper>
+        <Nav>
+          <Title>{t("sign_up_title")}</Title>
+        </Nav>
 
-      <SignUpComponent>
-        <Form>
-          <Field>
-            <h2> {t("first_name")} </h2>
-            <Input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
+        <SignUpComponent>
+          <Form>
+            <Name
+              selectedLanguage={selectedLanguage}
+              firstName={firstName}
+              setFirstName={setFirstName}
+              lastName={lastName}
+              setLastName={setLastName}
             />
-          </Field>
-          <Field>
-            <h2> {t("last_name")} </h2>
-            <Input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              required
-            />
-          </Field>
-          <Field>
-            <h2> {t("email")} </h2>
-            <Input
-              type="text"
-              value={email}
-              onChange={handleEmailChange}
-              required
-              error={emailError}
-            />
-            {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
-          </Field>
 
-          <Field>
-            <h2> {t("phone")} </h2>
-            <Input
-              type="tel"
-              value={phone}
-              onChange={handlePhoneChange}
-              required
+            <Email
+              selectedLanguage={selectedLanguage}
+              email={email}
+              setEmail={setEmail}
+              otp={otp}
+              setOtp={setOtp}
+              userEnteredOtp={userEnteredOtp}
+              setUserEnteredOtp={setUserEnteredOtp}
+              verificationSent={verificationSent}
+              setVerificationSent={setVerificationSent}
+              verificationSuccess={verificationSuccess}
+              setVerificationSuccess={setVerificationSuccess}
+              emailError={emailError}
+              setEmailError={setEmailError}
+              customers={customers}
+              isLookUp={false}
             />
-            {/* <button onClick={getOtp}>Send OTP</button> */}
-            {phoneError && <ErrorMessage>{phoneError}</ErrorMessage>}
-          </Field>
-          {/* <Field>
-            <h2> {t("address")} </h2>
-            <Autocomplete
-              apiKey={AUTO_ADDRESS_API_KEY}
-              onPlaceSelected={(place) => {
-                console.log(place);
-                setSelectedAddress(place.value);
-              }}
-            />
-          </Field> */}
-          <Field>
-            <h2>{t("fabricator")}</h2>
-            <Input
-              type="text"
-              value={fabricator}
-              onChange={handleFabricatorChange}
-              disabled={isNotApplicableFabricator}
-            />
-            <CheckboxContainer>
-              <input
-                type="checkbox"
-                id="notApplicableCheckbox"
-                checked={isNotApplicableFabricator}
-                onChange={handleCheckboxChange}
-              />
-              <CheckboxLabel htmlFor="notApplicableCheckbox">
-                {t("not_applicable")}
-              </CheckboxLabel>
-            </CheckboxContainer>
-          </Field>
-          <Field>
-            <h2> {t("kitchen_and_bath")} </h2>
-            <Input
-              type="kitchen_and_bath"
-              value={kitchen_and_bath}
-              onChange={(e) => setKitchen_and_bath(e.target.value)}
-            />
-          </Field>
-          <Field>
-            <h2> {t("designer_or_architech")} </h2>
-            <Input
-              type="text"
-              value={designer_or_architech}
-              onChange={(e) => setDesigner_or_architech(e.target.value)}
-            />
-          </Field>
-          <Field>
-            <Consent>
-              <label htmlFor="consentCheckbox">
-                {t("waiver_terms_1")}{" "}
-                <ConcentButton
-                  onClick={handleConsentFormClick}
-                  className="link-button"
-                >
-                  {t("waiver_terms_2")}
-                </ConcentButton>
-              </label>
-            </Consent>
-          </Field>
-          <SignUpButtonArea>
-            <SignUpButton onClick={handleSignUp}>Sign Up</SignUpButton>
-          </SignUpButtonArea>
-        </Form>
-      </SignUpComponent>
+            {verificationSuccess && (
+              <>
+                <Field>
+                  <h2> {t("phone")} </h2>
+                  <Input
+                    type="tel"
+                    value={phone}
+                    onChange={handlePhoneChange}
+                    required
+                  />
+                  {phoneError && <ErrorMessage>{phoneError}</ErrorMessage>}
+                </Field>
 
-      <ConsentFormModal
-        showModal={showModal}
-        handleCrossClick={handleConsentFormClick}
-        setAcceptTerms={setAcceptTerms}
-        setInitials={setInitials}
-        initialAcceptTerms={acceptTerms} // Pass the acceptTerms state here
-        initialInitials={initials} // Pass the initials state here
-      />
+                <AddressFields
+                  selectedLanguage={selectedLanguage}
+                  addressLine={addressLine}
+                  setAddressLine={setAddressLine}
+                  aptNo={aptNo}
+                  setAptNo={setAptNo}
+                  city={city}
+                  setCity={setCity}
+                  state={state}
+                  setState={setState}
+                  setCountry={setCountry}
+                  zipCode={zipCode}
+                  setZipCode={setZipCode}
+                />
 
-      <SignedUpModal
-        showModal={showSignedUpModal}
-        handleCrossClick={handleSignedUpModalClick}
-        customer_id={id}
-      />
+                <Fabricator
+                  selectedLanguage={selectedLanguage}
+                  fabricator={fabricator}
+                  setFabricator={setFabricator}
+                  isNotApplicableFabricator={isNotApplicableFabricator}
+                  setIsNotApplicableFabricator={setIsNotApplicableFabricator}
+                  f_address={f_address}
+                  setF_address={setF_address}
+                />
+
+                <KitchenAndBath
+                  selectedLanguage={selectedLanguage}
+                  kitchen_and_bath={kitchen_and_bath}
+                  setKitchen_and_bath={setKitchen_and_bath}
+                />
+
+                <DesignOrArchitect
+                  selectedLanguage={selectedLanguage}
+                  designer_or_architech={designer_or_architech}
+                  setDesigner_or_architech={setDesigner_or_architech}
+                />
+
+                <Field>
+                  <Consent>
+                    <label htmlFor="consentCheckbox">
+                      {t("waiver_terms_1")}
+                      <ConcentButton
+                        onClick={handleConsentFormClick}
+                        className="link-button"
+                      >
+                        {t("waiver_terms_2")}
+                      </ConcentButton>
+                    </label>
+                  </Consent>
+                </Field>
+                <SignUpButtonArea>
+                  <SignUpButton onClick={handleSignUp}>Sign Up</SignUpButton>
+                </SignUpButtonArea>
+              </>
+            )}
+          </Form>
+        </SignUpComponent>
+
+        <ConsentFormModal
+          showModal={showConsentModal}
+          handleCrossClick={handleConsentFormClick}
+          setAcceptTerms={setAcceptTerms}
+          acceptTerms={acceptTerms}
+          setImageURL={setImageURL}
+          imageURL={imageURL}
+        />
+
+        <SignedUpModal
+          showModal={showSignedUpModal}
+          handleCrossClick={handleSignedUpModalClick}
+          customer_id={id}
+          text="You have been successfully Signed Up!"
+        />
+      </ContentWrapper>
     </Container>
   );
 };
 
 const Container = styled.div`
-  padding: 0px;
+  position: relative;
+`;
+
+const BackgroundImage = styled.img`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  object-fit: cover;
+`;
+
+const ContentWrapper = styled.div`
+  position: relative;
+  z-index: 1;
+  height: 100%;
 `;
 
 const Nav = styled.div`
@@ -355,55 +411,6 @@ const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-// const DropdownMenu = styled.ul`
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   list-style-type: none;
-//   padding: 0;
-//   margin: 0;
-// `;
-
-// const DropdownButton = styled.button`
-//   margin-top: 10px;
-//   background-color: transparent;
-//   border: none;
-//   cursor: pointer;
-// `;
-
-// const DropdownContent = styled.div`
-//   position: absolute;
-//   top: 100%;
-//   right: 10px;
-//   display: ${({ isOpen }) => (isOpen ? "block" : "none")};
-//   background-color: #fff;
-//   padding: 8px;
-//   border-radius: 4px;
-//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-//   z-index: 1;
-// `;
-
-// const DropdownMenuItem = styled.li`
-//   padding: 10px;
-//   cursor: pointer;
-
-//   &:hover {
-//     background-color: #f0f0f0;
-//   }
-// `;
-
-// const DropdownItemLink = styled.a`
-//   color: black;
-// `;
-
-const ConcentButton = styled.button`
-  background-color: transparent;
-  border: none;
-  text-decoration: none;
-  cursor: pointer;
-  color: yellow;
-`;
-
 const SignUpComponent = styled.div`
   display: flex;
   flex-direction: column;
@@ -420,7 +427,7 @@ const Form = styled.div`
   padding: 15px;
 
   height: 100%;
-  width: 40%;
+  width: 50%;
   gap: 20px;
 `;
 
@@ -438,18 +445,8 @@ const Input = styled.input`
     inset 0 0 0 2px rgb(0 0 0 / 0%) inset 0 0 0 1px rgb(0 0 0 / 0);
   vertical-align: middle;
   padding: 10px;
-  text-align: center;
   font-size: 20px;
   color: rgba(0, 0, 0, 0.6);
-`;
-
-const CheckboxContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const CheckboxLabel = styled.label`
-  margin-left: 10px;
 `;
 
 const ErrorMessage = styled.p`
@@ -462,15 +459,27 @@ const Consent = styled.div`
   display: flex;
 
   label {
-    a {
-      color: #cca132; /* Change link color to #cca132 */
-      text-decoration: none;
-      transition: color 0.3s;
+    text-decoration: none;
+    transition: color 0.3s;
+    font-size: large;
 
-      &:hover {
-        font-weight: bold; /* Make it bold on hover */
-      }
+    &:hover {
+      font-weight: bold;
     }
+  }
+`;
+
+const ConcentButton = styled.button`
+  background-color: transparent;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  color: #cca132;
+  transition: color 0.3s;
+  font-size: larger;
+
+  &:hover {
+    font-weight: bold;
   }
 `;
 

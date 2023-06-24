@@ -10,6 +10,7 @@ import CustomerDetails from "./components/CustomerDetails";
 import CustomerSelection from "./components/CustomerSelection";
 import AdminActions from "./components/AdminActions";
 import cookies from "js-cookie";
+import ExistingCustomer from "./components/ExistingCustomer";
 
 const languages = [
   {
@@ -29,8 +30,8 @@ function App(props) {
 
   // For Language change
   const currentLanguageCode = cookies.get("i18next") || "en";
-  const selectedLanguage = languages.find(
-    (l) => l.code === currentLanguageCode
+  const [selectedLanguage, setSelectedLanguage] = useState(
+    languages.find((l) => l.code === currentLanguageCode)
   );
 
   useEffect(() => {
@@ -47,10 +48,14 @@ function App(props) {
               currentLanguage={currentLanguage}
               currentLanguageCode={currentLanguageCode}
               languages={languages}
+              setSelectedLanguage={setSelectedLanguage}
             />
           </Route>
           <Route exact path="/signup">
-            <SignUp currentLanguage={currentLanguage} />
+            <SignUp selectedLanguage={selectedLanguage} />
+          </Route>
+          <Route exact path="/lookup">
+            <ExistingCustomer selectedLanguage={selectedLanguage} />
           </Route>
           <Route path="/login">
             <LogIn />

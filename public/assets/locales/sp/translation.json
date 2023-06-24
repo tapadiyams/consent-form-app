@@ -15,6 +15,12 @@
     "designer_or_architech": "Diseño o arquitecto",
     "waiver_terms_1": "Firma el",
     "waiver_terms_2": "Acuerdo de indemnización de renuncia y liberación",
-    "not_applicable": "No aplica"
-
+    "not_applicable": "No aplica",
+    "otp_placeholder":"Ingrese su correo electrónico para recibir OTP",
+    "address_line": "Dirección",
+    "apt_no": "No. de piso/apto..",
+    "city": "Ciudad",
+    "state": "Estado",
+    "country": "País",
+    "zip_code": "Código postal"
 }

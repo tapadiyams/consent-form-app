@@ -23,9 +23,6 @@ const CustomerDetails = ({
     fetchData(customerId);
   }, [customerId, getCustomersList, getSelections]);
 
-  console.log("customer:", customer);
-  console.log("selections: ", selections);
-
   if (!customer) {
     return <div>Customer not found</div>;
   }
@@ -42,6 +39,10 @@ const CustomerDetails = ({
           <TableData>{customer.date}</TableData>
         </TableRow>
         <TableRow>
+          <TableHeader>ID</TableHeader>
+          <TableData>{customer.id}</TableData>
+        </TableRow>
+        <TableRow>
           <TableHeader>Name</TableHeader>
           <TableData>
             {customer.firstName} {customer.lastName}
@@ -55,14 +56,19 @@ const CustomerDetails = ({
           <TableHeader>Phone</TableHeader>
           <TableData>{customer.phone}</TableData>
         </TableRow>
-        {/* <TableRow>
+        <TableRow>
           <TableHeader>Address</TableHeader>
           <TableData>{customer.address}</TableData>
-        </TableRow> */}
+        </TableRow>
 
         <TableRow>
           <TableHeader>Fabricator</TableHeader>
           <TableData>{customer.fabricator}</TableData>
+        </TableRow>
+
+        <TableRow>
+          <TableHeader>Fabricator's Address</TableHeader>
+          <TableData>{customer.f_address}</TableData>
         </TableRow>
 
         <TableRow>
@@ -82,11 +88,10 @@ const CustomerDetails = ({
           <tr>
             <TableHeader>#</TableHeader>
             <TableHeader>Material</TableHeader>
-            <TableHeader>Option</TableHeader>
             <TableHeader>Size</TableHeader>
             <TableHeader>Lot</TableHeader>
-            <TableHeader>Color</TableHeader>
-            {/* <TableHeader>Actions</TableHeader>  */}
+            <TableHeader>Finish</TableHeader>
+            <TableHeader>Actions</TableHeader>
           </tr>
         </thead>
         <tbody>
@@ -104,9 +109,6 @@ const CustomerDetails = ({
                   {/* Link to customer page */}
                 </TableCell>
                 <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                  {selection.selectedOption}
-                </TableCell>
-                <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                   {selection.size}
                 </TableCell>
 
@@ -121,52 +123,78 @@ const CustomerDetails = ({
           })}
         </tbody>
       </SelectionTable>
+      <Footer>
+        <FooterContent>
+          {customer.imageURL ? (
+            <img
+              src={customer.imageURL}
+              alt="customer signature"
+              style={{
+                display: "block",
+                margin: "0 auto",
+                // border: "1px solid black",
+                width: "150px",
+              }}
+            />
+          ) : null}
+
+          <h2>Customer's Signature</h2>
+        </FooterContent>
+
+        <FooterContent>
+          <h2>Sale's Representative</h2>
+        </FooterContent>
+      </Footer>
     </Container>
   );
 };
-
-const SelectionTable = styled.table`
-  border: 2px solid forestgreen;
-  width: 1000px;
-  height: 200px;
-`;
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  color: black;
 `;
 
 const PrintButton = styled.button`
   background-color: green;
   color: white;
   padding: 10px 20px;
+  font-size: 20px;
   border: none;
   border-radius: 4px;
-  margin-bottom: 20px;
+  margin-top: 20px;
 `;
 
 const Table = styled.table`
   border-collapse: collapse;
-  width: 400px;
-  margin-bottom: 20px;
+  width: auto;
+  margin-top: 20px;
+  border: 2px solid #b2d3c2;
 `;
 
 const TableRow = styled.tr`
   &:nth-child(even) {
-    background-color: grey;
+    background-color: #b2d3c2;
   }
 `;
 
 const TableHeader = styled.th`
-  color: white;
   text-align: left;
   padding: 8px;
   &:nth-child(even) {
-    background-color: grey;
+    background-color: #b2d3c2;
   }
 `;
 
+const SelectionTable = styled.table`
+  border: 2px solid #b2d3c2;
+  width: 70%;
+  height: 200px;
+`;
 const TableData = styled.td`
   text-align: left;
   padding: 8px;
@@ -175,7 +203,25 @@ const TableData = styled.td`
 const TableCell = styled.td`
   text-align: center;
   padding: 15px;
-  background-color: ${(props) => (props.isEvenRow ? "#B2D3C2" : "transparent")};
+  background-color: ${(props) => (props.isEvenRow ? "#b2d3c2" : "transparent")};
+`;
+
+const Footer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  page-break-after: always; /* Add page break after footer */
+`;
+
+const FooterContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 100px;
+  justify-content: end;
+  h2 {
+    color: black;
+  }
 `;
 
 const mapStateToProps = (state) => {

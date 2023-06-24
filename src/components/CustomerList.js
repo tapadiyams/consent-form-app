@@ -108,8 +108,6 @@ const CustomerList = ({ customers, getCustomersList }) => {
 const AppContainer = styled.div`
   background-color: white;
   color: black;
-  width: 100%;
-  height: 100vh;
 `;
 
 const NavBar = styled.nav`
@@ -133,11 +131,10 @@ const Content = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100vh;
   background-color: white;
   color: black;
   margin: 100px;
+  height: 100vh;
 `;
 
 const Search = styled.div`

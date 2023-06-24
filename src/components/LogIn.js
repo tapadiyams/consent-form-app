@@ -10,17 +10,25 @@ const jump = keyframes`
   }
 `;
 
-const Container = styled.section`
-  background: #fdf9f3;
-  height: 100vh;
+const Container = styled.section``;
+
+const BackgroundImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  object-fit: cover;
 `;
 
 const Wrapper = styled.section`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+
+  height: 100vh;
   width: 100%;
 `;
 
@@ -93,10 +101,11 @@ function LogIn() {
 
   return (
     <Container>
+      <BackgroundImage src="/images/granite-countertop-1080x600.jpg" alt="" />
       <Wrapper>
         <Form onSubmit={handleSubmit}>
           <Input
-            type="email"
+            type="text"
             name="email"
             value={dados.email}
             onChange={handleChange}
