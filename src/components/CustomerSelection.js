@@ -17,6 +17,7 @@ const CustomerSelection = ({
   getStonesList,
   stonesList,
 }) => {
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
   const [size, setSize] = useState("");
   const [thickness, setThickness] = useState("");
@@ -78,8 +79,9 @@ const CustomerSelection = ({
     resetCart();
   };
 
-  const handleMaterialSelect = (category) => {
-    setSelectedMaterial(category);
+  const handleMaterialSelect = (material) => {
+    setSelectedCategory("");
+    setSelectedMaterial(material);
     setSelectedSize(null); // Reset selectedSize when selecting a new material
     setThickness(null); // Reset selectedThickness when selecting a new material
     setFinish("");
@@ -93,6 +95,7 @@ const CustomerSelection = ({
   const handleAddButtonClick = () => {
     const selectedItem = {
       customerId: customerId,
+      category: selectedCategory,
       material: selectedMaterial,
       size: size,
       thickness: thickness,

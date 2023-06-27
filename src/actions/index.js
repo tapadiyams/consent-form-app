@@ -681,11 +681,12 @@ export function deleteEmployeeAPI(payload) {
  *
  */
 export function addStoneAPI(payload) {
-  const { material, sizes, thicknesses, finish, bookmatch } = payload;
+  const { category, material, sizes, thicknesses, finish, bookmatch } = payload;
 
   return async (dispatch) => {
     try {
       await stonesCollection.add({
+        category: category,
         material: material,
         sizes: sizes,
         thicknesses: thicknesses,
@@ -700,10 +701,13 @@ export function addStoneAPI(payload) {
 
 export function getStonesListAPI() {
   return (dispatch) => {
-    stonesCollection.orderBy("material", "desc").onSnapshot((snapshot) => {
-      let payload = snapshot.docs.map((doc) => doc.data());
-      dispatch(getStones(payload));
-    });
+    stonesCollection
+      .orderBy("category")
+      // .orderBy("material")
+      .onSnapshot((snapshot) => {
+        let payload = snapshot.docs.map((doc) => doc.data());
+        dispatch(getStones(payload));
+      });
   };
 }
 

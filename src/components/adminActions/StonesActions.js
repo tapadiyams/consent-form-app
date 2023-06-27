@@ -61,6 +61,7 @@ const StonesActions = ({
       <table>
         <thead>
           <tr>
+            <th>Category</th>
             <th>Material</th>
             <th>Sizes</th>
             <th>Thicknesses</th>
@@ -73,6 +74,8 @@ const StonesActions = ({
         <tbody>
           {Object.entries(stones).map(([stoneId, stone]) => (
             <tr key={stoneId}>
+              {console.log("Shubham, stone: ", stone)}
+              <td>{stone.category}</td>
               <td>{stone.material}</td>
               <td>
                 {stone.sizes && stone.sizes.length > 0

@@ -34,6 +34,7 @@ const RemoveButton = styled.button`
 `;
 
 const AddStoneModal = ({ isOpen, onClose, onSubmit, stones }) => {
+  const [category, setCategory] = useState("");
   const [material, setMaterial] = useState("");
   const [sizes, setSizes] = useState([]);
   const [sizeInput, setSizeInput] = useState("");
@@ -81,8 +82,13 @@ const AddStoneModal = ({ isOpen, onClose, onSubmit, stones }) => {
   };
 
   const handleSubmit = () => {
+    if (!category) {
+      alert("Category of the stone is required!");
+      return;
+    }
+
     if (!material) {
-      alert("Name of stone is required!");
+      alert("Name of the stone is required!");
       return;
     }
 
@@ -110,6 +116,7 @@ const AddStoneModal = ({ isOpen, onClose, onSubmit, stones }) => {
     }
 
     const payload = {
+      category: category,
       material: material,
       sizes: sizes,
       thicknesses: thicknesses,
@@ -125,6 +132,14 @@ const AddStoneModal = ({ isOpen, onClose, onSubmit, stones }) => {
     <ModalContainer isOpen={isOpen}>
       <ModalContent>
         <h2>Add New Stone</h2>
+        <InputLabel>
+          Category:
+          <Input
+            type="text"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          />
+        </InputLabel>
         <InputLabel>
           Material:
           <Input
