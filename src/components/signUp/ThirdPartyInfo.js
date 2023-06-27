@@ -23,7 +23,9 @@ const ThirdPartyInfo = (props) => {
           <FullLineInput
             type="text"
             value={props.name}
-            placeholder={`Enter ${props.title_lowercase}'s Name`}
+            placeholder={t("enter_name", {
+              title_lowercase: props.title_lowercase.toLowerCase(),
+            })}
             onChange={(e) => props.setName(e.target.value)}
           />
         )}
@@ -43,7 +45,9 @@ const ThirdPartyInfo = (props) => {
             <FullLineInput
               type="text"
               value={props.address}
-              placeholder={`Enter ${props.title_lowercase}'s Address`}
+              placeholder={t("enter_address", {
+                title_lowercase: props.title.toLowerCase(),
+              })}
               onChange={(e) => props.setAddress(e.target.value)}
               required
             />
@@ -51,14 +55,18 @@ const ThirdPartyInfo = (props) => {
               <Input
                 type="text"
                 value={props.email}
-                placeholder={`${props.title_lowercase}'s Email`}
+                placeholder={t("enter_email", {
+                  title_lowercase: props.title.toLowerCase(),
+                })}
                 onChange={(e) => props.setEmail(e.target.value)}
                 required
               />
               <Input
                 type="text"
                 value={props.phone}
-                placeholder={`${props.title_lowercase}'s Phone`}
+                placeholder={t("enter_phone", {
+                  title_lowercase: props.title.toLowerCase(),
+                })}
                 onChange={(e) => props.setPhone(e.target.value)}
                 required
               />

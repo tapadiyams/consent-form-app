@@ -15,6 +15,12 @@
     "email": "EMAIL",
     "otp_placeholder":"Enter your email address for the verification",
     "email_error": "Please enter a valid email address",
+    "enter_the_otp": "Enter the OTP",
+    "email_send_otp": "Send OTP",
+    "email_verify_otp": "Verify OTP",
+    "email_verified": "Email verification successful !",
+    "customer_already_exists": "Customer already exists!",
+    "customer_does_not_exist_please_check_your_email_address_again.":"Customer does not exist! Please Check your email address again.",
 
     "phone": "PHONE",
     "phone_error": "Please enter a valid phone number",
@@ -33,14 +39,29 @@
     "kitchen_and_bath_title_uppercase": "KITCHEN AND BATH",
     "kitchen_and_bath_title_lowercase": "Kitchen and Bath",
 
-    "designer_or_architect_uppercase": "DESIGN / ARCHITECT",
-    "designer_or_architect_lowercase": "Design / Architect",
+    "designer_or_architect_uppercase": "DESIGN OR ARCHITECT",
+    "designer_or_architect_lowercase": "Design or Architect",
 
+    "enter_name": "Enter {{title_lowercase}}'s name",
+    "enter_address": "Enter {{title_lowercase}}'s address",
+    "enter_email": "Enter {{title_lowercase}}'s email",
+    "enter_phone": "Enter {{title_lowercase}}'s phone",
 
     "waiver_terms_1": "Sign the",
     "waiver_terms_2": "Waiver and Release indemnity agreement",
-    "not_applicable": "Not applicable"
-    
+    "not_applicable": "Not applicable",
+
+    "you_have_been_successfully_signed_up": "You have been successfully Signed Up!",
+
+    "consent_text_title":"Waiver and Release indemnity agreement",
+    "consent_text": "I am checking this box to acknowledge that I have read and understood the following terms. By checking this box, I allow Reliance Granite and Marble Corporation (\"Reliance\" or \"we\" or \"our\" or \"us\") to rely on my consent and waive the requirement of an electronic signature for this Waiver and Release indemnity agreement.\n\nI understand that Reliance is located at 50 Boright Avenue, Kenilworth, NJ 07033 (\"PREMISES\") and operates a wholesale warehouse for natural stone tiles and slabs. The warehouse involves heavy traffic, movement of workers, material-handling equipment, and the presence of heavy and dangerous equipment. The premises may contain debris, sharp or jagged surfaces, and objects that may pose risks.\n\nBy entering the premises, I acknowledge the unique risks involved and agree to the following:\n\n1. I will not move around the premises alone/unattended and will ask for help/assistance when handling materials/products and moving about.\n2. I will be vigilant, careful, alert, and aware of ongoing activities and tripping hazards while walking in the premises and between aisles.\n3. I will not use any mobile or electronic device in the premises, as it may hinder my awareness of my surroundings.\n4. Any person under the age of 16 must remain in the waiting area and is strictly prohibited from accessing the warehouse area without permission.\n5. I will avoid confined areas and areas with insufficient or dim lighting.\n6. I will not attempt to lift or move any stones, tiles, or objects.\n7. I will not touch any machines, equipment, or materials in the premises.\n8. I will obey all rules and instructions provided by Reliance staff.\n9. I will ask questions and seek additional safety information when needed.\n\nI understand that checking the acceptance box will be considered my consent and acknowledgment. I further agree that I am solely responsible for any bodily injury, death, loss of personal property, damages, and expenses that may occur while on the premises. I release Reliance from any claims for personal injuries and property damage.\n\nI have read this waiver & release carefully and fully understand its terms. I am aware that by signing it, I waive and release all claims for personal injuries and property damage that I sustain while on the premises. I acknowledge that Reliance has made no warranty, express or implied, regarding the condition of the premises, materials, equipment, or the competency of any person present.\n\nI have had ample opportunity to review this document and ask questions. I fully assume the risks associated with being on the premises. To the fullest extent permitted by New Jersey Law, I agree to hold harmless, release, defend, and indemnify Reliance, its owners, officers, principals, agents, successors, assigns, heirs, employees, volunteers, and independent contractors from any loss, damage, or injuries to persons and property.\n\nThis waiver & release covers any and all liability, claims, demands, causes of action, or damages related to or arising from: (a) Reliance or its employees, (b) other individuals present on the premises, or (c) my presence at the premises, including all activities associated with it. I agree not to sue, claim against, attach the property of, or prosecute Reliance for any injury, death, damages, or losses, whether caused by negligence or other acts.\n\nThis Contract is legally binding upon me, my spouse, my heirs, assigns, legal guardians, and personal representatives. I acknowledge that this waiver & release is intended to be as broad and inclusive as permitted by the laws of the state of New Jersey, and any dispute arising from it shall be governed by and construed in accordance with New Jersey Law.\n\nIf I am a parent/guardian/supervisor/caretaker (of a minor) and checking the box on behalf of a minor, I acknowledge that this waiver & release shall be binding to the fullest extent permitted by law with respect to said minor. The consent of one parent or legal guardian shall be deemed the consent of all persons legally responsible for this individual, even if only one such person signs this Waiver & Release.\n\nI further confirm that I am not under the influence of any medication, alcohol, or controlled substance that would impair my judgment to enter into this Waiver & Release or comply with its terms while on the premises.\n\nBy checking the box and accepting this agreement, I confirm that I have read and fully understand this Covenant Not to Sue, Waiver, Release, Informed Consent, Assumption of Risk, and Indemnity Agreement. I acknowledge that I am giving up substantial rights by signing it, and I do so freely and voluntarily without any inducement, assurance, or guarantee being made to me. I intend my acceptance to be a complete and unconditional release of Reliance and all parties mentioned herein to the greatest extent allowed by law. I understand that this is a release of liability, and if I do not understand or agree with its terms, I should not check the box or accept (e-signature) in this document.",
+    "consent_text_acceptance_checkbox": "I hereby accept the terms and conditions written in this consent form.",
+    "sign_here": "Sign here",
+    "save": "Save",
+    "clear": "Clear",
+
+   "access_agreement_text": "In exchange for granting access to the warehouse of Reliance Granite and Marble Corporation, (\"Reliance\" or \"Us\") and for other good and valuable consideration, by signing below the customer, fabricator, contractor, or other individual or representative (\"you\" or \"your\") agrees as follows:\n\n- Selected material(s) will be on hold for 5 days only if tagged.\n- Your contractor/fabricator may contact us to request further time extensions, but any such request shall be considered in Reliance's sole discretion.\n- Samples given to customers are for reference purposes only. The actual slabs supplied may vary from the samples given, as stones, being a natural product, may vary in color and characteristics. Accordingly, you understand and agree that it is your responsibility to ensure that the material being cut is the very same material which was selected.\n- Understand and agree that once the material is processed, cut or in any way altered or modified from its warehouse condition, it may not be returned to Reliance and no refunds or exchanges will be issued.\n- You understand and agree that you will deal with your contractor, fabricator, and/or customer directly with respect to the material(s) identified herein, and that Reliance is in no way responsible for work performed by said contractor, fabricator, or other third party as applicable.\n- You further agree to indemnify and hold us harmless for any claims relating thereto.\n- Should it become necessary for Reliance to employ an attorney to enforce or defend against any of the conditions or covenants hereof, you agree to pay all expenses incurred, including a reasonable attorney's fee.\n\nBy signing below, you:\n\n(1) acknowledge that you have read, understand, and agree to the policies contained in this paragraph; and\n(2) if you are not the customer, you represent that, prior to signing, you have informed your customer, representative, associate, principal, agent, contractor, fabricator, or any other third party affected by this policy or any of the contents hereof, that said party has consented and agreed to this policy, and that you, personally, as the signatory hereof, assume full responsibility for said party's obligations set forth herein."  
+      
 }
 
     

@@ -1,26 +1,61 @@
 {
     "welcome_to_reliance_stone": "Bienvenido a Reliance Stone",
     "existing_customer": "Cliente existente",
-    "new_customer": "Nueva cliente",
-    "sign_up_title": "Inscribirse",
-    "first_name": "Nombre de pila",
-    "last_name": "Apellido",
-    "email": "Correo electrónico",
-    "email_error": "Por favor, introduce una dirección de correo electrónico válida",
-    "phone": "Teléfono",
-    "phone_error": "Por favor ingrese un número de teléfono válido",
+    "look_up": "Buscar",
+    "new_customer": "Nuevo cliente",
+    "sign_up_title": "Regístrate",
+    
+    "first_name": "NOMBRE",
+    "last_name": "APELLIDO",
+    
+    "email": "CORREO ELECTRÓNICO",
+    "otp_placeholder": "Ingrese su dirección de correo electrónico para la verificación",
+    "email_error": "Por favor, ingrese una dirección de correo electrónico válida",
+    "enter_the_otp": "Ingrese el OTP",
+    "email_send_otp": "Enviar OTP",
+    "email_verify_otp": "Verificar OTP",
+    "email_verified": "¡Verificación de correo electrónico exitosa!",
+    "customer_already_exists": "¡Cliente ya existe!",
+    "customer_does_not_exist_please_check_your_email_address_again.": "¡El cliente no existe! Por favor, verifique su dirección de correo electrónico nuevamente.",
+    
+    "phone": "TELÉFONO",
+    "phone_error": "Por favor, ingrese un número de teléfono válido",
+    
     "address": "DIRECCIÓN",
-    "fabricator": "Fabricante",
-    "kitchen_and_bath": "cocina y baño",
-    "designer_or_architect": "Diseño o arquitecto",
-    "waiver_terms_1": "Firma el",
-    "waiver_terms_2": "Acuerdo de indemnización de renuncia y liberación",
-    "not_applicable": "No aplica",
-    "otp_placeholder":"Ingrese su correo electrónico para recibir OTP",
-    "address_line": "Dirección",
-    "apt_no": "No. de piso/apto..",
+    "address_line": "Línea de dirección",
+    "apt_no": "Apto / Piso No.",
     "city": "Ciudad",
     "state": "Estado",
     "country": "País",
-    "zip_code": "Código postal"
-}
+    "zip_code": "Código postal",
+    
+    "fabricator_title_uppercase": "FABRICANTE",
+    "fabricator_title_lowercase": "Fabricante",
+    
+    "kitchen_and_bath_title_uppercase": "COCINA Y BAÑO",
+    "kitchen_and_bath_title_lowercase": "Cocina y Baño",
+    
+    "designer_or_architect_uppercase": "DISEÑO O ARQUITECTURA",
+    "designer_or_architect_lowercase": "Diseño o Arquitectura",
+    
+    "enter_name": "Ingrese el nombre del {{title_lowercase}}",
+    "enter_address": "Ingrese la dirección del {{title_lowercase}}",
+    "enter_email": "Ingrese el correo electrónico del {{title_lowercase}}",
+    "enter_phone": "Ingrese el teléfono del {{title_lowercase}}",
+    
+    "waiver_terms_1": "Firme el",
+    "waiver_terms_2": "Acuerdo de exención y liberación",
+    "not_applicable": "No aplicable",
+    
+    "you_have_been_successfully_signed_up": "¡Te has registrado exitosamente!",
+    
+    "consent_text_title": "Acuerdo de exención y liberación",
+    "consent_text": "Marco esta casilla para reconocer que he leído y comprendido los siguientes términos. Al marcar esta casilla, permito que Reliance Granite and Marble Corporation (\"Reliance\" o \"nosotros\" o \"nuestro\" o \"nos\") confíe en mi consentimiento y renuncie al requisito de una firma electrónica para este Acuerdo de exención y liberación.\n\nEntiendo que Reliance está ubicado en 50 Boright Avenue, Kenilworth, NJ 07033 (\"PREMISAS\") y opera un almacén mayorista de losas y baldosas de piedra natural. El almacén implica un tráfico intenso, movimiento de trabajadores, equipos de manipulación de materiales y la presencia de equipos pesados y peligrosos. Las instalaciones pueden contener escombros, superficies afiladas o dentadas y objetos que puedan representar riesgos.\n\nAl ingresar a las instalaciones, reconozco los riesgos únicos involucrados y acepto lo siguiente:\n\n1. No me moveré por las instalaciones solo o sin supervisión y pediré ayuda/asistencia al manipular materiales/productos y moverme.\n2. Estaré vigilante, cuidadoso, alerta y consciente de las actividades en curso y de los peligros de tropiezo mientras camino por las instalaciones y entre pasillos.\n3. No utilizaré dispositivos móviles o electrónicos en las instalaciones, ya que pueden obstaculizar mi conciencia del entorno.\n4. Cualquier persona menor de 16 años debe permanecer en el área de espera y está estrictamente prohibido el acceso al área del almacén sin permiso.\n5. Evitaré áreas confinadas y áreas con iluminación insuficiente o tenue.\n6. No intentaré levantar o mover piedras, baldosas u objetos.\n7. No tocaré ninguna máquina, equipo o material en las instalaciones.\n8. Obedeceré todas las reglas e instrucciones proporcionadas por el personal de Reliance.\n9. Haré preguntas y buscaré información adicional sobre seguridad cuando sea necesario.\n\nEntiendo que marcar la casilla de aceptación se considerará mi consentimiento y reconocimiento. Además, acepto que soy el único responsable de cualquier lesión corporal, muerte, pérdida de propiedad personal, daños y gastos que puedan ocurrir mientras estoy en las instalaciones. Libero a Reliance de cualquier reclamo por lesiones personales y daños a la propiedad.\n\nHe leído detenidamente esta exención y liberación y entiendo completamente sus términos. Soy consciente de que al firmarla, renuncio y libero todos los reclamos por lesiones personales y daños a la propiedad que sufro mientras estoy en las instalaciones. Reconozco que Reliance no ha ofrecido ninguna garantía, expresa o implícita, con respecto a la condición de las instalaciones, los materiales, los equipos o la competencia de cualquier persona presente.\n\nHe tenido amplia oportunidad de revisar este documento y hacer preguntas. Asumo plenamente los riesgos asociados con estar en las instalaciones. En la medida máxima permitida por la ley de Nueva Jersey, acepto eximir de responsabilidad, liberar, defender e indemnizar a Reliance, sus propietarios, oficiales, directivos, agentes, sucesores, cesionarios, herederos, empleados, voluntarios y contratistas independientes por cualquier pérdida, daño o lesión a personas y propiedad.\n\nEsta exención y liberación cubre cualquier responsabilidad, reclamo, demanda, causa de acción o daño relacionado con o derivado de: (a) Reliance o sus empleados, (b) otras personas presentes en las instalaciones, o (c) mi presencia en las instalaciones, incluidas todas las actividades asociadas. Acepto no demandar, reclamar, embargar la propiedad de o procesar a Reliance por ninguna lesión, muerte, daño o pérdida, ya sea causada por negligencia u otros actos.\n\nEste contrato es legalmente vinculante para mí, mi cónyuge, mis herederos, cesionarios, tutores legales y representantes personales. Reconozco que esta exención y liberación tiene la intención de ser lo más amplia e inclusiva posible según lo permitido por las leyes del estado de Nueva Jersey, y cualquier disputa que surja de ella se regirá e interpretará de acuerdo con la legislación de Nueva Jersey.\n\nSi soy padre/tutor/supervisor/cuidador (de un menor) y marco la casilla en nombre de un menor, reconozco que esta exención y liberación será vinculante en la medida máxima permitida por la ley con respecto a dicho menor. El consentimiento de un padre o tutor legal se considerará el consentimiento de todas las personas legalmente responsables de este individuo, incluso si solo una de esas personas firma esta exención y liberación.\n\nAdemás, confirmo que no estoy bajo la influencia de ningún medicamento, alcohol o sustancia controlada que pueda afectar mi juicio para aceptar esta exención y liberación o cumplir con sus términos mientras estoy en las instalaciones.\n\nAl marcar la casilla y aceptar este acuerdo, confirmo que he leído y comprendido completamente este convenio de no demanda, exención, liberación, consentimiento informado, asunción de riesgos e indemnización. Reconozco que estoy renunciando a derechos sustanciales al firmarlo y lo hago de manera libre y voluntaria sin que se me ofrezca, asegure o garantice nada. Mi intención al aceptar es liberar completamente a Reliance y a todas las partes mencionadas en este documento en la mayor medida permitida por la ley. Entiendo que esto es una liberación de responsabilidad y que si no entiendo o estoy de acuerdo con sus términos, no debería marcar la casilla ni aceptar (firma electrónica) en este documento.",
+    "consent_text_acceptance_checkbox": "Por la presente, acepto los términos y condiciones escritos en este formulario de consentimiento.",
+    "sign_here": "Firma aquí",
+    "save": "Guardar",
+    "clear": "Limpiar",
+    
+    "access_agreement_text": "A cambio de permitir el acceso al almacén de Reliance Granite and Marble Corporation (\"Reliance\" o \"nosotros\") y por otras consideraciones válidas, al firmar a continuación, el cliente, fabricante, contratista u otra persona o representante (\"usted\" o \"su\") acepta lo siguiente:\n\n- Los materiales seleccionados se reservarán durante 5 días solamente si están etiquetados.\n- Su contratista/fabricante puede contactarnos para solicitar extensiones de tiempo adicionales, pero cualquier solicitud de este tipo será considerada a nuestra entera discreción.\n- Las muestras entregadas a los clientes son solo para fines de referencia. Las losas reales suministradas pueden variar en color y características en comparación con las muestras dadas, ya que las piedras, al ser productos naturales, pueden variar. En consecuencia, usted comprende y acepta que es su responsabilidad asegurarse de que el material cortado sea exactamente el mismo material que se seleccionó.\n- Entiende y acepta que una vez que el material se procesa, corta o modifica de alguna manera a partir de su estado en el almacén, es posible que no se pueda devolver a Reliance y no se emitirán reembolsos ni créditos.\n- Entiende y acepta que Reliance no será responsable de ninguna demora en la entrega de los materiales, incluida cualquier demora causada por eventos o circunstancias más allá de nuestro control razonable, como desastres naturales, actos de gobierno, huelgas, interrupciones de transporte, escasez de materiales o cualquier otra causa similar.\n- Usted acepta indemnizar y eximir de responsabilidad a Reliance, sus funcionarios, directores, empleados, agentes, sucesores y cesionarios de y contra cualquier reclamo, demanda, pérdida, responsabilidad, daño o gasto, incluidos los honorarios legales razonables, que surjan o estén relacionados con su acceso al almacén o cualquier incumplimiento de las disposiciones de este acuerdo.\n\nAl firmar a continuación, usted reconoce que ha leído y comprendido completamente los términos y condiciones de este acuerdo y está de acuerdo en estar legalmente vinculado por ellos.",
+    "access_agreement_acceptance_checkbox": "Acepto los términos y condiciones escritos en este formulario de acuerdo de acceso."
+}    

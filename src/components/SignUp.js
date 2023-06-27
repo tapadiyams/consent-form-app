@@ -126,14 +126,14 @@ const SignUp = ({
   const sendCustomEmail = (id) => {
     emailjs
       .send(
-        "service_0cfzkig",
-        "template_uft6mgo",
+        "service_1rs8kr6",
+        "template_pw6r7cc",
         {
           receiver_email: email,
-          sender_email: "tapadiyams@gmail.com",
+          sender_email: "info@reliancestones.com",
           customer_id: id,
         },
-        "bhSMpYg94GkNWxePW"
+        "WHKLkddJgyNCF7XpA"
       )
       .then(
         (result) => {
@@ -459,6 +459,10 @@ const SignUp = ({
         </SignUpComponent>
 
         <ConsentFormModal
+          selectedLanguage={selectedLanguage}
+          consentTextTitle={t("consent_text_title")}
+          consentText={t("consent_text")}
+          consentTextAcceptanceCheckbox={t("consent_text_acceptance_checkbox")}
           showModal={showConsentModal}
           handleCrossClick={handleConsentFormClick}
           setAcceptTerms={setAcceptTerms}
@@ -471,7 +475,7 @@ const SignUp = ({
           showModal={showSignedUpModal}
           handleCrossClick={handleSignedUpModalClick}
           customer_id={id}
-          text="You have been successfully Signed Up!"
+          text={t("you_have_been_successfully_signed_up")}
         />
       </ContentWrapper>
     </Container>

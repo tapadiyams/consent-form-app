@@ -69,7 +69,7 @@ const Email = (props) => {
 
     // For existing customer lookup, if customer does not exist the show a banner
     if (props.isLookup && !existingCustomer) {
-      alert("Customer does not exist! Please Check your email address again.");
+      alert(t("customer_does_not_exist_please_check_your_email_address_again"));
       return;
     }
 
@@ -89,13 +89,13 @@ const Email = (props) => {
     // Send verification email
     emailjs
       .send(
-        "service_0cfzkig",
-        "template_jqj3ijr",
+        "service_1rs8kr6",
+        "template_2kfjxmb",
         {
           receiver_email: props.email,
           otp: generatedOtp,
         },
-        "bhSMpYg94GkNWxePW"
+        "WHKLkddJgyNCF7XpA"
       )
       .then(
         (result) => {
@@ -135,31 +135,33 @@ const Email = (props) => {
           />
           {props.emailError && <ErrorMessage>{props.emailError}</ErrorMessage>}
           {!props.verificationSuccess && (
-            <Button onClick={sendVerificationEmail}>Send OTP</Button>
+            <Button onClick={sendVerificationEmail}>
+              {t("email_send_otp")}
+            </Button>
           )}
         </Field>
 
         {props.verificationSent && !props.verificationSuccess && (
           <Field>
-            <h2>Enter the OTP</h2>
+            <h2>{t("enter_the_otp")}</h2>
             <Input
               type="text"
               value={props.userEnteredOtp}
               onChange={(e) => props.setUserEnteredOtp(e.target.value)}
             />
-            <Button onClick={verifyOTP}>Verify OTP</Button>
+            <Button onClick={verifyOTP}>{t("email_verify_otp")}</Button>
           </Field>
         )}
       </Container>
       {props.verificationSuccess && (
-        <H2 color="yellow">Email verification successful !</H2>
+        <H2 color="yellow">{t("email_verified")}</H2>
       )}
 
       <SignedUpModal
         showModal={showSignedUpModal}
         handleCrossClick={handleCustomerExistModalClick}
         customer_id={customer_id}
-        text="Customer already exists!"
+        text={t("customer_already_exists")}
       />
     </>
   );

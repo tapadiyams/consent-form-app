@@ -1,11 +1,18 @@
 import { connect } from "react-redux";
 import "firebase/compat/firestore";
-import consentText from "./consentText";
 import styled from "styled-components";
 import SignaturePad from "react-signature-canvas";
 import { useRef } from "react";
+import { useTranslation } from "react-i18next";
+import React, { useEffect } from "react";
 
 const ConsentFormModal = (props) => {
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    document.body.dir = props.selectedLanguage.dir || "ltr";
+  }, [props.selectedLanguage]);
+
   const sigCanvas = useRef({});
 
   const reset = (e) => {
@@ -13,7 +20,7 @@ const ConsentFormModal = (props) => {
   };
 
   // To break the statements
-  const formattedConsentText = consentText.replace(/\n/g, "<br>");
+  const formattedConsentText = props.consentText.replace(/\n/g, "<br>");
 
   const handleCheckboxChange = (e) => {
     props.setAcceptTerms(e.target.checked);
@@ -45,7 +52,7 @@ const ConsentFormModal = (props) => {
         <Container>
           <Content>
             <Header>
-              <h2>Waiver and Release indemnity agreement</h2>
+              <h2>{props.consentTextTitle}</h2>
             </Header>
             <p dangerouslySetInnerHTML={{ __html: formattedConsentText }}></p>
             <div>
@@ -56,8 +63,7 @@ const ConsentFormModal = (props) => {
                   onChange={handleCheckboxChange}
                 />
                 <CheckboxText>
-                  I hereby accept the <strong>terms and conditions</strong>{" "}
-                  written in this consent form
+                  {props.consentTextAcceptanceCheckbox}
                 </CheckboxText>
               </CheckboxLabel>
               <br />
@@ -74,7 +80,7 @@ const ConsentFormModal = (props) => {
                   />
                 ) : (
                   <SigningContainer>
-                    <h2> Sign here </h2>
+                    <h2> {t("sign_here")} </h2>
                     <StyledSignaturePad
                       ref={sigCanvas}
                       penColor="black"
@@ -82,8 +88,8 @@ const ConsentFormModal = (props) => {
                     />
 
                     <ButtonContainer>
-                      <Button onClick={save}>Save</Button>
-                      <Button onClick={clear}>Clear</Button>
+                      <Button onClick={save}>{t("save")}</Button>
+                      <Button onClick={clear}>{t("clear")}</Button>
                     </ButtonContainer>
                   </SigningContainer>
                 )}

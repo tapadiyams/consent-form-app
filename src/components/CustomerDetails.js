@@ -10,6 +10,7 @@ import {
   getKitchenAndBathsAPI,
   getSelectionsAPI,
 } from "../actions";
+import { useTranslation } from "react-i18next";
 
 const CustomerDetails = ({
   customers,
@@ -29,6 +30,13 @@ const CustomerDetails = ({
    * Define states and constants
    *
    */
+  const { t } = useTranslation();
+  // To break the statements
+  const formattedConsentText = t("access_agreement_text").replace(
+    /\n/g,
+    "<br>"
+  );
+
   const { id } = useParams();
   const customerId = parseInt(id, 10);
   const customer = customers.find(
@@ -87,9 +95,12 @@ const CustomerDetails = ({
 
   return (
     <Container>
-      <BackgroundImage src="/images/granite-countertop-1080x600.jpg" alt="" />
+      {/* <BackgroundImage src="/images/granite-countertop-1080x600.jpg" alt="" /> */}
       <Data>
-        <PrintButton onClick={handlePrint}>Print</PrintButton>
+        <Header>
+          <h2>CUSTOMER SELECTIONS</h2>
+          <PrintButton onClick={handlePrint}>Print</PrintButton>
+        </Header>
 
         <Table>
           <TableRow>
@@ -210,8 +221,7 @@ const CustomerDetails = ({
             </TableRow>
           </Table>
         </CustomerDetailData>
-        <br />
-        <br />
+
         <SelectionTable>
           <thead>
             <tr>
@@ -264,6 +274,10 @@ const CustomerDetails = ({
           </tbody>
         </SelectionTable>
 
+        <Consent>
+          <p dangerouslySetInnerHTML={{ __html: formattedConsentText }}></p>
+        </Consent>
+
         <Footer>
           <FooterContent>
             {customer.imageURL ? (
@@ -296,15 +310,15 @@ const Container = styled.div`
   min-height: 99vh;
 `;
 
-const BackgroundImage = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.1;
-  object-fit: cover;
-`;
+// const BackgroundImage = styled.img`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   opacity: 0.02;
+//   object-fit: cover;
+// `;
 
 const Data = styled.div`
   flex: 1;
@@ -314,13 +328,23 @@ const Data = styled.div`
   z-index: 1;
 `;
 
+const Header = styled.div`
+  display: flex;
+
+  h2 {
+    font-size: xx-large;
+    align-items: center;
+  }
+`;
+
 const PrintButton = styled.button`
   background-color: green;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 30px;
   border: none;
   border-radius: 4px;
   margin-bottom: 20px;
+  margin-left: 10px;
   z-index: 1;
 `;
 
@@ -339,7 +363,7 @@ const Table = styled.table`
 
 const TableRow = styled.tr`
   &:nth-child(even) {
-    background-color: grey;
+    background-color: #666666;
   }
 `;
 
@@ -359,12 +383,17 @@ const TableData = styled.td`
 
 const TableCell = styled.td`
   text-align: center;
-  background-color: ${(props) => (props.isEvenRow ? "grey" : "transparent")};
+  background-color: ${(props) => (props.isEvenRow ? "#666666" : "transparent")};
 `;
 
 const SelectionTable = styled.table`
   border: 2px solid white;
   width: 80%;
+`;
+
+const Consent = styled.div`
+  width: 80%;
+  padding: 10px;
 `;
 
 const Footer = styled.footer`
@@ -373,7 +402,7 @@ const Footer = styled.footer`
   justify-content: space-between;
   max-width: 80%;
   align-items: end;
-  margin-top: 100px;
+  /* margin-top: 100px; */
   height: 100%;
 `;
 
