@@ -2,27 +2,52 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { getCustomersListAPI } from "../actions";
+import { getCustomersListAPI, getFabricatorsAPI } from "../actions";
 
-const CustomerList = ({ customers, getCustomersList, employee }) => {
-  const [searchValue, setSearchValue] = useState("");
+const CustomerList = ({
+  customers,
+  getCustomersList,
+  employee,
+  fabricators,
+  getFabricators,
+}) => {
+  const [search, setSearch] = useState({
+    firstName: "",
+    lastName: "",
+    customerId: "",
+    email: "",
+  });
   const history = useHistory();
 
   useEffect(() => {
-    const fetchCustomersList = async () => {
-      await getCustomersList(); // Wait for the data to be fetched
+    const fetchData = async () => {
+      await getCustomersList();
+      await getFabricators();
     };
 
-    fetchCustomersList();
-  }, [getCustomersList, employee]);
+    fetchData();
+  }, [getCustomersList, getFabricators, employee]);
 
-  const handleSearchChange = (e) => {
-    setSearchValue(e.target.value);
+  const handleSearchChange = (e, columnName) => {
+    setSearch({
+      ...search,
+      [columnName]: e.target.value,
+    });
   };
 
   const filteredUsers = customers.filter((user) => {
     const fullName = `${user.firstName} ${user.lastName}`;
-    return fullName.toLowerCase().includes(searchValue.toLowerCase());
+
+    return (
+      fullName.toLowerCase().includes(search.firstName.toLowerCase()) &&
+      user.lastName.toLowerCase().includes(search.lastName.toLowerCase()) &&
+      user.customerId &&
+      user.customerId
+        .toString()
+        .toLowerCase()
+        .includes(search.customerId.toLowerCase()) &&
+      user.email.toLowerCase().includes(search.email.toLowerCase())
+    );
   });
 
   const handleCustomerClick = (customerId) => {
@@ -33,6 +58,16 @@ const CustomerList = ({ customers, getCustomersList, employee }) => {
     history.push(`/customer-selection/${customerId}`);
   };
 
+  const getAssociatedFabricator = (customerId) => {
+    const fabricator =
+      fabricators &&
+      Object.values(fabricators).find(
+        (f) => f.customerId && f.customerId === customerId
+      );
+
+    return fabricator ? fabricator.fabricatorName : "N/A";
+  };
+
   return (
     <AppContainer>
       <NavBar>
@@ -41,10 +76,25 @@ const CustomerList = ({ customers, getCustomersList, employee }) => {
         <NavLink to="/logout">Log Out</NavLink>
       </NavBar>
       <Content>
-        <Search>
+        {/* <Search>
           <p>Search</p>
-          <input value={searchValue} onChange={handleSearchChange} />
-        </Search>
+          <input
+            value={search.firstName}
+            onChange={(e) => handleSearchChange(e, "firstName")}
+          />
+          <input
+            value={search.lastName}
+            onChange={(e) => handleSearchChange(e, "lastName")}
+          />
+          <input
+            value={search.customerId}
+            onChange={(e) => handleSearchChange(e, "customerId")}
+          />
+          <input
+            value={search.email}
+            onChange={(e) => handleSearchChange(e, "email")}
+          />
+        </Search> */}
         <Table>
           <thead>
             <tr>
@@ -53,10 +103,45 @@ const CustomerList = ({ customers, getCustomersList, employee }) => {
               <TableHeader>Last Name</TableHeader>
               <TableHeader>Customer Id</TableHeader>
               <TableHeader>Email ID</TableHeader>
-              {/* <TableHeader>Fabricator</TableHeader> */}
+              <TableHeader>Fabricator</TableHeader>
               <TableHeader>Date Visited</TableHeader>
               <TableHeader>View</TableHeader>
               <TableHeader>Add Selections</TableHeader>
+            </tr>
+            <tr>
+              <TableHeader></TableHeader>
+              <TableHeader>
+                <input
+                  value={search.firstName}
+                  placeholder="Search"
+                  onChange={(e) => handleSearchChange(e, "firstName")}
+                />
+              </TableHeader>
+              <TableHeader>
+                <input
+                  value={search.lastName}
+                  placeholder="Search"
+                  onChange={(e) => handleSearchChange(e, "lastName")}
+                />
+              </TableHeader>
+              <TableHeader>
+                <input
+                  value={search.customerId}
+                  placeholder="Search"
+                  onChange={(e) => handleSearchChange(e, "customerId")}
+                />
+              </TableHeader>
+              <TableHeader>
+                <input
+                  value={search.email}
+                  placeholder="Search"
+                  onChange={(e) => handleSearchChange(e, "email")}
+                />
+              </TableHeader>
+              <TableHeader></TableHeader>
+              <TableHeader></TableHeader>
+              <TableHeader></TableHeader>
+              <TableHeader></TableHeader>
             </tr>
           </thead>
           <tbody>
@@ -83,17 +168,16 @@ const CustomerList = ({ customers, getCustomersList, employee }) => {
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {user.email}
                   </TableCell>
-                  {/* <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                    {fabricator.fabricatorName}
-                  </TableCell> */}
-
+                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    {getAssociatedFabricator(user.customerId)}
+                  </TableCell>
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {user.date}
                   </TableCell>
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     <button
                       to={customerLink}
-                      onClick={() => handleCustomerClick(user.customerId)} // Call handleCustomerClick function
+                      onClick={() => handleCustomerClick(user.customerId)}
                     >
                       View
                     </button>{" "}
@@ -103,7 +187,7 @@ const CustomerList = ({ customers, getCustomersList, employee }) => {
                       to={customerSelectionLink}
                       onClick={() =>
                         handleCustomerSelectionClick(user.customerId)
-                      } // Call handleCustomerClick function
+                      }
                     >
                       Add Selections
                     </button>{" "}
@@ -150,15 +234,6 @@ const Content = styled.div`
   margin: 100px;
 `;
 
-const Search = styled.div`
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-  p {
-    color: black;
-  }
-`;
-
 const Table = styled.table`
   border: 2px solid forestgreen;
   width: 1000px;
@@ -178,12 +253,14 @@ const TableCell = styled.td`
 const mapStateToProps = (state) => {
   return {
     customers: state.customerState.customers,
+    fabricators: state.customerState.fabricator,
     employee: state.stoneState.employee,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getCustomersList: (payload) => dispatch(getCustomersListAPI(payload)),
+  getFabricators: () => dispatch(getFabricatorsAPI()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerList);

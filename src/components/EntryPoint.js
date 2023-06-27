@@ -45,9 +45,9 @@ const EntryPoint = ({
       return;
     }
 
-    console.log("Shubham,websiteCredentials: ", websiteCredentials);
-
-    if (websiteCredentials[0].websiteUserName !== websiteUserName) {
+    if (
+      websiteCredentials[0].websiteUserName.trim() !== websiteUserName.trim()
+    ) {
       alert("User name is wrong.");
       return;
     }

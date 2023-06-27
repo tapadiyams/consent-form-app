@@ -254,7 +254,7 @@ export function getFabricatorsAPI(payload) {
   return (dispatch) => {
     let query = fabricatorsCollection; // Initialize the query variable
 
-    if (payload.customerId) {
+    if (payload && payload.customerId) {
       query = query.where("customerId", "==", payload.customerId);
     }
 
@@ -549,12 +549,20 @@ export function addEmployeeAPI(payload) {
 }
 
 // When a employee logs in then this function will be called.
+// export function setEmployeeAPI(payload) {
+//   const { employeeEmail, employeePassword } = payload;
+//   return (dispatch) => {
+//     const data = [
+//       { employeeEmail: employeeEmail, employeePassword: employeePassword },
+//     ];
+//     dispatch(setEmployee(data));
+//   };
+// }
+
 export function setEmployeeAPI(payload) {
   const { employeeEmail, employeePassword } = payload;
   return (dispatch) => {
-    const data = [
-      { employeeEmail: employeeEmail, employeePassword: employeePassword },
-    ];
+    const data = { employeeEmail, employeePassword };
     dispatch(setEmployee(data));
   };
 }
