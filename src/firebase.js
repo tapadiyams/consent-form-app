@@ -3,7 +3,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import "firebase/compat/storage";
 
-// For testing use this
+// For testing, use this
 // const firebaseConfig = {
 //   apiKey: "AIzaSyASBORQbGRChT6VvQW0fJePj_bk_xcijps",
 //   authDomain: "reliance-stone.firebaseapp.com",
@@ -13,6 +13,7 @@ import "firebase/compat/storage";
 //   appId: "1:111347042760:web:93702e418b66be6e04d8fd",
 // };
 
+// For production, use this
 const firebaseConfig = {
   apiKey: "AIzaSyCUtmKntkbHBUi2jhtqW1mVQUekC177Lp4",
   authDomain: "selections-reliance-stone.firebaseapp.com",

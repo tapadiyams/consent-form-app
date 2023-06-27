@@ -116,13 +116,13 @@ const BackgroundImage = styled.img`
 
 const RelianceImage = styled.div`
   position: absolute;
-  top: 50px;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 10px;
 
   & > img {
     width: 350px;

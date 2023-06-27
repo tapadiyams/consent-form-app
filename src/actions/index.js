@@ -452,11 +452,13 @@ export function deleteDesignerOrArchitectsAPI(customerId) {
  *
  */
 export function addSelectionsAPI(payload) {
-  const { customerId, material, size, thickness, finish, note } = payload;
+  const { category, customerId, material, size, thickness, finish, note } =
+    payload;
 
   return (dispatch) => {
     selectionsCollection.add({
       customerId: customerId,
+      category: category,
       material: material,
       size: size,
       thickness: thickness,

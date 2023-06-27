@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import {
   addSelectionsAPI,
@@ -23,12 +22,15 @@ const CustomerSelection = ({
   const [thickness, setThickness] = useState("");
   const [finish, setFinish] = useState("");
   const [note, setNote] = useState("");
-  const [selectedSize, setSelectedSize] = useState(null); // Add selectedSize state
-  const [selectedThickness, setSelectedThickness] = useState(null); // Add selectedThickness state
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedThickness, setSelectedThickness] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const [isCartVisible, setCartVisible] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     const fetchData = async () => {
-      await getCustomersList(); // Wait for the data to be fetched
+      await getCustomersList();
       await getStonesList();
     };
 
@@ -38,11 +40,6 @@ const CustomerSelection = ({
   const { id } = useParams();
   const customerId = parseInt(id, 10);
 
-  const [cartItems, setCartItems] = useState([]);
-  const [isCartVisible, setCartVisible] = useState(false);
-
-  const history = useHistory(); // Access the history object for navigation
-
   const resetCart = () => {
     setCartItems([]);
     resetSelection();
@@ -50,8 +47,10 @@ const CustomerSelection = ({
   };
 
   const resetSelection = () => {
+    setSelectedCategory(null);
     setSelectedMaterial(null);
     setSize("");
+    setThickness("");
     setFinish("");
     setNote("");
   };
@@ -70,20 +69,28 @@ const CustomerSelection = ({
     for (const selectedItem of cartItems) {
       await addSelection(selectedItem);
     }
-    history.goBack(); // Use goBack() instead of back()
+    history.goBack();
     resetCart();
   };
 
   const handleCancel = () => {
-    history.goBack(); // Use goBack() instead of back()
+    history.goBack();
     resetCart();
   };
 
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+    setSelectedMaterial(null);
+    setSelectedSize(null);
+    setSelectedThickness(null);
+    setFinish("");
+    setNote("");
+  };
+
   const handleMaterialSelect = (material) => {
-    setSelectedCategory("");
     setSelectedMaterial(material);
-    setSelectedSize(null); // Reset selectedSize when selecting a new material
-    setThickness(null); // Reset selectedThickness when selecting a new material
+    setSelectedSize(null);
+    setSelectedThickness(null);
     setFinish("");
     setNote("");
   };
@@ -108,19 +115,43 @@ const CustomerSelection = ({
     resetSelection();
   };
 
+  // Group the stones by category
+  const groupedStones = stonesList.reduce((acc, stone) => {
+    if (acc[stone.category]) {
+      acc[stone.category].push(stone);
+    } else {
+      acc[stone.category] = [stone];
+    }
+    return acc;
+  }, {});
+
   return (
     <Container>
       <Menu>
-        {stonesList.map((stone) => (
+        {Object.entries(groupedStones).map(([category, stones]) => (
           <MenuItem
-            key={stone.material}
-            onClick={() => handleMaterialSelect(stone.material)}
-            selected={selectedMaterial === stone.material} // Check if the option is selected
+            key={category}
+            onClick={() => handleCategorySelect(category)}
+            selected={selectedCategory === category}
           >
-            {stone.material}
+            {category}
           </MenuItem>
         ))}
       </Menu>
+
+      {selectedCategory && (
+        <Menu>
+          {groupedStones[selectedCategory].map((stone) => (
+            <MenuItem
+              key={stone.material}
+              onClick={() => handleMaterialSelect(stone.material)}
+              selected={selectedMaterial === stone.material}
+            >
+              {stone.material}
+            </MenuItem>
+          ))}
+        </Menu>
+      )}
 
       {selectedMaterial && (
         <Menu>
@@ -238,6 +269,8 @@ const MenuItem = styled.li`
 
 const SelectionContainer = styled.div`
   margin-top: 20px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const SelectionLabel = styled.label`
@@ -311,6 +344,7 @@ const Cart = ({ cartItems, handleRemoveFromCart }) => {
         <CartItems>
           {cartItems.map((item, index) => (
             <CartItem key={index}>
+              <ItemName>{item.category}</ItemName>
               <ItemName>{item.material}</ItemName>
               <ItemName>{item.size}</ItemName>
               <ItemName>{item.thickness}</ItemName>

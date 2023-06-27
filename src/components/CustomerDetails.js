@@ -216,6 +216,7 @@ const CustomerDetails = ({
           <thead>
             <tr>
               <TableHeader>#</TableHeader>
+              <TableHeader>CATEGORIES</TableHeader>
               <TableHeader>MATERIALS</TableHeader>
               <TableHeader>SIZE</TableHeader>
               <TableHeader>THICKNESS</TableHeader>
@@ -233,6 +234,9 @@ const CustomerDetails = ({
                 <tr key={index}>
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {rowNumber}
+                  </TableCell>
+                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    {selection.category}
                   </TableCell>
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {selection.material}
