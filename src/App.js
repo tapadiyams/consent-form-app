@@ -37,7 +37,7 @@ function App(props) {
 
   useEffect(() => {
     document.body.dir = selectedLanguage.dir || "ltr";
-  }, [selectedLanguage]);
+  }, [selectedLanguage, props.employee]);
 
   return (
     <div className="App">
@@ -85,7 +85,9 @@ function App(props) {
 }
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    employee: state.stoneState.employee,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({});

@@ -49,10 +49,12 @@ export const getEmployees = (employeesPayload) => {
 };
 
 // Remember, it's a singular employee
-export const setEmployee = (employeePayload) => ({
-  type: SET_EMPLOYEE,
-  employeePayload: employeePayload,
-});
+export const setEmployee = (employeePayload) => {
+  return {
+    type: SET_EMPLOYEE,
+    employeePayload: employeePayload,
+  };
+};
 
 export const getStones = (stonesPayload) => ({
   type: GET_STONES,
@@ -561,13 +563,22 @@ export function addEmployeeAPI(payload) {
 //   };
 // }
 
-export function setEmployeeAPI(payload) {
-  const { employeeEmail, employeePassword } = payload;
-  return (dispatch) => {
-    const data = { employeeEmail, employeePassword };
-    dispatch(setEmployee(data));
-  };
-}
+// export function setEmployeeAPI(payload) {
+//   // const { employeeEmail, employeePassword } = payload;
+
+//   console.log("Shubham, payload:", payload);
+
+//   const dispatch = useDispatch();
+
+//   const employeeData = {
+//     employeeEmail: payload.employeeEmail,
+//     employeePassword: payload.employeePassword,
+//     employeeAuthority: "1",
+//   };
+
+//   console.log("Shubham, employeeData:", employeeData);
+//   dispatch(setEmployee(employeeData));
+// }
 
 export function getEmployeesListAPI() {
   return (dispatch) => {

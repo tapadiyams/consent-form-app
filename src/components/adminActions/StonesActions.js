@@ -74,7 +74,6 @@ const StonesActions = ({
         <tbody>
           {Object.entries(stones).map(([stoneId, stone]) => (
             <tr key={stoneId}>
-              {console.log("Shubham, stone: ", stone)}
               <td>{stone.category}</td>
               <td>{stone.material}</td>
               <td>

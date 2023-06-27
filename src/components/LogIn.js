@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { getEmployeesListAPI } from "../actions";
+import { getEmployeesListAPI, setEmployee } from "../actions";
 
 const LogIn = ({ getEmployeesList, emailError, employees }) => {
   const [email, setEmail] = useState("");
@@ -43,6 +43,13 @@ const LogIn = ({ getEmployeesList, emailError, employees }) => {
       alert(`Please check your email and password.`);
       return;
     }
+
+    const employeeData = {
+      employeeEmail: employee.employeeEmail,
+      employeePassword: employee.employeePassword,
+      employeeAuthority: "1",
+    };
+    setEmployee(employeeData);
 
     history.push("/view");
   };
@@ -176,7 +183,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getEmployeesList: () => dispatch(getEmployeesListAPI()),
-  setEmployee: () => dispatch(getEmployeesListAPI()),
+  // setEmployee: (payload) => dispatch(setEmployeeAPI(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

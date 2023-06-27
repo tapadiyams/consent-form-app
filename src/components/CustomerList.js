@@ -35,6 +35,8 @@ const CustomerList = ({
     });
   };
 
+  console.log("employee Shubham:", employee);
+
   const filteredUsers = customers.filter((user) => {
     const fullName = `${user.firstName} ${user.lastName}`;
 
@@ -71,7 +73,6 @@ const CustomerList = ({
   return (
     <AppContainer>
       <NavBar>
-        {console.log("Shubham, employee:", employee)}
         <NavLink to="/admin-actions">Admin Actions</NavLink>
         <NavLink to="/logout">Log Out</NavLink>
       </NavBar>

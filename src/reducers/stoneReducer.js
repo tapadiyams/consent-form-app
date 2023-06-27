@@ -9,7 +9,7 @@ import {
 export const initState = {
   websiteCredentials: [],
   employees: [],
-  employee: [],
+  employee: {},
   stones: [],
   loading: false,
 };
