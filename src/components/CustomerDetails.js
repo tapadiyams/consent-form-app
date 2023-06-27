@@ -23,8 +23,6 @@ const CustomerDetails = ({
   getDesignerOrArchitect,
   getSelections,
   deleteSelection,
-  getWebsiteCredentials,
-  getCustomers,
 }) => {
   /**
    *
@@ -59,11 +57,6 @@ const CustomerDetails = ({
     getKitchenAndBath,
     getDesignerOrArchitect,
   ]);
-
-  useEffect(() => {
-    getWebsiteCredentials();
-    getCustomers();
-  }, [getWebsiteCredentials, getCustomers]);
 
   if (!customer) {
     return <div>Customer not found</div>;
