@@ -8,7 +8,7 @@ const SignedUpModal = (props) => {
   const history = useHistory();
   const reset = (e) => {
     e.preventDefault();
-    history.push("/");
+    history.push("/home");
   };
 
   return (

@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import customerReducer from "./customerReducer";
-import materialReducer from "./materialReducer";
+import stoneReducer from "./stoneReducer";
 
 const rootReducer = combineReducers({
   customerState: customerReducer,
-  materialState: materialReducer,
+  stoneState: stoneReducer,
 });
 
 export default rootReducer;

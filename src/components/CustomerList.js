@@ -36,7 +36,7 @@ const CustomerList = ({ customers, getCustomersList }) => {
   return (
     <AppContainer>
       <NavBar>
-        <NavLink to="/admin-action">Admin Actions</NavLink>
+        <NavLink to="/admin-actions">Admin Actions</NavLink>
         <NavLink to="/logout">Log Out</NavLink>
       </NavBar>
       <Content>
@@ -50,10 +50,12 @@ const CustomerList = ({ customers, getCustomersList }) => {
               <TableHeader>#</TableHeader>
               <TableHeader>First Name</TableHeader>
               <TableHeader>Last Name</TableHeader>
+              <TableHeader>Customer Id</TableHeader>
               <TableHeader>Email ID</TableHeader>
+              {/* <TableHeader>Fabricator</TableHeader> */}
               <TableHeader>Date Visited</TableHeader>
-              <TableHeader>ID</TableHeader>
-              {/* <TableHeader>Actions</TableHeader>  */}
+              <TableHeader>View</TableHeader>
+              <TableHeader>Add Selections</TableHeader>
             </tr>
           </thead>
           <tbody>
@@ -69,31 +71,41 @@ const CustomerList = ({ customers, getCustomersList }) => {
                     {rowNumber}
                   </TableCell>
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                    <Link
-                      to={customerLink}
-                      onClick={() => handleCustomerClick(user.id)} // Call handleCustomerClick function
-                    >
-                      {user.firstName}
-                    </Link>{" "}
-                    {/* Link to customer page */}
+                    {user.firstName}
                   </TableCell>
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {user.lastName}
                   </TableCell>
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    {user.customerId}
+                  </TableCell>
+                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {user.email}
                   </TableCell>
+                  {/* <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    {fabricator.fabricatorName}
+                  </TableCell> */}
 
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {user.date}
                   </TableCell>
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                    <Link
-                      to={customerSelectionLink}
-                      onClick={() => handleCustomerSelectionClick(user.id)} // Call handleCustomerClick function
+                    <button
+                      to={customerLink}
+                      onClick={() => handleCustomerClick(user.customerId)} // Call handleCustomerClick function
                     >
-                      {user.id}
-                    </Link>{" "}
+                      View
+                    </button>{" "}
+                  </TableCell>
+                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    <button
+                      to={customerSelectionLink}
+                      onClick={() =>
+                        handleCustomerSelectionClick(user.customerId)
+                      } // Call handleCustomerClick function
+                    >
+                      Add Selections
+                    </button>{" "}
                   </TableCell>
                 </tr>
               );
@@ -107,7 +119,9 @@ const CustomerList = ({ customers, getCustomersList }) => {
 
 const AppContainer = styled.div`
   background-color: white;
+  width: 100%;
   color: black;
+  height: 100vh;
 `;
 
 const NavBar = styled.nav`
@@ -129,12 +143,10 @@ const NavLink = styled(Link)`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   background-color: white;
   color: black;
   margin: 100px;
-  height: 100vh;
 `;
 
 const Search = styled.div`

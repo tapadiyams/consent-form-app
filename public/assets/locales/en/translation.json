@@ -27,11 +27,16 @@
     "country": "Country",
     "zip_code": "Zip Code",
 
-    "fabricator": "FABRICATOR",
+    "fabricator_title_uppercase": "FABRICATOR",
+    "fabricator_title_lowercase": "Fabricator",
 
-    "kitchen_and_bath": "KITCHEN AND BATH",
+    "kitchen_and_bath_title_uppercase": "KITCHEN AND BATH",
+    "kitchen_and_bath_title_lowercase": "Kitchen and Bath",
 
-    "designer_or_architech": "DESIGN / ARCHITECT",
+    "designer_or_architect_uppercase": "DESIGN / ARCHITECT",
+    "designer_or_architect_lowercase": "Design / Architect",
+
+
     "waiver_terms_1": "Sign the",
     "waiver_terms_2": "Waiver and Release indemnity agreement",
     "not_applicable": "Not applicable"

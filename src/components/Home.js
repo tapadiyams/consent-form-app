@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { signUpAPI } from "../actions";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
@@ -20,11 +19,22 @@ const GlobeIcon = ({ width = 35, height = 35, fill = "#fff" }) => (
 );
 
 const Home = (props) => {
+  /**
+   *
+   * Define Constants and States
+   *
+   */
+  // Language dropdown state
   const [isOpen, setIsOpen] = useState(false);
-
-  // For Language change
+  // Language change constants
   const { t, i18n } = useTranslation();
+  const history = useHistory();
 
+  /**
+   *
+   * Define methods and functions
+   *
+   */
   const handleLanguageChange = (code) => {
     i18next.changeLanguage(code); // Change the language using i18next library
   };
@@ -33,11 +43,8 @@ const Home = (props) => {
     setIsOpen(!isOpen);
   };
 
-  const history = useHistory();
-
   const handleNewCustomerClick = () => {
     history.push("/signup");
-    props.setCurrentLanguage(i18n.language);
     props.setSelectedLanguage(i18n.language);
   };
 
@@ -49,6 +56,11 @@ const Home = (props) => {
     history.push("/login");
   };
 
+  /**
+   *
+   * Define view
+   *
+   */
   return (
     <Container>
       <BackgroundImage src="/images/granite-countertop-1080x600.jpg" alt="" />
@@ -100,6 +112,11 @@ const Home = (props) => {
   );
 };
 
+/**
+ *
+ * Define styled components
+ *
+ */
 const Container = styled.div`
   position: relative; /* Make the container a positioning context */
 
@@ -273,8 +290,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  signUp: (payload) => dispatch(signUpAPI(payload)),
-});
+const mapDispatchToProps = (dispatch) => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -1,5 +1,162 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
+import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
+import {
+  deleteCustomersAPI,
+  getCustomersListAPI,
+  getWebsiteCredentialsAPI,
+} from "../actions";
+
+const LogIn = ({
+  getWebsiteCredentials,
+  websiteCredentials,
+  setHasWebsiteAccess,
+  getCustomers,
+  deleteCustomers,
+  customers,
+  emailError,
+}) => {
+  const [websiteUserName, setWebsiteUserName] = useState("");
+  const [websitePassword, setWebsitePassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const history = useHistory();
+
+  useEffect(() => {
+    getWebsiteCredentials();
+  }, [getWebsiteCredentials]);
+
+  useEffect(() => {
+    async function fetchData() {
+      await getCustomers();
+      await deleteCustomers(customers);
+    }
+    fetchData();
+  }, [deleteCustomers, customers, getCustomers]);
+
+  const verifyWebsiteCredentials = () => {
+    if (!websiteUserName) {
+      alert("User name cannot be empty.");
+      return;
+    }
+
+    if (!websitePassword) {
+      alert("Password cannot be empty.");
+      return;
+    }
+
+    if (websiteCredentials[0].websiteUserName !== websiteUserName) {
+      alert("User name is wrong.");
+      return;
+    }
+
+    if (websiteCredentials[0].websitePassword !== websitePassword) {
+      alert("Password is wrong.");
+      return;
+    }
+
+    setHasWebsiteAccess(true);
+    history.push("/home");
+  };
+
+  return (
+    <Container>
+      <BackgroundImage src="/images/granite-countertop-1080x600.jpg" alt="" />
+      <RelianceImage>
+        <img src="/images/reliancewhite.png" alt="" />
+      </RelianceImage>
+      <Field>
+        <H2>USER NAME</H2>
+        <Input
+          type="text"
+          value={websiteUserName}
+          onChange={(e) => setWebsiteUserName(e.target.value)}
+          required
+          error={emailError}
+        />
+      </Field>
+
+      <Field>
+        <H2>PASSWORD</H2>
+        <Input
+          type={showPassword ? "text" : "password"}
+          value={websitePassword}
+          onChange={(e) => setWebsitePassword(e.target.value)}
+        />
+        <PasswordToggle onClick={() => setShowPassword(!showPassword)}>
+          {showPassword ? "Hide Password" : "Show Password"}
+        </PasswordToggle>
+        <Button onClick={verifyWebsiteCredentials}>ENTER THE WEBSITE</Button>
+      </Field>
+    </Container>
+  );
+};
+
+const Container = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 10px;
+`;
+
+const BackgroundImage = styled.img`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  object-fit: cover;
+`;
+
+const RelianceImage = styled.div`
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+
+  & > img {
+    width: 350px;
+    height: 200px;
+  }
+`;
+
+const H2 = styled.h2`
+  color: #cca132;
+`;
+
+const Field = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 30%;
+  z-index: 1;
+`;
+
+const Input = styled.input`
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 60%),
+    inset 0 0 0 2px rgb(0 0 0 / 0%) inset 0 0 0 1px rgb(0 0 0 / 0);
+  vertical-align: middle;
+  padding: 10px;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.6);
+`;
+
+const PasswordToggle = styled.div`
+  color: #50c878;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+`;
 
 const jump = keyframes`
   from{
@@ -10,117 +167,31 @@ const jump = keyframes`
   }
 `;
 
-const Container = styled.section``;
-
-const BackgroundImage = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.1;
-  object-fit: cover;
-`;
-
-const Wrapper = styled.section`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  height: 100vh;
-  width: 100%;
-`;
-
-const Form = styled.form`
-  margin: 0 auto;
-  width: 100%;
-  max-width: 414px;
-  padding: 1.3rem;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-`;
-
-const Input = styled.input`
-  max-width: 100%;
-  padding: 11px 13px;
-  background: #f9f9fa;
-  color: #f03d4e;
-  margin-bottom: 0.9rem;
-  border-radius: 4px;
-  outline: 0;
-  border: 1px solid rgba(245, 245, 245, 0.7);
-  font-size: 14px;
-  transition: all 0.3s ease-out;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1), 0 1px 1px rgba(0, 0, 0, 0.1);
-  :focus,
-  :hover {
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.15), 0 1px 5px rgba(0, 0, 0, 0.1);
-  }
-`;
-
 const Button = styled.button`
-  max-width: 100%;
-  padding: 11px 13px;
-  color: rgb(253, 249, 243);
-  font-weight: 600;
-  text-transform: uppercase;
-  background: #f03d4e;
-  border: none;
-  border-radius: 3px;
-  outline: 0;
+  height: 40px;
+  background-color: #50c878;
+  color: white;
+  font-size: 20px;
   cursor: pointer;
-  margin-top: 0.6rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease-out;
+
   :hover {
-    background: rgb(200, 50, 70);
+    background: #cca132;
     animation: ${jump} 0.2s ease-out forwards;
   }
 `;
 
-function LogIn() {
-  const [dados, setDados] = useState({
-    email: "",
-    password: "",
-  });
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(dados);
+const mapStateToProps = (state) => {
+  return {
+    websiteCredentials: state.stoneState.websiteCredentials,
+    customers: state.customerState.customers,
   };
+};
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    setDados((prevDados) => ({
-      ...prevDados,
-      [name]: value,
-    }));
-  };
+const mapDispatchToProps = (dispatch) => ({
+  getWebsiteCredentials: () => dispatch(getWebsiteCredentialsAPI()),
+  getCustomers: () => dispatch(getCustomersListAPI()),
+  deleteCustomers: (customersList) =>
+    dispatch(deleteCustomersAPI(customersList)),
+});
 
-  return (
-    <Container>
-      <BackgroundImage src="/images/granite-countertop-1080x600.jpg" alt="" />
-      <Wrapper>
-        <Form onSubmit={handleSubmit}>
-          <Input
-            type="text"
-            name="email"
-            value={dados.email}
-            onChange={handleChange}
-          />
-          <Input
-            type="password"
-            name="password"
-            value={dados.password}
-            onChange={handleChange}
-          />
-          <Button>Log In</Button>
-        </Form>
-      </Wrapper>
-    </Container>
-  );
-}
-
-export default LogIn;
+export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

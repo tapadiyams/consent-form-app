@@ -4,46 +4,56 @@ import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-import { addSelectionsAPI, getCustomersListAPI } from "../actions";
-import { useParams } from "react-router-dom";
+import {
+  addSelectionsAPI,
+  getCustomersListAPI,
+  getStonesListAPI,
+} from "../actions";
+import { useParams, useHistory } from "react-router-dom";
 
-const stoneDictionary = {
-  "Alaskan Pure White": {
-    sizes: ["130x65", "127x64", "130x79", "136x77"],
-    thickness: ["2cm", "3cm"],
-    finish: "Polish",
-  },
-  Alberti: {
-    sizes: ["130x65"],
-    thickness: ["3cm"],
-    finish: "Polish",
-  },
-  Alicante: {
-    sizes: ["128X64"],
-    thickness: ["3cm"],
-    finish: "Polish",
-  },
-  "American Falls": {
-    sizes: ["126X63"],
-    thickness: ["3cm"],
-    finish: "Polish",
-  },
-};
+const CustomerSelection = ({
+  getCustomersList,
+  addSelection,
+  getStonesList,
+  stonesList,
+}) => {
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [size, setSize] = useState("");
+  const [thickness, setThickness] = useState("");
+  const [finish, setFinish] = useState("");
+  const [note, setNote] = useState("");
+  const [selectedSize, setSelectedSize] = useState(null); // Add selectedSize state
+  const [selectedThickness, setSelectedThickness] = useState(null); // Add selectedThickness state
 
-const CustomerSelection = ({ getCustomersList, addSelection }) => {
   useEffect(() => {
     const fetchData = async () => {
       await getCustomersList(); // Wait for the data to be fetched
+      await getStonesList();
     };
 
     fetchData();
-  }, [getCustomersList]);
+  }, [getCustomersList, getStonesList]);
 
   const { id } = useParams();
   const customerId = parseInt(id, 10);
 
   const [cartItems, setCartItems] = useState([]);
   const [isCartVisible, setCartVisible] = useState(false);
+
+  const history = useHistory(); // Access the history object for navigation
+
+  const resetCart = () => {
+    setCartItems([]);
+    resetSelection();
+    setCartVisible(false);
+  };
+
+  const resetSelection = () => {
+    setSelectedMaterial(null);
+    setSize("");
+    setFinish("");
+    setNote("");
+  };
 
   const handleRemoveFromCart = (index) => {
     const updatedCartItems = [...cartItems];
@@ -55,111 +65,134 @@ const CustomerSelection = ({ getCustomersList, addSelection }) => {
     setCartVisible(!isCartVisible);
   };
 
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [size, setSize] = useState("");
-  const [lot, setLot] = useState("");
-  const [color, setColor] = useState("");
-
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    setSelectedOption(null);
-    setSize("");
-    setLot("");
-    setColor("");
+  const handleFinalizeItems = async () => {
+    for (const selectedItem of cartItems) {
+      await addSelection(selectedItem);
+    }
+    history.goBack(); // Use goBack() instead of back()
+    resetCart();
   };
 
-  const handleOptionSelect = (option) => {
-    setSelectedOption(option);
+  const handleCancel = () => {
+    history.goBack(); // Use goBack() instead of back()
+    resetCart();
   };
 
-  const handleSizeChange = (event) => {
-    setSize(event.target.value);
+  const handleMaterialSelect = (category) => {
+    setSelectedMaterial(category);
+    setSelectedSize(null); // Reset selectedSize when selecting a new material
+    setThickness(null); // Reset selectedThickness when selecting a new material
+    setFinish("");
+    setNote("");
   };
 
-  const handleLotChange = (event) => {
-    setLot(event.target.value);
-  };
-
-  const handleColorChange = (event) => {
-    setColor(event.target.value);
+  const handleFinishChange = (event) => {
+    setFinish(event.target.value);
   };
 
   const handleAddButtonClick = () => {
-    // Create an object or string with the selected options
     const selectedItem = {
       customerId: customerId,
-      category: selectedCategory,
-      option: selectedOption,
+      material: selectedMaterial,
       size: size,
-      lot: lot,
-      color: color,
+      thickness: thickness,
+      finish: finish,
+      note: note,
     };
 
-    // Add the selected item to the cartItems array
     setCartItems([...cartItems, selectedItem]);
-    addSelection(selectedItem);
+
+    resetSelection();
   };
 
   return (
     <Container>
       <Menu>
-        {Object.keys(stoneDictionary).map((category) => (
+        {stonesList.map((stone) => (
           <MenuItem
-            key={category}
-            onClick={() => handleCategorySelect(category)}
+            key={stone.material}
+            onClick={() => handleMaterialSelect(stone.material)}
+            selected={selectedMaterial === stone.material} // Check if the option is selected
           >
-            {category}
+            {stone.material}
           </MenuItem>
         ))}
       </Menu>
 
-      {selectedCategory && (
+      {selectedMaterial && (
         <Menu>
-          {stoneDictionary[selectedCategory].map((option) => (
-            <MenuItem key={option} onClick={() => handleOptionSelect(option)}>
-              {option}
-            </MenuItem>
-          ))}
+          {stonesList
+            .find((stone) => stone.material === selectedMaterial)
+            ?.sizes?.map((size) => (
+              <MenuItem
+                key={size}
+                onClick={() => {
+                  setSize(size);
+                  setSelectedSize(size);
+                }}
+                selected={size === selectedSize}
+              >
+                {size}
+              </MenuItem>
+            ))}
         </Menu>
       )}
 
-      {selectedOption && (
+      {selectedMaterial && (
+        <Menu>
+          {stonesList
+            .find((stone) => stone.material === selectedMaterial)
+            ?.thicknesses?.map((thickness) => (
+              <MenuItem
+                key={thickness}
+                onClick={() => {
+                  setThickness(thickness);
+                  setSelectedThickness(thickness);
+                }}
+                selected={thickness === selectedThickness}
+              >
+                {thickness}
+              </MenuItem>
+            ))}
+        </Menu>
+      )}
+
+      {selectedMaterial && (
         <SelectionContainer>
-          <SelectionLabel>Size:</SelectionLabel>
+          <SelectionLabel>Finish:</SelectionLabel>
           <SelectionInput
             type="text"
-            value={size}
-            onChange={handleSizeChange}
+            value={finish}
+            onChange={handleFinishChange}
           />
 
-          <SelectionLabel>Lot:</SelectionLabel>
-          <SelectionInput type="text" value={lot} onChange={handleLotChange} />
-
-          <SelectionLabel>Color:</SelectionLabel>
+          <SelectionLabel>Note:</SelectionLabel>
           <SelectionInput
             type="text"
-            value={color}
-            onChange={handleColorChange}
+            value={note}
+            onChange={(event) => setNote(event.target.value)}
           />
 
           <AddButton onClick={handleAddButtonClick}>Add</AddButton>
         </SelectionContainer>
       )}
 
-      {/* Cart Icon */}
       <CartIcon onClick={handleToggleCartVisibility}>
         <FontAwesomeIcon icon={faShoppingCart} />
         <CartItemCount>{cartItems.length}</CartItemCount>
       </CartIcon>
 
-      {/* Cart */}
       {isCartVisible && (
         <Cart
           cartItems={cartItems}
           handleRemoveFromCart={handleRemoveFromCart}
         />
       )}
+
+      <ButtonContainer>
+        <Button onClick={handleFinalizeItems}>Finalize Items</Button>
+        <Button onClick={handleCancel}>Go Back</Button>
+      </ButtonContainer>
     </Container>
   );
 };
@@ -173,8 +206,8 @@ const Menu = styled.ul`
   padding: 0;
   margin: 0;
   display: flex;
-  flex-direction: column; /* Set the flex direction to column */
-  align-items: flex-start; /* Align items to the start of the container */
+  flex-direction: column;
+  align-items: flex-start;
 `;
 
 const MenuItem = styled.li`
@@ -183,10 +216,16 @@ const MenuItem = styled.li`
   border: 1px solid gray;
   text-align: center;
   display: inline-block;
-  font-size: 25px; /* Updated font size */
+  font-size: 25px;
   padding: 10px;
   cursor: pointer;
-  background-color: lightgray;
+  white-space: nowrap; /* Prevent line break */
+  overflow: hidden; /* Hide overflowing text */
+  text-overflow: ellipsis; /* Display ellipsis for overflow */
+  background-color: ${(props) =>
+    props.selected
+      ? "gray"
+      : "lightgray"}; // Set background color based on selected prop
   margin-right: 5px;
 
   &:hover {
@@ -217,46 +256,45 @@ const CartIcon = styled.div`
   right: 0;
 `;
 
-const CartItemCount = styled.span`
-  /* Add your styles here */
+const CartItemCount = styled.span``;
+
+const ButtonContainer = styled.div`
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 `;
 
-const CartContainer = styled.div`
-  /* Add your styles here */
+const Button = styled.button`
+  padding: 10px 20px;
 `;
 
-const CartTitle = styled.h2`
-  /* Add your styles here */
-`;
+const CartContainer = styled.div``;
 
-const CartItems = styled.ul`
-  /* Add your styles here */
-`;
+const CartTitle = styled.h2``;
 
-const CartItem = styled.li`
-  /* Add your styles here */
-`;
+const CartItems = styled.ul``;
+
+const CartItem = styled.li``;
 
 const ItemName = styled.span`
-  /* Add your styles here */
+  padding: 10px;
 `;
 
-const RemoveButton = styled.button`
-  /* Add your styles here */
-`;
+const RemoveButton = styled.button``;
 
-const EmptyCartMessage = styled.p`
-  /* Add your styles here */
-`;
+const EmptyCartMessage = styled.p``;
 
 const mapStateToProps = (state) => {
   return {
     customers: state.customerState.customers,
+    stonesList: state.stoneState.stones,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getCustomersList: () => dispatch(getCustomersListAPI()),
+  getStonesList: () => dispatch(getStonesListAPI()),
   addSelection: (selectedItem) => dispatch(addSelectionsAPI(selectedItem)),
 });
 
@@ -270,11 +308,11 @@ const Cart = ({ cartItems, handleRemoveFromCart }) => {
         <CartItems>
           {cartItems.map((item, index) => (
             <CartItem key={index}>
-              <ItemName>{item.category}</ItemName>
-              <ItemName>{item.option}</ItemName>
+              <ItemName>{item.material}</ItemName>
               <ItemName>{item.size}</ItemName>
-              <ItemName>{item.lot}</ItemName>
-              <ItemName>{item.color}</ItemName>
+              <ItemName>{item.thickness}</ItemName>
+              <ItemName>{item.finish}</ItemName>
+              <ItemName>{item.note}</ItemName>
               <RemoveButton onClick={() => handleRemoveFromCart(index)}>
                 Remove
               </RemoveButton>

@@ -2,241 +2,410 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { getCustomersListAPI, getSelectionsAPI } from "../actions";
+import {
+  deleteSelectionsAPI,
+  getCustomersListAPI,
+  getDesignerOrArchitectsAPI,
+  getFabricatorsAPI,
+  getKitchenAndBathsAPI,
+  getSelectionsAPI,
+} from "../actions";
 
 const CustomerDetails = ({
   customers,
+  fabricator,
+  kitchenAndBath,
+  designerOrArchitect,
   selections,
   getCustomersList,
+  getFabricator,
+  getKitchenAndBath,
+  getDesignerOrArchitect,
   getSelections,
+  deleteSelection,
+  getWebsiteCredentials,
+  getCustomers,
 }) => {
+  /**
+   *
+   * Define states and constants
+   *
+   */
   const { id } = useParams();
   const customerId = parseInt(id, 10);
-  const customer = customers.find((customer) => customer.id === customerId);
-
+  const customer = customers.find(
+    (customer) => customer.customerId === customerId
+  );
+  /**
+   *
+   * Define hooks
+   *
+   */
   useEffect(() => {
     const fetchData = async (customerId) => {
       await getCustomersList(); // Wait for the data to be fetched
       await getSelections(customerId);
+      await getFabricator(customerId);
+      await getKitchenAndBath(customerId);
+      await getDesignerOrArchitect(customerId);
     };
 
     fetchData(customerId);
-  }, [customerId, getCustomersList, getSelections]);
+  }, [
+    customerId,
+    getCustomersList,
+    getSelections,
+    getFabricator,
+    getKitchenAndBath,
+    getDesignerOrArchitect,
+  ]);
+
+  useEffect(() => {
+    getWebsiteCredentials();
+    getCustomers();
+  }, [getWebsiteCredentials, getCustomers]);
 
   if (!customer) {
     return <div>Customer not found</div>;
   }
+
+  /**
+   *
+   * Define functions
+   *
+   */
   const handlePrint = () => {
     window.print();
   };
 
+  // const handleEditSelection = () => {};
+
+  const handleRemoveSelection = (selection) => {
+    const payload = {
+      customerId: selection?.customerId,
+      material: selection?.material,
+      size: selection?.size,
+      thickness: selection?.thickness,
+      finish: selection?.finish,
+      note: selection?.note,
+    };
+    deleteSelection(payload);
+  };
+
   return (
     <Container>
-      <PrintButton onClick={handlePrint}>Print</PrintButton>
-      <Table>
-        <TableRow>
-          <TableHeader>Date Visited</TableHeader>
-          <TableData>{customer.date}</TableData>
-        </TableRow>
-        <TableRow>
-          <TableHeader>ID</TableHeader>
-          <TableData>{customer.id}</TableData>
-        </TableRow>
-        <TableRow>
-          <TableHeader>Name</TableHeader>
-          <TableData>
-            {customer.firstName} {customer.lastName}
-          </TableData>
-        </TableRow>
-        <TableRow>
-          <TableHeader>Email</TableHeader>
-          <TableData>{customer.email}</TableData>
-        </TableRow>
-        <TableRow>
-          <TableHeader>Phone</TableHeader>
-          <TableData>{customer.phone}</TableData>
-        </TableRow>
-        <TableRow>
-          <TableHeader>Address</TableHeader>
-          <TableData>{customer.address}</TableData>
-        </TableRow>
+      <BackgroundImage src="/images/granite-countertop-1080x600.jpg" alt="" />
+      <Data>
+        <PrintButton onClick={handlePrint}>Print</PrintButton>
 
-        <TableRow>
-          <TableHeader>Fabricator</TableHeader>
-          <TableData>{customer.fabricator}</TableData>
-        </TableRow>
+        <Table>
+          <TableRow>
+            <CustomerDetailTableHeader>Date Visited</CustomerDetailTableHeader>
+            <TableData>{customer.date}</TableData>
+          </TableRow>
+          <TableRow>
+            <CustomerDetailTableHeader>Customer Id</CustomerDetailTableHeader>
+            <TableData>{customer.customerId}</TableData>
+          </TableRow>
+          <TableRow>
+            <CustomerDetailTableHeader>Name</CustomerDetailTableHeader>
+            <TableData>
+              {customer.firstName} {customer.lastName}
+            </TableData>
+          </TableRow>
+          <TableRow>
+            <CustomerDetailTableHeader>Email</CustomerDetailTableHeader>
+            <TableData>{customer.email}</TableData>
+          </TableRow>
+          <TableRow>
+            <CustomerDetailTableHeader>Phone</CustomerDetailTableHeader>
+            <TableData>{customer.phone}</TableData>
+          </TableRow>
+          <TableRow>
+            <CustomerDetailTableHeader>Address</CustomerDetailTableHeader>
+            <TableData>{customer.address}</TableData>
+          </TableRow>
+        </Table>
 
-        <TableRow>
-          <TableHeader>Fabricator's Address</TableHeader>
-          <TableData>{customer.f_address}</TableData>
-        </TableRow>
+        <CustomerDetailData>
+          <Table>
+            <TableRow>
+              <CustomerDetailTableHeader>Fabricator</CustomerDetailTableHeader>
+              <TableData>
+                {fabricator && fabricator[0]?.fabricatorName}
+              </TableData>
+            </TableRow>
+            <TableRow>
+              <CustomerDetailTableHeader>Address</CustomerDetailTableHeader>
+              <TableData>
+                {fabricator && fabricator[0]?.fabricatorAddress}
+              </TableData>
+            </TableRow>
+            <TableRow>
+              <CustomerDetailTableHeader>Email</CustomerDetailTableHeader>
+              <TableData>
+                {fabricator && fabricator[0]?.fabricatorEmail}
+              </TableData>
+            </TableRow>
+            <TableRow>
+              <CustomerDetailTableHeader>Phone</CustomerDetailTableHeader>
+              <TableData>
+                {fabricator && fabricator[0]?.fabricatorPhone}
+              </TableData>
+            </TableRow>
+          </Table>
 
-        <TableRow>
-          <TableHeader>Kitchen and Bath</TableHeader>
-          <TableData>{customer.kitchenandbath}</TableData>
-        </TableRow>
+          <Table>
+            <TableRow>
+              <CustomerDetailTableHeader>
+                Kitchen and Bath
+              </CustomerDetailTableHeader>
+              <TableData>
+                {kitchenAndBath && kitchenAndBath[0]?.kitchenAndBathName}
+              </TableData>
+            </TableRow>
+            <TableRow>
+              <CustomerDetailTableHeader>Address</CustomerDetailTableHeader>
+              <TableData>
+                {kitchenAndBath && kitchenAndBath[0]?.kitchenAndBathAddress}
+              </TableData>
+            </TableRow>
+            <TableRow>
+              <CustomerDetailTableHeader>Email</CustomerDetailTableHeader>
+              <TableData>
+                {kitchenAndBath && kitchenAndBath[0]?.kitchenAndBathEmail}
+              </TableData>
+            </TableRow>
+            <TableRow>
+              <CustomerDetailTableHeader>Phone</CustomerDetailTableHeader>
+              <TableData>
+                {kitchenAndBath && kitchenAndBath[0]?.kitchenAndBathPhone}
+              </TableData>
+            </TableRow>
+          </Table>
 
-        <TableRow>
-          <TableHeader>Designer / Architect</TableHeader>
-          <TableData>{customer.designerorarchitech}</TableData>
-        </TableRow>
-      </Table>
-      <br />
-      <br />
-      <SelectionTable>
-        <thead>
-          <tr>
-            <TableHeader>#</TableHeader>
-            <TableHeader>Material</TableHeader>
-            <TableHeader>Size</TableHeader>
-            <TableHeader>Lot</TableHeader>
-            <TableHeader>Finish</TableHeader>
-            <TableHeader>Actions</TableHeader>
-          </tr>
-        </thead>
-        <tbody>
-          {selections.map((selection, index) => {
-            const rowNumber = index + 1;
-            const isEvenRow = rowNumber % 2 === 0;
+          <Table>
+            <TableRow>
+              <CustomerDetailTableHeader>
+                Designer / Architect
+              </CustomerDetailTableHeader>
+              <TableData>
+                {designerOrArchitect &&
+                  designerOrArchitect[0]?.designerOrArchitectName}
+              </TableData>
+            </TableRow>
+            <TableRow>
+              <CustomerDetailTableHeader>Address</CustomerDetailTableHeader>
+              <TableData>
+                {designerOrArchitect &&
+                  designerOrArchitect[0]?.designerOrArchitectAddress}
+              </TableData>
+            </TableRow>
+            <TableRow>
+              <CustomerDetailTableHeader>Email</CustomerDetailTableHeader>
+              <TableData>
+                {designerOrArchitect &&
+                  designerOrArchitect[0]?.designerOrArchitectEmail}
+              </TableData>
+            </TableRow>
+            <TableRow>
+              <CustomerDetailTableHeader>Phone</CustomerDetailTableHeader>
+              <TableData>
+                {designerOrArchitect &&
+                  designerOrArchitect[0]?.designerOrArchitectPhone}
+              </TableData>
+            </TableRow>
+          </Table>
+        </CustomerDetailData>
+        <br />
+        <br />
+        <SelectionTable>
+          <thead>
+            <tr>
+              <TableHeader>#</TableHeader>
+              <TableHeader>MATERIALS</TableHeader>
+              <TableHeader>SIZE</TableHeader>
+              <TableHeader>THICKNESS</TableHeader>
+              <TableHeader>NOTES</TableHeader>
+              {/* <TableHeader>EDITS</TableHeader> */}
+              <TableHeader>REMOVE</TableHeader>
+            </tr>
+          </thead>
+          <tbody>
+            {selections.map((selection, index) => {
+              const rowNumber = index + 1;
+              const isEvenRow = rowNumber % 2 === 0;
 
-            return (
-              <tr key={index}>
-                <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                  {rowNumber}
-                </TableCell>
-                <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                  {selection.selectedCategory}
-                  {/* Link to customer page */}
-                </TableCell>
-                <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                  {selection.size}
-                </TableCell>
+              return (
+                <tr key={index}>
+                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    {rowNumber}
+                  </TableCell>
+                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    {selection.material}
+                  </TableCell>
+                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    {selection.size}
+                  </TableCell>
+                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    {selection.thickness}
+                  </TableCell>
+                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    {selection.note}
+                  </TableCell>
+                  {/* <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    <button onClick={handleEditSelection}>EDIT</button>
+                  </TableCell> */}
+                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    <button onClick={() => handleRemoveSelection(selection)}>
+                      REMOVE
+                    </button>
+                  </TableCell>
+                </tr>
+              );
+            })}
+          </tbody>
+        </SelectionTable>
 
-                <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                  {selection.lot}
-                </TableCell>
-                <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                  {selection.color}
-                </TableCell>
-              </tr>
-            );
-          })}
-        </tbody>
-      </SelectionTable>
-      <Footer>
-        <FooterContent>
-          {customer.imageURL ? (
-            <img
-              src={customer.imageURL}
-              alt="customer signature"
-              style={{
-                display: "block",
-                margin: "0 auto",
-                // border: "1px solid black",
-                width: "150px",
-              }}
-            />
-          ) : null}
+        <Footer>
+          <FooterContent>
+            {customer.imageURL ? (
+              <img
+                src={customer.imageURL}
+                alt="customer signature"
+                style={{
+                  display: "block",
+                  margin: "0 auto",
+                  width: "150px",
+                }}
+              />
+            ) : null}
+            <h2>Customer's Signature</h2>
+          </FooterContent>
 
-          <h2>Customer's Signature</h2>
-        </FooterContent>
-
-        <FooterContent>
-          <h2>Sale's Representative</h2>
-        </FooterContent>
-      </Footer>
+          <FooterContent>
+            <h2>Sale's Representative</h2>
+          </FooterContent>
+        </Footer>
+      </Data>
     </Container>
   );
 };
 
 const Container = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 99vh;
+`;
+
+const BackgroundImage = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  object-fit: cover;
+`;
+
+const Data = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  height: 100vh;
-  background-color: white;
-  color: black;
+  z-index: 1;
 `;
 
 const PrintButton = styled.button`
   background-color: green;
   color: white;
   padding: 10px 20px;
-  font-size: 20px;
   border: none;
   border-radius: 4px;
-  margin-top: 20px;
+  margin-bottom: 20px;
+  z-index: 1;
+`;
+
+const CustomerDetailData = styled.div`
+  display: flex;
+  gap: 10px;
+  width: 80%;
 `;
 
 const Table = styled.table`
-  border-collapse: collapse;
-  width: auto;
-  margin-top: 20px;
-  border: 2px solid #b2d3c2;
+  margin-bottom: 20px;
+  border: 2px solid white;
+  z-index: 1;
+  width: 60%;
 `;
 
 const TableRow = styled.tr`
   &:nth-child(even) {
-    background-color: #b2d3c2;
+    background-color: grey;
   }
+`;
+
+const CustomerDetailTableHeader = styled.th`
+  color: white;
+  text-align: start;
 `;
 
 const TableHeader = styled.th`
-  text-align: left;
-  padding: 8px;
-  &:nth-child(even) {
-    background-color: #b2d3c2;
-  }
+  color: white;
+  text-align: center;
 `;
 
-const SelectionTable = styled.table`
-  border: 2px solid #b2d3c2;
-  width: 70%;
-  height: 200px;
-`;
 const TableData = styled.td`
   text-align: left;
-  padding: 8px;
 `;
 
 const TableCell = styled.td`
   text-align: center;
-  padding: 15px;
-  background-color: ${(props) => (props.isEvenRow ? "#b2d3c2" : "transparent")};
+  background-color: ${(props) => (props.isEvenRow ? "grey" : "transparent")};
 `;
 
-const Footer = styled.div`
+const SelectionTable = styled.table`
+  border: 2px solid white;
+  width: 80%;
+`;
+
+const Footer = styled.footer`
   display: flex;
-  justify-content: space-between;
   width: 100%;
-  page-break-after: always; /* Add page break after footer */
+  justify-content: space-between;
+  max-width: 80%;
+  align-items: end;
+  margin-top: 100px;
+  height: 100%;
 `;
 
 const FooterContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 100px;
-  justify-content: end;
-  h2 {
-    color: black;
-  }
+  gap: 10px;
 `;
 
 const mapStateToProps = (state) => {
   return {
     customers: state.customerState.customers,
+    fabricator: state.customerState.fabricator,
+    kitchenAndBath: state.customerState.kitchenAndBath,
+    designerOrArchitect: state.customerState.designerOrArchitect,
     selections: state.customerState.selections,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getCustomersList: () => dispatch(getCustomersListAPI()),
+  getFabricator: (customerId) => dispatch(getFabricatorsAPI({ customerId })),
+  getKitchenAndBath: (customerId) =>
+    dispatch(getKitchenAndBathsAPI({ customerId })),
+  getDesignerOrArchitect: (customerId) =>
+    dispatch(getDesignerOrArchitectsAPI({ customerId })),
+  getSelections: (customerId) => dispatch(getSelectionsAPI({ customerId })),
 
-  getSelections: (customerId) => {
-    dispatch(getSelectionsAPI({ customerId }));
-  },
+  deleteSelection: (payload) => dispatch(deleteSelectionsAPI(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerDetails);

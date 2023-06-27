@@ -1,19 +1,31 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { getCustomersListAPI, signUpAPI } from "../actions";
+import {
+  addCustomerAPI,
+  addDesignerOrArchitectAPI,
+  addFabricatorAPI,
+  addKitchenAndBathAPI,
+  getCustomersListAPI,
+} from "../actions";
 import ConsentFormModal from "./ConsentFormModal";
 import SignedUpModal from "./SignedUpModal";
 import emailjs from "@emailjs/browser";
 import { useTranslation } from "react-i18next";
 import AddressFields from "./signUp/Address";
-import Fabricator from "./signUp/Fabricator";
-import KitchenAndBath from "./signUp/KitchenAndBath";
 import Email from "./signUp/Email";
 import Name from "./signUp/Name";
-import DesignOrArchitect from "./signUp/DesignOrArchitect";
+import ThirdPartyInfo from "./signUp/ThirdPartyInfo";
 
-const SignUp = ({ getCustomersList, customers, signUp, selectedLanguage }) => {
+const SignUp = ({
+  getCustomersList,
+  customers,
+  addCustomer,
+  addFabricator,
+  addKitchenAndBath,
+  addDesignerOrArchitect,
+  selectedLanguage,
+}) => {
   /*
    * Define states and constants
    */
@@ -46,11 +58,27 @@ const SignUp = ({ getCustomersList, customers, signUp, selectedLanguage }) => {
   const [fabricator, setFabricator] = useState("");
   const [isNotApplicableFabricator, setIsNotApplicableFabricator] =
     useState(false);
-  const [f_address, setF_address] = useState("");
+  const [fabricatorAddress, setFabricatorAddress] = useState("");
+  const [fabricatorEmail, setFabricatorEmail] = useState("");
+  const [fabricatorPhone, setFabricatorPhone] = useState("");
+
   // Kitchen and Bath
-  const [kitchen_and_bath, setKitchen_and_bath] = useState("");
+  const [kitchenAndBath, setKitchenAndBath] = useState("");
+  const [isNotApplicableKitchenAndBath, setIsNotApplicableKitchenAndBath] =
+    useState(false);
+  const [kitchenAndBathAddress, setKitchenAndBathAddress] = useState("");
+  const [kitchenAndBathEmail, setKitchenAndBathEmail] = useState("");
+  const [kitchenAndBathPhone, setKitchenAndBathPhone] = useState("");
   // Designer/Architect
-  const [designer_or_architech, setDesigner_or_architech] = useState("");
+  const [designerOrArchitect, setDesignerOrArchitect] = useState("");
+  const [
+    isNotApplicableDesignerOrArchitect,
+    setIsNotApplicableDesignerOrArchitect,
+  ] = useState(false);
+  const [designerOrArchitectAddress, setDesignerOrArchitectAddress] =
+    useState("");
+  const [designerOrArchitectEmail, setDesignerOrArchitectEmail] = useState("");
+  const [designerOrArchitectPhone, setDesignerOrArchitectPhone] = useState("");
 
   // Consent
   const [showConsentModal, setShowConsentModal] = useState("close");
@@ -157,6 +185,15 @@ const SignUp = ({ getCustomersList, customers, signUp, selectedLanguage }) => {
   const handleSignUp = (e) => {
     e.preventDefault();
 
+    let newId = customers?.length > 0 ? customers[0].customerId + 1 : 1;
+
+    if (!newId) {
+      showBanner("Error in alotting customer id. Please contact front desk.");
+      console.error("Error in alotting customer id.");
+      return;
+    }
+
+    // customer constraints
     if (!firstName) {
       showBanner("First name is required.");
       return;
@@ -173,25 +210,62 @@ const SignUp = ({ getCustomersList, customers, signUp, selectedLanguage }) => {
       showBanner("Phone is required.");
       return;
     }
-
-    const customerAddress =
-      addressLine +
-      "," +
-      aptNo +
-      "," +
-      city +
-      "," +
-      state +
-      "," +
-      country +
-      "," +
-      zipCode;
-
+    const customerAddress = `${addressLine}, ${aptNo}, ${city}, ${state}, ${country}, ${zipCode}`;
     if (!customerAddress) {
       showBanner("Customer address is required.");
       return;
     }
 
+    // fabricator constraints
+    if (!isNotApplicableFabricator && !fabricator) {
+      showBanner("Please provide the name of the fabricator.");
+      return;
+    }
+    if (
+      !isNotApplicableFabricator &&
+      !(fabricatorAddress || fabricatorEmail || fabricatorPhone)
+    ) {
+      showBanner(
+        "Please provide the address, email, or phone of the fabricator."
+      );
+      return;
+    }
+
+    // kitchen and bath constraints
+    if (!isNotApplicableKitchenAndBath && !kitchenAndBath) {
+      showBanner("Please provide the name of the kitchen and bath.");
+      return;
+    }
+    if (
+      !isNotApplicableKitchenAndBath &&
+      !(kitchenAndBathAddress || kitchenAndBathEmail || kitchenAndBathPhone)
+    ) {
+      showBanner(
+        "Please provide the address, email, or phone of the kitchen and bath."
+      );
+      return;
+    }
+
+    // designer or architect constraints
+    if (!isNotApplicableDesignerOrArchitect && !designerOrArchitect) {
+      showBanner("Please provide the name of the design / architect.");
+      return;
+    }
+    if (
+      !isNotApplicableDesignerOrArchitect &&
+      !(
+        designerOrArchitectAddress ||
+        designerOrArchitectEmail ||
+        designerOrArchitectPhone
+      )
+    ) {
+      showBanner(
+        "Please provide the address, email, or phone of the design / architect."
+      );
+      return;
+    }
+
+    // consent form contraints
     if (!acceptTerms) {
       showBanner("You must accept the terms and conditions.");
       return;
@@ -201,38 +275,55 @@ const SignUp = ({ getCustomersList, customers, signUp, selectedLanguage }) => {
       return;
     }
 
-    if (!isNotApplicableFabricator || fabricator) {
-      showBanner("Please provide the name of the fabricator.");
-      return;
-    }
-    if (!isNotApplicableFabricator || f_address) {
-      showBanner("Please provide the address of the fabricator.");
-      return;
-    }
+    const fabricatorPayload = {
+      customerId: newId,
+      fabricatorName: fabricator,
+      fabricatorAddress: fabricatorAddress,
+      fabricatorEmail: fabricatorEmail,
+      fabricatorPhone: fabricatorPhone,
+    };
 
-    let newId = customers?.length > 0 ? customers[0].id + 1 : 1;
+    const kitchenAndBathPayload = {
+      customerId: newId,
+      kitchenAndBathName: kitchenAndBath,
+      kitchenAndBathEmail: kitchenAndBathEmail,
+      kitchenAndBathPhone: kitchenAndBathPhone,
+      kitchenAndBathAddress: kitchenAndBathAddress,
+    };
+
+    const designerOrArchitectPayload = {
+      customerId: newId,
+      designerOrArchitectName: designerOrArchitect,
+      designerOrArchitectEmail: designerOrArchitectEmail,
+      designerOrArchitectPhone: designerOrArchitectPhone,
+      designerOrArchitectAddress: designerOrArchitectAddress,
+    };
 
     const customerPayload = {
       date: date,
-      id: newId,
+      customerId: newId,
       firstName: firstName,
       lastName: lastName,
       email: email,
       phone: phone,
       address: customerAddress,
-      kitchen_and_bath: kitchen_and_bath,
-      designer_or_architech: designer_or_architech,
       imageURL: imageURL,
+      fabricatorPayload: fabricatorPayload,
+      kitchenAndBathPayload: kitchenAndBathPayload,
+      designerOrArchitectPayload: designerOrArchitectPayload,
     };
 
-    // const fabricatorPayload = {
-    //   id: newId,
-    //   fabricator: fabricator,
-    //   fabricatorAddress: f_address,
-    // };
-
     // Save the payload in the firestore database
-    signUp(customerPayload);
+    addCustomer(customerPayload);
+    if (!isNotApplicableFabricator) {
+      addFabricator(fabricatorPayload);
+    }
+    if (!isNotApplicableKitchenAndBath) {
+      addKitchenAndBath(kitchenAndBathPayload);
+    }
+    if (!isNotApplicableDesignerOrArchitect) {
+      addDesignerOrArchitect(designerOrArchitectPayload);
+    }
 
     // Set the new id to the new id
     setId(newId);
@@ -293,7 +384,6 @@ const SignUp = ({ getCustomersList, customers, signUp, selectedLanguage }) => {
                   />
                   {phoneError && <ErrorMessage>{phoneError}</ErrorMessage>}
                 </Field>
-
                 <AddressFields
                   selectedLanguage={selectedLanguage}
                   addressLine={addressLine}
@@ -309,28 +399,44 @@ const SignUp = ({ getCustomersList, customers, signUp, selectedLanguage }) => {
                   setZipCode={setZipCode}
                 />
 
-                <Fabricator
+                {/* Fabricator */}
+                <ThirdPartyInfo
                   selectedLanguage={selectedLanguage}
-                  fabricator={fabricator}
-                  setFabricator={setFabricator}
-                  isNotApplicableFabricator={isNotApplicableFabricator}
-                  setIsNotApplicableFabricator={setIsNotApplicableFabricator}
-                  f_address={f_address}
-                  setF_address={setF_address}
+                  title={t("fabricator_title_uppercase")}
+                  title_lowercase={t("fabricator_title_lowercase")}
+                  isNotApplicable={isNotApplicableFabricator}
+                  setIsNotApplicable={setIsNotApplicableFabricator}
+                  setName={setFabricator}
+                  setAddress={setFabricatorAddress}
+                  setEmail={setFabricatorEmail}
+                  setPhone={setFabricatorPhone}
                 />
 
-                <KitchenAndBath
+                {/* KitchenAndBath */}
+                <ThirdPartyInfo
                   selectedLanguage={selectedLanguage}
-                  kitchen_and_bath={kitchen_and_bath}
-                  setKitchen_and_bath={setKitchen_and_bath}
+                  title={t("kitchen_and_bath_title_uppercase")}
+                  title_lowercase={t("kitchen_and_bath_title_lowercase")}
+                  isNotApplicable={isNotApplicableKitchenAndBath}
+                  setIsNotApplicable={setIsNotApplicableKitchenAndBath}
+                  setName={setKitchenAndBath}
+                  setAddress={setKitchenAndBathAddress}
+                  setEmail={setKitchenAndBathEmail}
+                  setPhone={setKitchenAndBathPhone}
                 />
 
-                <DesignOrArchitect
+                {/* DesignOrArchitect */}
+                <ThirdPartyInfo
                   selectedLanguage={selectedLanguage}
-                  designer_or_architech={designer_or_architech}
-                  setDesigner_or_architech={setDesigner_or_architech}
+                  title={t("designer_or_architect_uppercase")}
+                  title_lowercase={t("designer_or_architect_lowercase")}
+                  isNotApplicable={isNotApplicableDesignerOrArchitect}
+                  setIsNotApplicable={setIsNotApplicableDesignerOrArchitect}
+                  setName={setDesignerOrArchitect}
+                  setAddress={setDesignerOrArchitectAddress}
+                  setEmail={setDesignerOrArchitectEmail}
+                  setPhone={setDesignerOrArchitectPhone}
                 />
-
                 <Field>
                   <Consent>
                     <label htmlFor="consentCheckbox">
@@ -428,7 +534,7 @@ const Form = styled.div`
 
   height: 100%;
   width: 50%;
-  gap: 20px;
+  gap: 30px;
 `;
 
 const Field = styled.div`
@@ -517,7 +623,11 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  signUp: (payload) => dispatch(signUpAPI(payload)),
+  addCustomer: (payload) => dispatch(addCustomerAPI(payload)),
+  addFabricator: (payload) => dispatch(addFabricatorAPI(payload)),
+  addKitchenAndBath: (payload) => dispatch(addKitchenAndBathAPI(payload)),
+  addDesignerOrArchitect: (payload) =>
+    dispatch(addDesignerOrArchitectAPI(payload)),
   getCustomersList: () => dispatch(getCustomersListAPI()),
 });
 

@@ -129,6 +129,7 @@ const Email = (props) => {
             value={props.email}
             onChange={handleEmailChange}
             placeholder={t("otp_placeholder")}
+            disabled={props.verificationSuccess ? true : false}
             required
             error={props.emailError}
           />

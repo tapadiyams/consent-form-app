@@ -19,31 +19,23 @@ const ConsentFormModal = (props) => {
     props.setAcceptTerms(e.target.checked);
   };
 
-  const handleCloseClick = (e) => {
-    if (!props.acceptTerms) {
-      alert("You must accept the terms and conditions.");
-      return;
-    }
-    if (!props.imageURL) {
-      alert("You must sign and save to accept the waiver.");
-      return;
-    }
-    reset(e);
-  };
-
   const clear = () => sigCanvas.current.clear();
 
-  const save = (e) => {
+  const save = async (e) => {
     const isCanvasEmpty = sigCanvas.current.isEmpty();
     if (isCanvasEmpty) {
       alert("Please sign in the box");
     } else {
-      props.setImageURL(
-        sigCanvas.current.getTrimmedCanvas().toDataURL("image/png")
-      );
+      try {
+        const imageURL = await sigCanvas.current
+          .getTrimmedCanvas()
+          .toDataURL("image/png");
+        await props.setImageURL(imageURL);
+      } catch (error) {
+        console.error("Error saving image:", error);
+      }
 
-      // close the modal
-      handleCloseClick(e);
+      reset(e);
     }
   };
 

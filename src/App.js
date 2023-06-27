@@ -11,6 +11,7 @@ import CustomerSelection from "./components/CustomerSelection";
 import AdminActions from "./components/AdminActions";
 import cookies from "js-cookie";
 import ExistingCustomer from "./components/ExistingCustomer";
+import EntryPoint from "./components/EntryPoint";
 
 const languages = [
   {
@@ -26,7 +27,7 @@ const languages = [
 ];
 
 function App(props) {
-  const [currentLanguage, setCurrentLanguage] = useState("en");
+  const [hasWebsiteAccess, setHasWebsiteAccess] = useState(true);
 
   // For Language change
   const currentLanguageCode = cookies.get("i18next") || "en";
@@ -43,35 +44,40 @@ function App(props) {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Home
-              setCurrentLanguage={setCurrentLanguage}
-              currentLanguage={currentLanguage}
-              currentLanguageCode={currentLanguageCode}
-              languages={languages}
-              setSelectedLanguage={setSelectedLanguage}
-            />
+            <EntryPoint setHasWebsiteAccess={setHasWebsiteAccess} />
           </Route>
-          <Route exact path="/signup">
-            <SignUp selectedLanguage={selectedLanguage} />
-          </Route>
-          <Route exact path="/lookup">
-            <ExistingCustomer selectedLanguage={selectedLanguage} />
-          </Route>
-          <Route path="/login">
-            <LogIn />
-          </Route>
-          <Route path="/admin-action">
-            <AdminActions />
-          </Route>
-          <Route path="/view">
-            <CustomerList />
-          </Route>
-          <Route path="/customer-selection/:id">
-            <CustomerSelection />
-          </Route>
-          <Route path="/customer/:id">
-            <CustomerDetails />
-          </Route>
+          {hasWebsiteAccess && (
+            <>
+              <Route exact path="/home">
+                <Home
+                  currentLanguageCode={currentLanguageCode}
+                  setSelectedLanguage={setSelectedLanguage}
+                  languages={languages}
+                />
+              </Route>
+              <Route exact path="/signup">
+                <SignUp selectedLanguage={selectedLanguage} />
+              </Route>
+              <Route exact path="/lookup">
+                <ExistingCustomer selectedLanguage={selectedLanguage} />
+              </Route>
+              <Route path="/login">
+                <LogIn />
+              </Route>
+              <Route path="/admin-actions">
+                <AdminActions />
+              </Route>
+              <Route path="/view">
+                <CustomerList />
+              </Route>
+              <Route path="/customer-selection/:id">
+                <CustomerSelection />
+              </Route>
+              <Route path="/customer/:id">
+                <CustomerDetails />
+              </Route>
+            </>
+          )}
         </Switch>
       </Router>
     </div>

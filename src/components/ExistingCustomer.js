@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
-import { getCustomersListAPI, signUpAPI } from "../actions";
+import { getCustomersListAPI } from "../actions";
 import { useTranslation } from "react-i18next";
 import Email from "./signUp/Email";
 
@@ -136,7 +136,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  signUp: (payload) => dispatch(signUpAPI(payload)),
   getCustomersList: () => dispatch(getCustomersListAPI()),
 });
 
