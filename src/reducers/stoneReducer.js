@@ -3,7 +3,7 @@ import {
   GET_EMPLOYEES,
   SET_LOADING_STATUS,
   GET_STONES,
-  GET_EMPLOYEE,
+  SET_EMPLOYEE,
 } from "../actions/actionType";
 
 export const initState = {
@@ -26,7 +26,7 @@ const stoneReducer = (state = initState, action) => {
         ...state,
         employees: action.employeesPayload,
       };
-    case GET_EMPLOYEE:
+    case SET_EMPLOYEE:
       return {
         ...state,
         employee: action.employeePayload,

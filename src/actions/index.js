@@ -1,7 +1,7 @@
 import db from "../firebase";
 import {
   GET_EMPLOYEES,
-  GET_EMPLOYEE,
+  SET_EMPLOYEE,
   GET_STONES,
   SET_LOADING_STATUS,
   GET_CUSTOMERS,
@@ -49,8 +49,8 @@ export const getEmployees = (employeesPayload) => {
 };
 
 // Remember, it's a singular employee
-export const getEmployee = (employeePayload) => ({
-  type: GET_EMPLOYEE,
+export const setEmployee = (employeePayload) => ({
+  type: SET_EMPLOYEE,
   employeePayload: employeePayload,
 });
 
@@ -549,16 +549,13 @@ export function addEmployeeAPI(payload) {
 }
 
 // When a employee logs in then this function will be called.
-export function getEmployeeAPI(payload) {
+export function setEmployeeAPI(payload) {
   const { employeeEmail, employeePassword } = payload;
   return (dispatch) => {
-    employeesCollection
-      .where("employeeEmail", "==", employeeEmail)
-      .where("employeePassword", "==", employeePassword)
-      .onSnapshot((snapshot) => {
-        const data = snapshot.docs.map((doc) => doc.data());
-        dispatch(getEmployee(data));
-      });
+    const data = [
+      { employeeEmail: employeeEmail, employeePassword: employeePassword },
+    ];
+    dispatch(setEmployee(data));
   };
 }
 

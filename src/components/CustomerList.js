@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getCustomersListAPI } from "../actions";
 
-const CustomerList = ({ customers, getCustomersList }) => {
+const CustomerList = ({ customers, getCustomersList, employee }) => {
   const [searchValue, setSearchValue] = useState("");
   const history = useHistory();
 
@@ -14,7 +14,7 @@ const CustomerList = ({ customers, getCustomersList }) => {
     };
 
     fetchCustomersList();
-  }, [getCustomersList]);
+  }, [getCustomersList, employee]);
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
@@ -36,6 +36,7 @@ const CustomerList = ({ customers, getCustomersList }) => {
   return (
     <AppContainer>
       <NavBar>
+        {console.log("Shubham, employee:", employee)}
         <NavLink to="/admin-actions">Admin Actions</NavLink>
         <NavLink to="/logout">Log Out</NavLink>
       </NavBar>
@@ -177,6 +178,7 @@ const TableCell = styled.td`
 const mapStateToProps = (state) => {
   return {
     customers: state.customerState.customers,
+    employee: state.stoneState.employee,
   };
 };
 

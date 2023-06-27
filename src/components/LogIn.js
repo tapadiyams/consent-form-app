@@ -1,62 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import {
-  deleteCustomersAPI,
-  getCustomersListAPI,
-  getWebsiteCredentialsAPI,
-} from "../actions";
+import { getEmployeesListAPI } from "../actions";
 
-const LogIn = ({
-  getWebsiteCredentials,
-  websiteCredentials,
-  setHasWebsiteAccess,
-  getCustomers,
-  deleteCustomers,
-  customers,
-  emailError,
-}) => {
-  const [websiteUserName, setWebsiteUserName] = useState("");
-  const [websitePassword, setWebsitePassword] = useState("");
+const LogIn = ({ getEmployeesList, emailError, employees }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
   const history = useHistory();
 
+  // hooks
   useEffect(() => {
-    getWebsiteCredentials();
-  }, [getWebsiteCredentials]);
+    const fetchEmployeesList = async () => {
+      await getEmployeesList();
+    };
+    fetchEmployeesList();
+  }, [getEmployeesList]); // Include props in the dependency array if needed for other parts of the component
 
-  useEffect(() => {
-    async function fetchData() {
-      await getCustomers();
-      await deleteCustomers(customers);
-    }
-    fetchData();
-  }, [deleteCustomers, customers, getCustomers]);
-
-  const verifyWebsiteCredentials = () => {
-    if (!websiteUserName) {
-      alert("User name cannot be empty.");
+  const verifyEmployeeCredentials = async () => {
+    if (!email) {
+      alert("Email cannot be empty.");
       return;
     }
 
-    if (!websitePassword) {
+    if (!password) {
       alert("Password cannot be empty.");
       return;
     }
 
-    if (websiteCredentials[0].websiteUserName !== websiteUserName) {
-      alert("User name is wrong.");
+    const employee =
+      employees &&
+      Object.values(employees).find(
+        (e) =>
+          e.employeeEmail &&
+          e.employeeEmail.toLowerCase() === email.toLowerCase() &&
+          e.employeePassword &&
+          e.employeePassword.toLowerCase() === password.toLowerCase()
+      );
+
+    if (!employee) {
+      alert(`Please check your email and password.`);
       return;
     }
 
-    if (websiteCredentials[0].websitePassword !== websitePassword) {
-      alert("Password is wrong.");
-      return;
-    }
-
-    setHasWebsiteAccess(true);
-    history.push("/home");
+    history.push("/view");
   };
 
   return (
@@ -66,11 +54,11 @@ const LogIn = ({
         <img src="/images/reliancewhite.png" alt="" />
       </RelianceImage>
       <Field>
-        <H2>USER NAME</H2>
+        <H2>EMAIL</H2>
         <Input
           type="text"
-          value={websiteUserName}
-          onChange={(e) => setWebsiteUserName(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
           error={emailError}
         />
@@ -80,13 +68,13 @@ const LogIn = ({
         <H2>PASSWORD</H2>
         <Input
           type={showPassword ? "text" : "password"}
-          value={websitePassword}
-          onChange={(e) => setWebsitePassword(e.target.value)}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <PasswordToggle onClick={() => setShowPassword(!showPassword)}>
           {showPassword ? "Hide Password" : "Show Password"}
         </PasswordToggle>
-        <Button onClick={verifyWebsiteCredentials}>ENTER THE WEBSITE</Button>
+        <Button onClick={verifyEmployeeCredentials}>ENTER THE WEBSITE</Button>
       </Field>
     </Container>
   );
@@ -182,16 +170,13 @@ const Button = styled.button`
 
 const mapStateToProps = (state) => {
   return {
-    websiteCredentials: state.stoneState.websiteCredentials,
-    customers: state.customerState.customers,
+    employees: state.stoneState.employees,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  getWebsiteCredentials: () => dispatch(getWebsiteCredentialsAPI()),
-  getCustomers: () => dispatch(getCustomersListAPI()),
-  deleteCustomers: (customersList) =>
-    dispatch(deleteCustomersAPI(customersList)),
+  getEmployeesList: () => dispatch(getEmployeesListAPI()),
+  setEmployee: () => dispatch(getEmployeesListAPI()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogIn);
