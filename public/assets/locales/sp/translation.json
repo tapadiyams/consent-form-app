@@ -16,7 +16,7 @@
     "email_verify_otp": "Verificar OTP",
     "email_verified": "¡Verificación de correo electrónico exitosa!",
     "customer_already_exists": "¡Cliente ya existe!",
-    "customer_does_not_exist_please_check_your_email_address_again.": "¡El cliente no existe! Por favor, verifique su dirección de correo electrónico nuevamente.",
+    "customer_does_not_exist_please_check_your_email_address_again": "¡El cliente no existe! Por favor, verifique su dirección de correo electrónico nuevamente.",
     
     "phone": "TELÉFONO",
     "phone_error": "Por favor, ingrese un número de teléfono válido",

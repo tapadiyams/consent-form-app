@@ -475,7 +475,7 @@ const SignUp = ({
         <SignedUpModal
           showModal={showSignedUpModal}
           handleCrossClick={handleSignedUpModalClick}
-          customer_id={id}
+          customerId={id}
           text={t("you_have_been_successfully_signed_up")}
         />
       </ContentWrapper>

@@ -20,7 +20,7 @@
     "email_verify_otp": "Verify OTP",
     "email_verified": "Email verification successful !",
     "customer_already_exists": "Customer already exists!",
-    "customer_does_not_exist_please_check_your_email_address_again.":"Customer does not exist! Please Check your email address again.",
+    "customer_does_not_exist_please_check_your_email_address_again":"Customer does not exist! Please Check your email address again.",
 
     "phone": "PHONE",
     "phone_error": "Please enter a valid phone number",

@@ -11,7 +11,7 @@ const Email = (props) => {
    */
   const { t } = useTranslation();
   const [showSignedUpModal, setShowSignedUpModal] = useState("close");
-  const [customer_id, setCustomer_id] = useState("");
+  const [customerId, setCustomerId] = useState("");
   const [existingCustomer, setExistingCustomer] = useState({});
   const history = useHistory();
 
@@ -73,11 +73,10 @@ const Email = (props) => {
       return;
     }
 
-    if (!props.isLookup && existingCustomer) {
-      const { id } = existingCustomer;
-      setCustomer_id(id);
+    if (props.isLookup && existingCustomer) {
+      setCustomerId(existingCustomer.customerId);
 
-      // open the modal with the id
+      // open the modal with the customerId
       setShowSignedUpModal("open");
       return;
     }
@@ -111,7 +110,7 @@ const Email = (props) => {
     if (parseInt(props.otp) === parseInt(props.userEnteredOtp)) {
       props.setVerificationSuccess(true);
       if (props.isLookup && existingCustomer) {
-        history.push(`/customer/${existingCustomer.id}`);
+        history.push(`/customer/${existingCustomer.customerId}`);
         return;
       }
     } else {
@@ -160,7 +159,7 @@ const Email = (props) => {
       <SignedUpModal
         showModal={showSignedUpModal}
         handleCrossClick={handleCustomerExistModalClick}
-        customer_id={customer_id}
+        customerId={customerId}
         text={t("customer_already_exists")}
       />
     </>

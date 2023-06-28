@@ -18,7 +18,7 @@ const SignedUpModal = (props) => {
           <Content>
             <Header>
               <h2>{props.text}</h2>
-              <span>Your id is {props.customer_id}</span>
+              <span>Your id is {props.customerId}</span>
 
               <button onClick={(event) => reset(event)}>
                 <img src="/images/close-icon.svg" alt="" />
