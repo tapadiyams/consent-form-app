@@ -37,7 +37,6 @@ const SignUp = ({
   // Name
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [assistedBy, setAssistedBy] = useState("");
   // Email
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -312,7 +311,7 @@ const SignUp = ({
       fabricatorPayload: fabricatorPayload,
       kitchenAndBathPayload: kitchenAndBathPayload,
       designerOrArchitectPayload: designerOrArchitectPayload,
-      assistedBy: assistedBy,
+      assistedBy: "",
     };
 
     // Save the payload in the firestore database
