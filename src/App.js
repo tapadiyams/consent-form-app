@@ -12,6 +12,9 @@ import AdminActions from "./components/AdminActions";
 import cookies from "js-cookie";
 import ExistingCustomer from "./components/ExistingCustomer";
 import EntryPoint from "./components/EntryPoint";
+import { createBrowserHistory } from "history";
+import NotFound from "./components/NotFound";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 const languages = [
   {
@@ -32,6 +35,8 @@ function App(props) {
   const [employeeName, setEmployeeName] = useState("");
   const [employeePermission, setEmployeePermission] = useState("");
 
+  const history = createBrowserHistory();
+
   // For Language change
   const currentLanguageCode = cookies.get("i18next") || "en";
   const [selectedLanguage, setSelectedLanguage] = useState(
@@ -43,7 +48,7 @@ function App(props) {
   }, [selectedLanguage, props.employee]);
   return (
     <div className="App">
-      <Router>
+      <Router history={history}>
         <Switch>
           <Route exact path="/">
             <EntryPoint setHasWebsiteAccess={setHasWebsiteAccess} />
@@ -94,6 +99,9 @@ function App(props) {
                   employeePermission={employeePermission}
                 />
               </Route>
+              <Route path="/not-found" component={NotFound} />
+              {/* Redirect to the not-found page for any other route */}
+              <Redirect to="/not-found" />
             </>
           )}
         </Switch>
