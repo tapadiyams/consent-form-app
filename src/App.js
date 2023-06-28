@@ -64,7 +64,10 @@ function App(props) {
                 <ExistingCustomer selectedLanguage={selectedLanguage} />
               </Route>
               <Route path="/customer/:id">
-                <CustomerDetails />
+                <CustomerDetails
+                  employeeName={employeeName}
+                  employeePermission={employeePermission}
+                />
               </Route>
 
               <Route path="/login">

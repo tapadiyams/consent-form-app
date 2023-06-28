@@ -190,48 +190,54 @@ export function editCustomerAPI(payload) {
   const { customerId, assistedBy } = payload;
 
   return (dispatch) => {
-    // Query the materials collection to find the document with the given material name
-    const query = employeesCollection.where("customerId", "==", customerId);
-    query
-      .get()
-      .then((querySnapshot) => {
-        // Check if a matching document exists
-        if (querySnapshot.empty) {
-          console.log(
-            "Error has caused in editCustomerAPI(): querySnapshot is empty."
-          );
-          return;
-        }
-
-        if (querySnapshot.length > 1) {
-          console.error(
-            "Error has caused in editCustomerAPI(): multiple entries found  for customer with customerId: .",
-            customerId
-          );
-        }
-        const customerDocRef = querySnapshot.docs[0].ref;
-        customerDocRef
-          .update({
-            // employeeEmail can not be changed
-            assistedBy: assistedBy,
-          })
-          // .then(() => {
-          // })
-          .catch((error) => {
-            // Dispatch an error action if needed
+    if (assistedBy) {
+      // Query the materials collection to find the document with the given material name
+      const query = customersCollection.where("customerId", "==", customerId);
+      query
+        .get()
+        .then((querySnapshot) => {
+          // Check if a matching document exists
+          if (querySnapshot.empty) {
             console.log(
-              "Error has caused in editCustomerAPI() while dispatching.",
-              error
+              "Error has caused in editCustomerAPI(): querySnapshot is empty."
             );
-          });
-      })
-      .catch((error) => {
-        // Handle the error when querying the database
-        console.log(
-          "Error has caused in editCustomerAPI() while querying the database.",
-          error
-        );
-      });
+            return;
+          }
+
+          if (querySnapshot.length > 1) {
+            console.error(
+              "Error has caused in editCustomerAPI(): multiple entries found  for customer with customerId: .",
+              customerId
+            );
+          }
+          const customerDocRef = querySnapshot.docs[0].ref;
+          customerDocRef
+            .update({
+              // customerId can not be changed
+              assistedBy: assistedBy,
+            })
+            // .then(() => {
+            // })
+            .catch((error) => {
+              // Dispatch an error action if needed
+              console.log(
+                "Error has caused in editCustomerAPI() while dispatching.",
+                error
+              );
+            });
+        })
+        .catch((error) => {
+          // Handle the error when querying the database
+          console.log(
+            "Error has caused in editCustomerAPI() while querying the database.",
+            error
+          );
+        });
+    } else {
+      console.error(
+        "Error has caused in editCustomerAPI(). Sales representative's name is empty."
+      );
+    }
   };
 }
 

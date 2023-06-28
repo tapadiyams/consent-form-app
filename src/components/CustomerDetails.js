@@ -295,6 +295,7 @@ const CustomerDetails = ({
           </FooterContent>
 
           <FooterContent>
+            <h2>{(customer && customer?.assistedBy) || ""}</h2>
             <h2>Sale's Representative</h2>
           </FooterContent>
         </Footer>

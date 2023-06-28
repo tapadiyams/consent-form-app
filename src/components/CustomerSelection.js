@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import {
   addSelectionsAPI,
+  editCustomerAPI,
   getCustomersListAPI,
   getStonesListAPI,
 } from "../actions";
@@ -15,7 +16,9 @@ const CustomerSelection = ({
   addSelection,
   getStonesList,
   stonesList,
+  employeeName,
   employeePermission,
+  editCustomer,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
@@ -70,6 +73,8 @@ const CustomerSelection = ({
     for (const selectedItem of cartItems) {
       await addSelection(selectedItem);
     }
+    await editCustomer({ customerId, employeeName });
+
     history.goBack();
     resetCart();
   };
@@ -128,7 +133,9 @@ const CustomerSelection = ({
 
   return (
     <Container>
-      {(employeePermission === "1" || employeePermission === "2") && (
+      {(employeePermission === "" ||
+        employeePermission === "1" ||
+        employeePermission === "2") && (
         <>
           <Menu>
             {Object.entries(groupedStones).map(([category, stones]) => (
@@ -337,6 +344,7 @@ const mapDispatchToProps = (dispatch) => ({
   getCustomersList: () => dispatch(getCustomersListAPI()),
   getStonesList: () => dispatch(getStonesListAPI()),
   addSelection: (selectedItem) => dispatch(addSelectionsAPI(selectedItem)),
+  editCustomer: (payload) => dispatch(editCustomerAPI(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerSelection);
