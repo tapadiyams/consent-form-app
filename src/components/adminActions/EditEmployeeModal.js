@@ -23,14 +23,18 @@ const EditEmployeeModal = ({ isOpen, onClose, employee, onSubmit }) => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const [employeePermission, setEmployeePermission] = useState(false);
+  const [employeePermission, setEmployeePermission] = useState("");
 
   useEffect(() => {
     if (isOpen && employee) {
       setName(employee.employeeName || "");
       setPassword(employee.employeePassword || "");
       setRole(employee.employeeRole || "");
-      setEmployeePermission((employee && employee?.employeePermission) || "");
+      setEmployeePermission(
+        employee && employee.employeePermission
+          ? employee.employeePermission
+          : ""
+      );
     }
   }, [isOpen, employee]);
 
@@ -87,8 +91,8 @@ const EditEmployeeModal = ({ isOpen, onClose, employee, onSubmit }) => {
           Permission:
           <Input
             type="number"
-            checked={employeePermission}
-            onChange={(e) => setEmployeePermission(e.target.checked)}
+            value={employeePermission}
+            onChange={(e) => setEmployeePermission(e.target.value)}
           />
         </InputLabel>
         <div className="modal-buttons">

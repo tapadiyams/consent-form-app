@@ -6,7 +6,7 @@ import EmployeesActions from "./adminActions/EmployeesActions";
 
 const menu = ["Employees List", "Stones Actions"];
 
-const AdminActions = () => {
+const AdminActions = ({ employeePermission }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleCategorySelect = (category) => {
@@ -27,13 +27,13 @@ const AdminActions = () => {
       </Menu>
 
       <ContentContainer>
-        {selectedCategory && selectedCategory === "Employees List" && (
-          <EmployeesActions />
-        )}
+        {employeePermission === "1" &&
+          selectedCategory &&
+          selectedCategory === "Employees List" && <EmployeesActions />}
 
-        {selectedCategory && selectedCategory === "Stones Actions" && (
-          <StonesActions />
-        )}
+        {employeePermission === "2" &&
+          selectedCategory &&
+          selectedCategory === "Stones Actions" && <StonesActions />}
       </ContentContainer>
     </Container>
   );

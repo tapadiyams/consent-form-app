@@ -18,6 +18,9 @@ const LogIn = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+
+  const [isLoading, setIsLoading] = useState(false); // Loading state
+
   const history = useHistory();
 
   // hooks
@@ -53,13 +56,16 @@ const LogIn = ({
       alert(`Please check your email and password.`);
       return;
     }
+
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    setIsLoading(true);
 
     // this has to be async operation
     await setEmployeeName(employee.employeeName);
     await setEmployeePermission(employee.employeePermission);
 
-    await delay(3000);
+    await delay(2000);
 
     // TODO [tapadiyams@gmail.com]: Correct the setEmployee action.
     const employeeData = {
@@ -67,6 +73,8 @@ const LogIn = ({
       employeePermission: employee.employeePermission,
     };
     setEmployee(employeeData);
+
+    setIsLoading(false); // Set loading state to false
 
     history.push("/view");
   };
@@ -98,7 +106,10 @@ const LogIn = ({
         <PasswordToggle onClick={() => setShowPassword(!showPassword)}>
           {showPassword ? "Hide Password" : "Show Password"}
         </PasswordToggle>
-        <Button onClick={verifyEmployeeCredentials}>ENTER THE WEBSITE</Button>
+        <Button onClick={verifyEmployeeCredentials}>
+          {" "}
+          {isLoading ? <Spinner /> : "LOG IN"}
+        </Button>
       </Field>
     </Container>
   );
@@ -179,6 +190,26 @@ const jump = keyframes`
   }
 `;
 
+const Spinner = styled.div`
+  /* Add styles for the spinner */
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ffffff;
+  border-top-color: #50c878;
+  border-radius: 50%;
+
+  animation: spinnerAnimation 0.6s linear infinite;
+
+  @keyframes spinnerAnimation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
 const Button = styled.button`
   height: 40px;
   background-color: #50c878;
@@ -189,6 +220,21 @@ const Button = styled.button`
   :hover {
     background: #cca132;
     animation: ${jump} 0.2s ease-out forwards;
+  }
+
+  /* Flexbox properties for centering */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  /* Add padding to create space for the spinner */
+  padding-right: 24px; /* Adjust the value as needed */
+
+  /* Adjust the spinner position */
+  & > ${Spinner} {
+    /* position: absolute; */
+    right: 20px; /* Adjust the value as needed */
   }
 `;
 

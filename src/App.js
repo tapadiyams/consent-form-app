@@ -74,7 +74,10 @@ function App(props) {
                 />
               </Route>
               <Route path="/admin-actions">
-                <AdminActions />
+                <AdminActions
+                  employeeName={employeeName}
+                  employeePermission={employeePermission}
+                />
               </Route>
               <Route path="/view">
                 <CustomerList

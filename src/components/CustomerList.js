@@ -76,11 +76,6 @@ const CustomerList = ({
 
   return (
     <AppContainer>
-      {console.log(
-        " Shubham, employeeName employeePermission",
-        employeeName,
-        employeePermission
-      )}
       <NavBar>
         <NavLink to="/admin-actions">Admin Actions</NavLink>
         <NavLink to="/">Log Out</NavLink>

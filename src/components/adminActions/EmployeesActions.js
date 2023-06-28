@@ -96,7 +96,7 @@ const EmployeesActions = (props) => {
                 </td>
                 <td>
                   {employee && employee.employeePermission
-                    ? employee.employeePermission.toString()
+                    ? employee.employeePermission
                     : ""}
                 </td>
 

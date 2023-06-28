@@ -134,7 +134,7 @@ const AddEmployeeModal = ({ isOpen, onClose, onSubmit, employees }) => {
           Permission:
           <Input
             type="number"
-            checked={employeePermission}
+            value={employeePermission}
             onChange={(e) => setEmployeePermission(e.target.value)}
           />
         </InputLabel>
