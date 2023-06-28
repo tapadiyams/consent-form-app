@@ -15,6 +15,7 @@ const CustomerSelection = ({
   addSelection,
   getStonesList,
   stonesList,
+  employeePermission,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
@@ -127,106 +128,110 @@ const CustomerSelection = ({
 
   return (
     <Container>
-      <Menu>
-        {Object.entries(groupedStones).map(([category, stones]) => (
-          <MenuItem
-            key={category}
-            onClick={() => handleCategorySelect(category)}
-            selected={selectedCategory === category}
-          >
-            {category}
-          </MenuItem>
-        ))}
-      </Menu>
-
-      {selectedCategory && (
-        <Menu>
-          {groupedStones[selectedCategory].map((stone) => (
-            <MenuItem
-              key={stone.material}
-              onClick={() => handleMaterialSelect(stone.material)}
-              selected={selectedMaterial === stone.material}
-            >
-              {stone.material}
-            </MenuItem>
-          ))}
-        </Menu>
-      )}
-
-      {selectedMaterial && (
-        <Menu>
-          {stonesList
-            .find((stone) => stone.material === selectedMaterial)
-            ?.sizes?.map((size) => (
+      {(employeePermission === "1" || employeePermission === "2") && (
+        <>
+          <Menu>
+            {Object.entries(groupedStones).map(([category, stones]) => (
               <MenuItem
-                key={size}
-                onClick={() => {
-                  setSize(size);
-                  setSelectedSize(size);
-                }}
-                selected={size === selectedSize}
+                key={category}
+                onClick={() => handleCategorySelect(category)}
+                selected={selectedCategory === category}
               >
-                {size}
+                {category}
               </MenuItem>
             ))}
-        </Menu>
+          </Menu>
+
+          {selectedCategory && (
+            <Menu>
+              {groupedStones[selectedCategory].map((stone) => (
+                <MenuItem
+                  key={stone.material}
+                  onClick={() => handleMaterialSelect(stone.material)}
+                  selected={selectedMaterial === stone.material}
+                >
+                  {stone.material}
+                </MenuItem>
+              ))}
+            </Menu>
+          )}
+
+          {selectedMaterial && (
+            <Menu>
+              {stonesList
+                .find((stone) => stone.material === selectedMaterial)
+                ?.sizes?.map((size) => (
+                  <MenuItem
+                    key={size}
+                    onClick={() => {
+                      setSize(size);
+                      setSelectedSize(size);
+                    }}
+                    selected={size === selectedSize}
+                  >
+                    {size}
+                  </MenuItem>
+                ))}
+            </Menu>
+          )}
+
+          {selectedMaterial && (
+            <Menu>
+              {stonesList
+                .find((stone) => stone.material === selectedMaterial)
+                ?.thicknesses?.map((thickness) => (
+                  <MenuItem
+                    key={thickness}
+                    onClick={() => {
+                      setThickness(thickness);
+                      setSelectedThickness(thickness);
+                    }}
+                    selected={thickness === selectedThickness}
+                  >
+                    {thickness}
+                  </MenuItem>
+                ))}
+            </Menu>
+          )}
+
+          {selectedMaterial && (
+            <SelectionContainer>
+              <SelectionLabel>Finish:</SelectionLabel>
+              <SelectionInput
+                type="text"
+                value={finish}
+                onChange={handleFinishChange}
+              />
+
+              <SelectionLabel>Note:</SelectionLabel>
+              <SelectionInput
+                type="text"
+                value={note}
+                onChange={(event) => setNote(event.target.value)}
+              />
+
+              <AddButton onClick={handleAddButtonClick}>Add</AddButton>
+            </SelectionContainer>
+          )}
+
+          <CartIcon onClick={handleToggleCartVisibility}>
+            <FontAwesomeIcon icon={faShoppingCart} />
+            <CartItemCount>{cartItems.length}</CartItemCount>
+          </CartIcon>
+
+          {isCartVisible && (
+            <Cart
+              cartItems={cartItems}
+              handleRemoveFromCart={handleRemoveFromCart}
+            />
+          )}
+
+          <ButtonContainer>
+            <Button onClick={handleFinalizeItems}>Finalize Items</Button>
+            <Button onClick={handleCancel}>Go Back</Button>
+          </ButtonContainer>
+        </>
       )}
-
-      {selectedMaterial && (
-        <Menu>
-          {stonesList
-            .find((stone) => stone.material === selectedMaterial)
-            ?.thicknesses?.map((thickness) => (
-              <MenuItem
-                key={thickness}
-                onClick={() => {
-                  setThickness(thickness);
-                  setSelectedThickness(thickness);
-                }}
-                selected={thickness === selectedThickness}
-              >
-                {thickness}
-              </MenuItem>
-            ))}
-        </Menu>
-      )}
-
-      {selectedMaterial && (
-        <SelectionContainer>
-          <SelectionLabel>Finish:</SelectionLabel>
-          <SelectionInput
-            type="text"
-            value={finish}
-            onChange={handleFinishChange}
-          />
-
-          <SelectionLabel>Note:</SelectionLabel>
-          <SelectionInput
-            type="text"
-            value={note}
-            onChange={(event) => setNote(event.target.value)}
-          />
-
-          <AddButton onClick={handleAddButtonClick}>Add</AddButton>
-        </SelectionContainer>
-      )}
-
-      <CartIcon onClick={handleToggleCartVisibility}>
-        <FontAwesomeIcon icon={faShoppingCart} />
-        <CartItemCount>{cartItems.length}</CartItemCount>
-      </CartIcon>
-
-      {isCartVisible && (
-        <Cart
-          cartItems={cartItems}
-          handleRemoveFromCart={handleRemoveFromCart}
-        />
-      )}
-
-      <ButtonContainer>
-        <Button onClick={handleFinalizeItems}>Finalize Items</Button>
-        <Button onClick={handleCancel}>Go Back</Button>
-      </ButtonContainer>
     </Container>
   );
 };

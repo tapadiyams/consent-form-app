@@ -31,7 +31,7 @@ const AdminActions = ({ employeePermission }) => {
           selectedCategory &&
           selectedCategory === "Employees List" && <EmployeesActions />}
 
-        {employeePermission === "2" &&
+        {employeePermission === "1" &&
           selectedCategory &&
           selectedCategory === "Stones Actions" && <StonesActions />}
       </ContentContainer>

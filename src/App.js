@@ -86,7 +86,10 @@ function App(props) {
                 />
               </Route>
               <Route path="/customer-selection/:id">
-                <CustomerSelection />
+                <CustomerSelection
+                  employeeName={employeeName}
+                  employeePermission={employeePermission}
+                />
               </Route>
             </>
           )}
