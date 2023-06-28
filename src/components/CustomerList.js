@@ -5,9 +5,10 @@ import styled from "styled-components";
 import { getCustomersListAPI, getFabricatorsAPI } from "../actions";
 
 const CustomerList = ({
+  employeeName,
+  employeePermission,
   customers,
   getCustomersList,
-  employee,
   fabricators,
   getFabricators,
 }) => {
@@ -16,6 +17,8 @@ const CustomerList = ({
     lastName: "",
     customerId: "",
     email: "",
+    date: "",
+    fabricator: "",
   });
   const history = useHistory();
 
@@ -26,38 +29,13 @@ const CustomerList = ({
     };
 
     fetchData();
-  }, [getCustomersList, getFabricators, employee]);
+  }, [getCustomersList, getFabricators, employeeName, employeePermission]);
 
   const handleSearchChange = (e, columnName) => {
     setSearch({
       ...search,
       [columnName]: e.target.value,
     });
-  };
-
-  console.log("employee Shubham:", employee);
-
-  const filteredUsers = customers.filter((user) => {
-    const fullName = `${user.firstName} ${user.lastName}`;
-
-    return (
-      fullName.toLowerCase().includes(search.firstName.toLowerCase()) &&
-      user.lastName.toLowerCase().includes(search.lastName.toLowerCase()) &&
-      user.customerId &&
-      user.customerId
-        .toString()
-        .toLowerCase()
-        .includes(search.customerId.toLowerCase()) &&
-      user.email.toLowerCase().includes(search.email.toLowerCase())
-    );
-  });
-
-  const handleCustomerClick = (customerId) => {
-    history.push(`/customer/${customerId}`);
-  };
-
-  const handleCustomerSelectionClick = (customerId) => {
-    history.push(`/customer-selection/${customerId}`);
   };
 
   const getAssociatedFabricator = (customerId) => {
@@ -70,32 +48,44 @@ const CustomerList = ({
     return fabricator ? fabricator.fabricatorName : "N/A";
   };
 
+  const filteredUsers = customers.filter((user) => {
+    const fullName = `${user.firstName} ${user.lastName}`;
+
+    return (
+      fullName.toLowerCase().includes(search.firstName.toLowerCase()) &&
+      user.lastName.toLowerCase().includes(search.lastName.toLowerCase()) &&
+      user.customerId &&
+      user.customerId
+        .toString()
+        .toLowerCase()
+        .includes(search.customerId.toLowerCase()) &&
+      user.date.toLowerCase().includes(search.date.toLowerCase()) &&
+      getAssociatedFabricator(user.customerId)
+        .toLowerCase()
+        .includes(search.fabricator.toLowerCase())
+    );
+  });
+
+  const handleCustomerClick = (customerId) => {
+    history.push(`/customer/${customerId}`);
+  };
+
+  const handleCustomerSelectionClick = (customerId) => {
+    history.push(`/customer-selection/${customerId}`);
+  };
+
   return (
     <AppContainer>
+      {console.log(
+        " Shubham, employeeName employeePermission",
+        employeeName,
+        employeePermission
+      )}
       <NavBar>
         <NavLink to="/admin-actions">Admin Actions</NavLink>
-        <NavLink to="/logout">Log Out</NavLink>
+        <NavLink to="/">Log Out</NavLink>
       </NavBar>
       <Content>
-        {/* <Search>
-          <p>Search</p>
-          <input
-            value={search.firstName}
-            onChange={(e) => handleSearchChange(e, "firstName")}
-          />
-          <input
-            value={search.lastName}
-            onChange={(e) => handleSearchChange(e, "lastName")}
-          />
-          <input
-            value={search.customerId}
-            onChange={(e) => handleSearchChange(e, "customerId")}
-          />
-          <input
-            value={search.email}
-            onChange={(e) => handleSearchChange(e, "email")}
-          />
-        </Search> */}
         <Table>
           <thead>
             <tr>
@@ -139,8 +129,20 @@ const CustomerList = ({
                   onChange={(e) => handleSearchChange(e, "email")}
                 />
               </TableHeader>
-              <TableHeader></TableHeader>
-              <TableHeader></TableHeader>
+              <TableHeader>
+                <input
+                  value={search.fabricator}
+                  placeholder="Search"
+                  onChange={(e) => handleSearchChange(e, "fabricator")}
+                />
+              </TableHeader>
+              <TableHeader>
+                <input
+                  value={search.date}
+                  placeholder="Search"
+                  onChange={(e) => handleSearchChange(e, "date")}
+                />
+              </TableHeader>
               <TableHeader></TableHeader>
               <TableHeader></TableHeader>
             </tr>
@@ -256,6 +258,7 @@ const mapStateToProps = (state) => {
     customers: state.customerState.customers,
     fabricators: state.customerState.fabricator,
     employee: state.stoneState.employee,
+    permission: state.stoneState.permission,
   };
 };
 

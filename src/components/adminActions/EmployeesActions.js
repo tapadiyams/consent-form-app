@@ -65,7 +65,7 @@ const EmployeesActions = (props) => {
             <th>Email</th>
             <th>Password</th>
             <th>Role</th>
-            <th>isAdmin</th>
+            <th>Permission</th>
             <th>Edit</th>
             <th>Remove</th>
           </tr>
@@ -95,9 +95,9 @@ const EmployeesActions = (props) => {
                     : ""}
                 </td>
                 <td>
-                  {employee && employee.isAdmin
-                    ? employee.isAdmin.toString()
-                    : "false"}
+                  {employee && employee.employeePermission
+                    ? employee.employeePermission.toString()
+                    : ""}
                 </td>
 
                 <td>

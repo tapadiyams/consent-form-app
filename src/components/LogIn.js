@@ -2,9 +2,19 @@ import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { getEmployeesListAPI, setEmployee } from "../actions";
+import { getEmployeesListAPI, setEmployeeAPI } from "../actions";
 
-const LogIn = ({ getEmployeesList, emailError, employees }) => {
+const LogIn = ({
+  getEmployeesList,
+  emailError,
+  employees,
+  setEmployee,
+
+  setEmployeeName,
+  setEmployeePermission,
+  employeeName,
+  employeePermission,
+}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
@@ -43,11 +53,18 @@ const LogIn = ({ getEmployeesList, emailError, employees }) => {
       alert(`Please check your email and password.`);
       return;
     }
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+    // this has to be async operation
+    await setEmployeeName(employee.employeeName);
+    await setEmployeePermission(employee.employeePermission);
+
+    await delay(3000);
+
+    // TODO [tapadiyams@gmail.com]: Correct the setEmployee action.
     const employeeData = {
-      employeeEmail: employee.employeeEmail,
-      employeePassword: employee.employeePassword,
-      employeeAuthority: "1",
+      employeeName: employee.employeeName,
+      employeePermission: employee.employeePermission,
     };
     setEmployee(employeeData);
 
@@ -183,7 +200,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getEmployeesList: () => dispatch(getEmployeesListAPI()),
-  // setEmployee: (payload) => dispatch(setEmployeeAPI(payload)),
+  setEmployee: (payload) => dispatch(setEmployeeAPI(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

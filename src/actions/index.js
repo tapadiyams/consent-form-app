@@ -10,6 +10,7 @@ import {
   GET_KITCHEN_AND_BATH,
   GET_DESIGNER_OR_ARCHITECT,
   GET_WEBSITE_CREDENTIALS,
+  SET_EMPLOYEE_PERMISSION,
 } from "./actionType";
 
 /*
@@ -41,18 +42,21 @@ export const setLoading = (status) => ({
   status: status,
 });
 
+// Remember, it's a singular employee
+export const setEmployee = (employee) => ({
+  type: SET_EMPLOYEE,
+  employee: employee,
+});
+
+export const setEmployeePermission = (permission) => ({
+  type: SET_EMPLOYEE_PERMISSION,
+  permission: permission,
+});
+
 export const getEmployees = (employeesPayload) => {
   return {
     type: GET_EMPLOYEES,
     employeesPayload: employeesPayload,
-  };
-};
-
-// Remember, it's a singular employee
-export const setEmployee = (employeePayload) => {
-  return {
-    type: SET_EMPLOYEE,
-    employeePayload: employeePayload,
   };
 };
 
@@ -155,6 +159,7 @@ export function addCustomerAPI(payload) {
     phone,
     address,
     imageURL,
+    assistedBy,
   } = payload;
 
   return (dispatch) => {
@@ -167,6 +172,7 @@ export function addCustomerAPI(payload) {
       phone: phone,
       address: address,
       imageURL: imageURL,
+      assistedBy: assistedBy,
     });
   };
 }
@@ -177,6 +183,55 @@ export function getCustomersListAPI() {
       let payload = snapshot.docs.map((doc) => doc.data());
       dispatch(getCustomers(payload));
     });
+  };
+}
+
+export function editCustomerAPI(payload) {
+  const { customerId, assistedBy } = payload;
+
+  return (dispatch) => {
+    // Query the materials collection to find the document with the given material name
+    const query = employeesCollection.where("customerId", "==", customerId);
+    query
+      .get()
+      .then((querySnapshot) => {
+        // Check if a matching document exists
+        if (querySnapshot.empty) {
+          console.log(
+            "Error has caused in editCustomerAPI(): querySnapshot is empty."
+          );
+          return;
+        }
+
+        if (querySnapshot.length > 1) {
+          console.error(
+            "Error has caused in editCustomerAPI(): multiple entries found  for customer with customerId: .",
+            customerId
+          );
+        }
+        const customerDocRef = querySnapshot.docs[0].ref;
+        customerDocRef
+          .update({
+            // employeeEmail can not be changed
+            assistedBy: assistedBy,
+          })
+          // .then(() => {
+          // })
+          .catch((error) => {
+            // Dispatch an error action if needed
+            console.log(
+              "Error has caused in editCustomerAPI() while dispatching.",
+              error
+            );
+          });
+      })
+      .catch((error) => {
+        // Handle the error when querying the database
+        console.log(
+          "Error has caused in editCustomerAPI() while querying the database.",
+          error
+        );
+      });
   };
 }
 
@@ -539,7 +594,7 @@ export function addEmployeeAPI(payload) {
     employeeEmail,
     employeePassword,
     employeeRole,
-    isAdmin,
+    employeePermission,
   } = payload;
   return (dispatch) => {
     employeesCollection.add({
@@ -547,38 +602,27 @@ export function addEmployeeAPI(payload) {
       employeeEmail: employeeEmail,
       employeePassword: employeePassword,
       employeeRole: employeeRole,
-      isAdmin: isAdmin,
+      employeePermission: employeePermission,
     });
   };
 }
 
+// TODO [tapadiyams@gmail.com]: Correct the setEmployee action.
 // When a employee logs in then this function will be called.
-// export function setEmployeeAPI(payload) {
-//   const { employeeEmail, employeePassword } = payload;
-//   return (dispatch) => {
-//     const data = [
-//       { employeeEmail: employeeEmail, employeePassword: employeePassword },
-//     ];
-//     dispatch(setEmployee(data));
-//   };
-// }
-
-// export function setEmployeeAPI(payload) {
-//   // const { employeeEmail, employeePassword } = payload;
-
-//   console.log("Shubham, payload:", payload);
-
-//   const dispatch = useDispatch();
-
-//   const employeeData = {
-//     employeeEmail: payload.employeeEmail,
-//     employeePassword: payload.employeePassword,
-//     employeeAuthority: "1",
-//   };
-
-//   console.log("Shubham, employeeData:", employeeData);
-//   dispatch(setEmployee(employeeData));
-// }
+export function setEmployeeAPI(payload) {
+  return (dispatch) => {
+    try {
+      dispatch(setEmployee(payload.employeeName));
+      dispatch(setEmployeePermission(payload.employeePermission));
+    } catch (error) {
+      // Handle any errors that occur during the asynchronous task
+      console.error(
+        "Error in setEmployeeAPI. Unable to set the employee and it's permission.",
+        error
+      );
+    }
+  };
+}
 
 export function getEmployeesListAPI() {
   return (dispatch) => {
@@ -597,7 +641,7 @@ export function editEmployeeAPI(payload) {
     employeeEmail,
     employeePassword,
     employeeRole,
-    isAdmin,
+    employeePermission,
   } = payload;
 
   return (dispatch) => {
@@ -625,7 +669,7 @@ export function editEmployeeAPI(payload) {
             employeeName: employeeName,
             employeePassword: employeePassword,
             employeeRole: employeeRole,
-            isAdmin: isAdmin,
+            employeePermission: employeePermission,
           })
           // .then(() => {
           // })

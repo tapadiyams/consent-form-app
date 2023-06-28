@@ -23,14 +23,14 @@ const EditEmployeeModal = ({ isOpen, onClose, employee, onSubmit }) => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [employeePermission, setEmployeePermission] = useState(false);
 
   useEffect(() => {
     if (isOpen && employee) {
       setName(employee.employeeName || "");
       setPassword(employee.employeePassword || "");
       setRole(employee.employeeRole || "");
-      setIsAdmin(employee.isAdmin || false);
+      setEmployeePermission((employee && employee?.employeePermission) || "");
     }
   }, [isOpen, employee]);
 
@@ -39,7 +39,7 @@ const EditEmployeeModal = ({ isOpen, onClose, employee, onSubmit }) => {
       name: name,
       password: password,
       role: role,
-      isAdmin: isAdmin,
+      employeePermission: employeePermission,
     };
 
     const payload = {
@@ -47,7 +47,7 @@ const EditEmployeeModal = ({ isOpen, onClose, employee, onSubmit }) => {
       employeeEmail: employee.employeeEmail,
       employeePassword: updatedEmployee.password,
       employeeRole: updatedEmployee.role,
-      isAdmin: updatedEmployee.isAdmin,
+      employeePermission: updatedEmployee.employeePermission,
     };
 
     onSubmit(payload);
@@ -84,11 +84,11 @@ const EditEmployeeModal = ({ isOpen, onClose, employee, onSubmit }) => {
           />
         </InputLabel>
         <InputLabel>
-          Admin:
+          Permission:
           <Input
-            type="checkbox"
-            checked={isAdmin}
-            onChange={(e) => setIsAdmin(e.target.checked)}
+            type="number"
+            checked={employeePermission}
+            onChange={(e) => setEmployeePermission(e.target.checked)}
           />
         </InputLabel>
         <div className="modal-buttons">

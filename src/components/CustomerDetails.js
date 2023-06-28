@@ -394,6 +394,10 @@ const SelectionTable = styled.table`
 const Consent = styled.div`
   width: 80%;
   padding: 10px;
+
+  p {
+    font-size: small;
+  }
 `;
 
 const Footer = styled.footer`

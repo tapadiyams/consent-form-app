@@ -29,6 +29,9 @@ const languages = [
 function App(props) {
   const [hasWebsiteAccess, setHasWebsiteAccess] = useState(true);
 
+  const [employeeName, setEmployeeName] = useState("");
+  const [employeePermission, setEmployeePermission] = useState("");
+
   // For Language change
   const currentLanguageCode = cookies.get("i18next") || "en";
   const [selectedLanguage, setSelectedLanguage] = useState(
@@ -38,7 +41,6 @@ function App(props) {
   useEffect(() => {
     document.body.dir = selectedLanguage.dir || "ltr";
   }, [selectedLanguage, props.employee]);
-
   return (
     <div className="App">
       <Router>
@@ -61,20 +63,27 @@ function App(props) {
               <Route exact path="/lookup">
                 <ExistingCustomer selectedLanguage={selectedLanguage} />
               </Route>
+              <Route path="/customer/:id">
+                <CustomerDetails />
+              </Route>
+
               <Route path="/login">
-                <LogIn />
+                <LogIn
+                  setEmployeeName={setEmployeeName}
+                  setEmployeePermission={setEmployeePermission}
+                />
               </Route>
               <Route path="/admin-actions">
                 <AdminActions />
               </Route>
               <Route path="/view">
-                <CustomerList />
+                <CustomerList
+                  employeeName={employeeName}
+                  employeePermission={employeePermission}
+                />
               </Route>
               <Route path="/customer-selection/:id">
                 <CustomerSelection />
-              </Route>
-              <Route path="/customer/:id">
-                <CustomerDetails />
               </Route>
             </>
           )}

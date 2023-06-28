@@ -29,7 +29,8 @@ const AddEmployeeModal = ({ isOpen, onClose, onSubmit, employees }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [employeePermission, setEmployeePermission] = useState("");
+
   const [emailError, setEmailError] = useState(false);
 
   // Reset all the useState values
@@ -38,7 +39,7 @@ const AddEmployeeModal = ({ isOpen, onClose, onSubmit, employees }) => {
     setEmail("");
     setPassword("");
     setRole("");
-    setIsAdmin(false);
+    setEmployeePermission("");
   };
 
   const handleEmailChange = (e) => {
@@ -89,7 +90,7 @@ const AddEmployeeModal = ({ isOpen, onClose, onSubmit, employees }) => {
       employeeEmail: email,
       employeePassword: password,
       employeeRole: role,
-      isAdmin: isAdmin,
+      employeePermission: employeePermission,
     };
 
     onSubmit(payload);
@@ -130,11 +131,11 @@ const AddEmployeeModal = ({ isOpen, onClose, onSubmit, employees }) => {
           />
         </InputLabel>
         <InputLabel>
-          Admin:
+          Permission:
           <Input
-            type="checkbox"
-            checked={isAdmin}
-            onChange={(e) => setIsAdmin(e.target.checked)}
+            type="number"
+            checked={employeePermission}
+            onChange={(e) => setEmployeePermission(e.target.value)}
           />
         </InputLabel>
         <div className="modal-buttons">
