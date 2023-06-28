@@ -61,6 +61,7 @@ const StonesActions = ({
       <table>
         <thead>
           <tr>
+            <th>#</th>
             <th>Category</th>
             <th>Material</th>
             <th>Sizes</th>
@@ -75,7 +76,6 @@ const StonesActions = ({
           {Object.entries(stones).map(([stoneId, stone]) => (
             <tr key={stoneId}>
               <td>{parseInt(stoneId) + 1}</td>
-              <td>{stone.category}</td>
               <td>{stone.category}</td>
               <td>{stone.material}</td>
               <td>
