@@ -9,11 +9,8 @@ const LogIn = ({
   emailError,
   employees,
   setEmployee,
-
   setEmployeeName,
   setEmployeePermission,
-  employeeName,
-  employeePermission,
 }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

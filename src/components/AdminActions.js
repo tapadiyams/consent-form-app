@@ -3,24 +3,33 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import StonesActions from "./adminActions/StonesActions";
 import EmployeesActions from "./adminActions/EmployeesActions";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const menu = ["Employees List", "Stones Actions"];
 
-const AdminActions = ({ employeePermission }) => {
+const AdminActions = ({ employeePermission, setHasWebsiteAccess }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
   };
 
+  const history = useHistory();
+
+  console.log("Shubham, employeePermission:", employeePermission);
+
+  const handleLogout = () => {
+    setHasWebsiteAccess("false");
+    history.pushState("/");
+  };
+
   return (
     <Container>
       <NavBar>
         <NavLink to="/view">Customers</NavLink>
-        <NavLink to="/">Log Out</NavLink>
+        <NavLink onClick={handleLogout}>Log Out</NavLink>
       </NavBar>
-      {(employeePermission === "" || employeePermission === "1") && (
+      {employeePermission === "2" && (
         <Layout>
           <Menu>
             {menu.map((category) => (

@@ -80,6 +80,7 @@ function App(props) {
                 <AdminActions
                   employeeName={employeeName}
                   employeePermission={employeePermission}
+                  setHasWebsiteAccess={setHasWebsiteAccess}
                 />
               </Route>
               <Route path="/view">
