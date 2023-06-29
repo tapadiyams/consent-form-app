@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import StonesActions from "./adminActions/StonesActions";
 import EmployeesActions from "./adminActions/EmployeesActions";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const menu = ["Employees List", "Stones Actions"];
 
@@ -15,26 +16,34 @@ const AdminActions = ({ employeePermission }) => {
 
   return (
     <Container>
-      <Menu>
-        {menu.map((category) => (
-          <MenuItem
-            key={category}
-            onClick={() => handleCategorySelect(category)}
-          >
-            {category}
-          </MenuItem>
-        ))}
-      </Menu>
+      <NavBar>
+        <NavLink to="/view">Customers</NavLink>
+        <NavLink to="/">Log Out</NavLink>
+      </NavBar>
+      {(employeePermission === "" || employeePermission === "1") && (
+        <Layout>
+          <Menu>
+            {menu.map((category) => (
+              <MenuItem
+                key={category}
+                onClick={() => handleCategorySelect(category)}
+                isSelected={selectedCategory === category}
+              >
+                {category}
+              </MenuItem>
+            ))}
+          </Menu>
 
-      <ContentContainer>
-        {employeePermission === "1" &&
-          selectedCategory &&
-          selectedCategory === "Employees List" && <EmployeesActions />}
-
-        {employeePermission === "1" &&
-          selectedCategory &&
-          selectedCategory === "Stones Actions" && <StonesActions />}
-      </ContentContainer>
+          <ContentContainer>
+            {selectedCategory && selectedCategory === "Employees List" && (
+              <EmployeesActions />
+            )}
+            {selectedCategory && selectedCategory === "Stones Actions" && (
+              <StonesActions />
+            )}
+          </ContentContainer>
+        </Layout>
+      )}
     </Container>
   );
 };
@@ -43,15 +52,29 @@ const Container = styled.div`
   display: flex;
 `;
 
-const ContentContainer = styled.div`
+const NavBar = styled.nav`
+  width: 100%;
+  background-color: black;
+  padding: 10px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-
-  text-align: center;
-  margin: 0 auto;
+  top: 0;
+  position: fixed;
 `;
+
+const NavLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+  margin-right: 10px;
+  padding: 10px;
+`;
+
+const Layout = styled.div`
+  margin-top: 80px;
+  display: flex;
+`;
+
+const ContentContainer = styled.div``;
 
 const Menu = styled.ul`
   list-style-type: none;
@@ -71,7 +94,7 @@ const MenuItem = styled.li`
   font-size: 25px;
   padding: 10px;
   cursor: pointer;
-  background-color: lightgray;
+  background-color: ${(props) => (props.isSelected ? "gray" : "lightgray")};
   margin-right: 5px;
 
   &:hover {

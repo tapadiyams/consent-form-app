@@ -8,6 +8,7 @@ import {
 } from "../../actions/index";
 import AddEmployeeModal from "./AddEmployeeModal";
 import EditEmployeeModal from "./EditEmployeeModal";
+import styled from "styled-components";
 
 const EmployeesActions = (props) => {
   // states and constants
@@ -28,6 +29,16 @@ const EmployeesActions = (props) => {
   }, [props]); // Include props in the dependency array if needed for other parts of the component
 
   const handleAddNewEmployee = (payload) => {
+    const existingEmployee =
+      props.employees &&
+      Object.values(props.employees).find(
+        (e) => e.employeeEmail && e.employeeEmail === payload.employeeEmail
+      );
+
+    if (existingEmployee) {
+      alert(`Employee ${existingEmployee.employeeEmail} already exists.`);
+      return;
+    }
     props.addEmployee(payload);
 
     setIsAddEmployeeModalOpen(false);
@@ -57,10 +68,11 @@ const EmployeesActions = (props) => {
   };
 
   return (
-    <div>
+    <Container>
       <table>
         <thead>
           <tr>
+            <th>No.</th>
             <th>Name</th>
             <th>Email</th>
             <th>Password</th>
@@ -74,6 +86,7 @@ const EmployeesActions = (props) => {
           {props.employees &&
             Object.entries(props.employees).map(([employeeId, employee]) => (
               <tr key={employeeId}>
+                <td>{parseInt(employeeId) + 1}</td>
                 <td>
                   {employee && employee.employeeName
                     ? employee.employeeName
@@ -134,9 +147,14 @@ const EmployeesActions = (props) => {
         onSubmit={handleEditEmployee}
         employee={editingEmployee}
       />
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const mapStateToProps = (state) => {
   return {

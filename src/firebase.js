@@ -34,7 +34,10 @@ if (isLocalhost) {
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebaseApp.firestore();
+
+// Create a Firebase Auth instance
 const auth = firebase.auth();
+
 const provider = new firebase.auth.GoogleAuthProvider();
 const storage = firebase.storage();
 

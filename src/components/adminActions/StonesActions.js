@@ -8,6 +8,7 @@ import {
 } from "../../actions/index";
 import AddStonesModal from "./AddStoneModal";
 import EditStonesModal from "./EditStonesModal";
+import styled from "styled-components";
 
 const StonesActions = ({
   getStonesList,
@@ -57,11 +58,11 @@ const StonesActions = ({
   };
 
   return (
-    <div>
+    <Container>
       <table>
         <thead>
           <tr>
-            <th>#</th>
+            <th>No.</th>
             <th>Category</th>
             <th>Material</th>
             <th>Sizes</th>
@@ -73,36 +74,41 @@ const StonesActions = ({
           </tr>
         </thead>
         <tbody>
-          {Object.entries(stones).map(([stoneId, stone]) => (
-            <tr key={stoneId}>
-              <td>{parseInt(stoneId) + 1}</td>
-              <td>{stone.category}</td>
-              <td>{stone.material}</td>
-              <td>
-                {stone.sizes && stone.sizes.length > 0
-                  ? stone.sizes.join(", ")
-                  : ""}
-              </td>
-              <td>
-                {stone.thicknesses && stone.thicknesses.length > 0
-                  ? stone.thicknesses.join(", ")
-                  : ""}
-              </td>
-
-              <td>{stone.finish}</td>
-              <td>{stone.bookmatch ? stone.bookmatch.toString() : "false"}</td>
-              <td>
-                <button onClick={(e) => handleEditingStone(e, stone)}>
-                  Edit
-                </button>
-              </td>
-              <td>
-                <button onClick={() => handleRemoveStone(stone.material)}>
-                  Remove
-                </button>
-              </td>
-            </tr>
-          ))}
+          {Object.entries(stones)
+            .sort(([, stoneA], [, stoneB]) =>
+              stoneA.category.localeCompare(stoneB.category)
+            )
+            .map(([stoneId, stone]) => (
+              <tr key={stoneId}>
+                <td>{parseInt(stoneId) + 1}</td>
+                <td>{stone.category}</td>
+                <td>{stone.material}</td>
+                <td>
+                  {stone.sizes && stone.sizes.length > 0
+                    ? stone.sizes.join(", ")
+                    : ""}
+                </td>
+                <td>
+                  {stone.thicknesses && stone.thicknesses.length > 0
+                    ? stone.thicknesses.join(", ")
+                    : ""}
+                </td>
+                <td>{stone.finish}</td>
+                <td>
+                  {stone.bookmatch ? stone.bookmatch.toString() : "false"}
+                </td>
+                <td>
+                  <button onClick={(e) => handleEditingStone(e, stone)}>
+                    Edit
+                  </button>
+                </td>
+                <td>
+                  <button onClick={() => handleRemoveStone(stone.material)}>
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
 
@@ -121,9 +127,14 @@ const StonesActions = ({
         onSubmit={handleEditStone}
         stone={editingStone}
       />
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const mapStateToProps = (state) => {
   return {

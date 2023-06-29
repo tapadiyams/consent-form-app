@@ -4,6 +4,7 @@ import styled, { keyframes } from "styled-components";
 import emailjs from "@emailjs/browser";
 import SignedUpModal from "../SignedUpModal";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { sendVerificationCode } from "../../actions";
 
 const Email = (props) => {
   /*
@@ -58,6 +59,10 @@ const Email = (props) => {
   };
 
   const sendVerificationEmail = () => {
+    // Example usage
+    const phoneNumber = "+16073380402"; // Replace with the target phone number
+    sendVerificationCode(phoneNumber);
+
     // Check if customer already exists
     const existingCustomer = props.customers.find(
       (user) => user.email === props.email
@@ -67,7 +72,7 @@ const Email = (props) => {
       setExistingCustomer(existingCustomer);
     }
 
-    // For existing customer lookup, if customer does not exist the show a banner
+    // For existing customer, if customer does not exist then show a banner
     if (props.isLookup && !existingCustomer) {
       alert(t("customer_does_not_exist_please_check_your_email_address_again"));
       return;
@@ -75,7 +80,6 @@ const Email = (props) => {
 
     if (props.isLookup && existingCustomer) {
       setCustomerId(existingCustomer.customerId);
-
       // open the modal with the customerId
       setShowSignedUpModal("open");
       return;
@@ -109,6 +113,9 @@ const Email = (props) => {
   const verifyOTP = () => {
     if (parseInt(props.otp) === parseInt(props.userEnteredOtp)) {
       props.setVerificationSuccess(true);
+      // TODO [tapadiyams@gmail.com]: Currently we just show a popup with the
+      // customerId and we dont take them to Customer Details page. We want to implement that.
+      // And also give an option to renew the date if they are the existing customer.
       if (props.isLookup && existingCustomer) {
         history.push(`/customer/${existingCustomer.customerId}`);
         return;

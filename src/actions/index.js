@@ -1,4 +1,5 @@
-import db from "../firebase";
+import db, { auth } from "../firebase";
+import firebase from "firebase/compat/app";
 import {
   GET_EMPLOYEES,
   SET_EMPLOYEE,
@@ -855,3 +856,27 @@ export function deleteStoneAPI(payload) {
       });
   };
 }
+
+export const sendVerificationCode = async (phoneNumber) => {
+  // Turn off phone auth app verification.
+  auth.settings.appVerificationDisabledForTesting = true;
+
+  var testVerificationCode = "123456";
+
+  // This will render a fake reCAPTCHA as appVerificationDisabledForTesting is true.
+  // This will resolve after rendering without app verification.
+  var appVerifier = new firebase.auth.RecaptchaVerifier("recaptcha-container");
+  // signInWithPhoneNumber will call appVerifier.verify() which will resolve with a fake
+  // reCAPTCHA response.
+  firebase
+    .auth()
+    .signInWithPhoneNumber(phoneNumber, appVerifier)
+    .then(function (confirmationResult) {
+      // confirmationResult can resolve with the fictional testVerificationCode above.
+      return confirmationResult.confirm(testVerificationCode);
+    })
+    .catch(function (error) {
+      // Error; SMS not sent
+      // ...
+    });
+};
