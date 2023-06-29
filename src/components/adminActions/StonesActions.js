@@ -75,9 +75,15 @@ const StonesActions = ({
         </thead>
         <tbody>
           {Object.entries(stones)
-            .sort(([, stoneA], [, stoneB]) =>
-              stoneA.category.localeCompare(stoneB.category)
-            )
+            .sort(([, stoneA], [, stoneB]) => {
+              // Sort by category first
+              if (stoneA.category < stoneB.category) return -1;
+              if (stoneA.category > stoneB.category) return 1;
+              // If category is the same, sort by material
+              if (stoneA.material < stoneB.material) return -1;
+              if (stoneA.material > stoneB.material) return 1;
+              return 0;
+            })
             .map(([stoneId, stone]) => (
               <tr key={stoneId}>
                 <td>{parseInt(stoneId) + 1}</td>
