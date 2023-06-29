@@ -146,10 +146,6 @@ const SignUp = ({
   };
 
   const handleConsentFormClick = (e) => {
-    // if (e.target !== e.currentTarget) {
-    //   return;
-    // }
-
     switch (showConsentModal) {
       case "open":
         setShowConsentModal("close");

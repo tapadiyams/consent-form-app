@@ -234,7 +234,8 @@ const Content = styled.div`
 
 const Table = styled.table`
   border: 2px solid forestgreen;
-  width: 1000px;
+  width: 100%;
+  max-width: 1000px;
   height: 200px;
 `;
 

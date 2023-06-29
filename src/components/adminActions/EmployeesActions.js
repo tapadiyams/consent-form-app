@@ -25,12 +25,8 @@ const EmployeesActions = ({
 
   // hooks
   useEffect(() => {
-    const fetchEmployeesList = async () => {
-      await getEmployeesList();
-    };
-
-    fetchEmployeesList();
-  }, [getEmployeesList, employees]); // Include props in the dependency array if needed for other parts of the component
+    getEmployeesList();
+  }, [getEmployeesList]); // Include props in the dependency array if needed for other parts of the component
 
   const handleAddNewEmployee = async (payload) => {
     const existingEmployee =
@@ -163,13 +159,11 @@ const Container = styled.div`
 
 const mapStateToProps = (state) => {
   return {
-    // Add your state mappings here
     employees: state.stoneState.employees,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  // Add your dispatch mappings here
   addEmployee: (payload) => dispatch(addEmployeeAPI(payload)), // Create
   getEmployeesList: () => dispatch(getEmployeesListAPI()), // Read
   editEmployeeAPI: (payload) => dispatch(editEmployeeAPI(payload)), // Update
