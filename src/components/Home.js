@@ -161,7 +161,7 @@ const LoginButton = styled.button`
   border: 2px solid white;
   border-radius: 40px;
   cursor: pointer;
-  margin-right: 220px;
+  margin-right: 120px;
 
   /* Some animation */
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -173,7 +173,7 @@ const LoginButton = styled.button`
 `;
 
 const GlobeIconWrapper = styled.div`
-  margin-right: 150px;
+  margin-right: 60px;
   padding-top: 10px;
   svg {
     transition: width 0.3s ease, height 0.3s ease, fill 0.3s ease;
