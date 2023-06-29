@@ -10,7 +10,13 @@ import AddEmployeeModal from "./AddEmployeeModal";
 import EditEmployeeModal from "./EditEmployeeModal";
 import styled from "styled-components";
 
-const EmployeesActions = (props) => {
+const EmployeesActions = ({
+  employees,
+  getEmployeesList,
+  addEmployee,
+  editEmployeeAPI,
+  deleteEmployee,
+}) => {
   // states and constants
   const [isAddEmployeeModalOpen, setIsAddEmployeeModalOpen] = useState(false);
 
@@ -19,19 +25,17 @@ const EmployeesActions = (props) => {
 
   // hooks
   useEffect(() => {
-    const { getEmployeesList } = props; // Destructure getEmployeesList from props
-
     const fetchEmployeesList = async () => {
       await getEmployeesList();
     };
 
     fetchEmployeesList();
-  }, [props]); // Include props in the dependency array if needed for other parts of the component
+  }, [getEmployeesList, employees]); // Include props in the dependency array if needed for other parts of the component
 
-  const handleAddNewEmployee = (payload) => {
+  const handleAddNewEmployee = async (payload) => {
     const existingEmployee =
-      props.employees &&
-      Object.values(props.employees).find(
+      employees &&
+      Object.values(employees).find(
         (e) => e.employeeEmail && e.employeeEmail === payload.employeeEmail
       );
 
@@ -39,7 +43,8 @@ const EmployeesActions = (props) => {
       alert(`Employee ${existingEmployee.employeeEmail} already exists.`);
       return;
     }
-    props.addEmployee(payload);
+
+    await addEmployee(payload);
 
     setIsAddEmployeeModalOpen(false);
   };
@@ -50,7 +55,7 @@ const EmployeesActions = (props) => {
   };
 
   const handleEditEmployee = (payload) => {
-    props.editEmployeeAPI(payload);
+    editEmployeeAPI(payload);
 
     setIsEditEmployeeModalOpen(false);
   };
@@ -63,7 +68,7 @@ const EmployeesActions = (props) => {
       const payload = {
         employeeEmail: employeeEmail,
       };
-      props.deleteEmployee(payload);
+      deleteEmployee(payload);
     }
   };
 
@@ -83,8 +88,8 @@ const EmployeesActions = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.employees &&
-            Object.entries(props.employees).map(([employeeId, employee]) => (
+          {employees &&
+            Object.entries(employees).map(([employeeId, employee]) => (
               <tr key={employeeId}>
                 <td>{parseInt(employeeId) + 1}</td>
                 <td>
@@ -138,7 +143,7 @@ const EmployeesActions = (props) => {
         isOpen={isAddEmployeeModalOpen}
         onClose={() => setIsAddEmployeeModalOpen(false)}
         onSubmit={handleAddNewEmployee}
-        employees={props.employees}
+        employees={employees}
       />
 
       <EditEmployeeModal
