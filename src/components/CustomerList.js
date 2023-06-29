@@ -84,7 +84,7 @@ const CustomerList = ({
         <Table>
           <thead>
             <tr>
-              <TableHeader>#</TableHeader>
+              <TableHeader>No.</TableHeader>
               <TableHeader>First Name</TableHeader>
               <TableHeader>Last Name</TableHeader>
               <TableHeader>Customer Id</TableHeader>

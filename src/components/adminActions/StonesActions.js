@@ -84,9 +84,9 @@ const StonesActions = ({
               if (stoneA.material > stoneB.material) return 1;
               return 0;
             })
-            .map(([stoneId, stone]) => (
+            .map(([stoneId, stone], index) => (
               <tr key={stoneId}>
-                <td>{parseInt(stoneId) + 1}</td>
+                <td>{index + 1}</td>
                 <td>{stone.category}</td>
                 <td>{stone.material}</td>
                 <td>
