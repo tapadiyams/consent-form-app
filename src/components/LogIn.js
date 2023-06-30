@@ -62,7 +62,7 @@ const LogIn = ({
     await setEmployeeName(employee.employeeName);
     await setEmployeePermission(employee.employeePermission);
 
-    await delay(2000);
+    await delay(1000);
 
     // TODO [tapadiyams@gmail.com]: Correct the setEmployee action.
     const employeeData = {

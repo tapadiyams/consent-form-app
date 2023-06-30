@@ -29,7 +29,7 @@ const AdminActions = ({ employeePermission, setHasWebsiteAccess }) => {
         <NavLink to="/view">Customers</NavLink>
         <NavLink onClick={handleLogout}>Log Out</NavLink>
       </NavBar>
-      {employeePermission === "2" && (
+      {employeePermission === "1" && (
         <Layout>
           <Menu>
             {menu.map((category) => (
