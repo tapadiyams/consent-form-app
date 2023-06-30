@@ -20,7 +20,7 @@ const AdminActions = ({ employeePermission, setHasWebsiteAccess }) => {
 
   const handleLogout = () => {
     setHasWebsiteAccess("false");
-    history.pushState("/");
+    history.push("/");
   };
 
   return (

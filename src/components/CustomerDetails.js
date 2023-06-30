@@ -11,6 +11,7 @@ import {
   getSelectionsAPI,
 } from "../actions";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const CustomerDetails = ({
   customers,
@@ -30,6 +31,8 @@ const CustomerDetails = ({
    * Define states and constants
    *
    */
+  const history = useHistory();
+
   const { t } = useTranslation();
   // To break the statements
   const formattedConsentText = t("access_agreement_text").replace(
@@ -79,6 +82,10 @@ const CustomerDetails = ({
     window.print();
   };
 
+  const handleBack = () => {
+    history.push("/view");
+  };
+
   // const handleEditSelection = () => {};
 
   const handleRemoveSelection = (selection) => {
@@ -95,11 +102,25 @@ const CustomerDetails = ({
 
   return (
     <Container>
-      {/* <BackgroundImage src="/images/granite-countertop-1080x600.jpg" alt="" /> */}
+      <Navigations>
+        <Button onClick={handleBack}>Back</Button>
+        <Button onClick={handlePrint}>Print</Button>
+      </Navigations>
+      <LogoTitle>
+        <Logo src="/images/reliancewhite.png" alt="" />
+        <CompanyInfo>
+          <Title>Reliance Granite and Marble, Corp</Title>
+          <CompanyDetails>
+            <h2>50 Boright Ave, Kenilworth, NJ 07033</h2>
+            <h2>Phone: (908) 624-1995</h2>
+            <h2>Fax: (908) 624-1996</h2>
+            <h2>info@reliancestones.com</h2>
+          </CompanyDetails>
+        </CompanyInfo>
+      </LogoTitle>
       <Data>
         <Header>
-          <h2>CUSTOMER SELECTIONS</h2>
-          <PrintButton onClick={handlePrint}>Print</PrintButton>
+          <h2>CUSTOMER SELECTION SHEET</h2>
         </Header>
 
         <Table>
@@ -225,7 +246,7 @@ const CustomerDetails = ({
         <SelectionTable>
           <thead>
             <tr>
-              <TableHeader>#</TableHeader>
+              <TableHeader>No.</TableHeader>
               <TableHeader>CATEGORIES</TableHeader>
               <TableHeader>MATERIALS</TableHeader>
               <TableHeader>SIZE</TableHeader>
@@ -311,22 +332,45 @@ const Container = styled.div`
   min-height: 99vh;
 `;
 
-// const BackgroundImage = styled.img`
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   opacity: 0.02;
-//   object-fit: cover;
-// `;
+const Navigations = styled.div`
+  display: flex;
+  justify-content: end;
+`;
+
+const LogoTitle = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px;
+`;
+
+const Logo = styled.img`
+  height: 120px;
+  width: 190px;
+`;
+
+const CompanyInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Title = styled.h2`
+  font-size: 2rem;
+  border-bottom: 1.2px solid white;
+`;
+
+const CompanyDetails = styled.div`
+  margin-left: 100px;
+  h2 {
+    font-size: 1rem;
+  }
+`;
 
 const Data = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 1;
 `;
 
 const Header = styled.div`
@@ -338,7 +382,7 @@ const Header = styled.div`
   }
 `;
 
-const PrintButton = styled.button`
+const Button = styled.button`
   background-color: green;
   color: white;
   padding: 10px 30px;

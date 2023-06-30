@@ -68,20 +68,25 @@ const Email = (props) => {
       (user) => user.email === props.email
     );
 
+    console.log("Shubham, props.customers:", props.customers);
+    console.log("Shubham, existingCustomer:", existingCustomer);
+    console.log("Shubham, props.email:", props.email);
+
     if (existingCustomer) {
       setExistingCustomer(existingCustomer);
+    }
+
+    // If existing customer and customer try to signup or lookup
+    if (existingCustomer) {
+      setCustomerId(existingCustomer.customerId);
+      // open the modal with the customerId
+      setShowSignedUpModal("open");
+      return;
     }
 
     // For existing customer, if customer does not exist then show a banner
     if (props.isLookup && !existingCustomer) {
       alert(t("customer_does_not_exist_please_check_your_email_address_again"));
-      return;
-    }
-
-    if (props.isLookup && existingCustomer) {
-      setCustomerId(existingCustomer.customerId);
-      // open the modal with the customerId
-      setShowSignedUpModal("open");
       return;
     }
 
