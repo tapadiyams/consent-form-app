@@ -16,8 +16,6 @@ const AdminActions = ({ employeePermission, setHasWebsiteAccess }) => {
 
   const history = useHistory();
 
-  console.log("Shubham, employeePermission:", employeePermission);
-
   const handleLogout = () => {
     setHasWebsiteAccess("false");
     history.push("/");

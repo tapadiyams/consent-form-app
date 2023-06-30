@@ -68,10 +68,6 @@ const Email = (props) => {
       (user) => user.email === props.email
     );
 
-    console.log("Shubham, props.customers:", props.customers);
-    console.log("Shubham, existingCustomer:", existingCustomer);
-    console.log("Shubham, props.email:", props.email);
-
     if (existingCustomer) {
       setExistingCustomer(existingCustomer);
     }

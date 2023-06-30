@@ -242,8 +242,49 @@ export function editCustomerAPI(payload) {
   };
 }
 
+// Delete the customers with the customerId
+export function deleteCustomersAPI(payload) {
+  return (dispatch) => {
+    const { customerId } = payload;
+
+    // Check if the customer's date is older than one year
+    const query = customersCollection.where("customerId", "==", customerId);
+
+    query
+      .get()
+      .then((querySnapshot) => {
+        if (querySnapshot.empty) {
+          // Handle the case when no matching document is found
+          console.log("Error: Customer not found.");
+          return;
+        }
+
+        // Delete the matching documents
+        querySnapshot.docs.forEach((doc) => {
+          doc.ref.delete().catch((error) => {
+            // Handle the error when deleting the document
+            console.log("Error while deleting a document:", error);
+          });
+        });
+
+        // Delete associated data
+        dispatch(deleteFabricatorsAPI(customerId));
+        dispatch(deleteKitchenAndBathsAPI(customerId));
+        dispatch(deleteDesignerOrArchitectsAPI(customerId));
+        dispatch(deleteSelectionsAPI(customerId));
+      })
+      .catch((error) => {
+        // Handle the error when querying the database
+        console.log(
+          "Error in deleteCustomersAPI() : querying the database:",
+          error
+        );
+      });
+  };
+}
+
 // Delete the customers dataafter an year along with Fabricators, Selections, etc.
-export function deleteCustomersAPI(customersList) {
+export function deleteCustomersCronJobAPI(customersList) {
   return (dispatch) => {
     const formattedDate = new Date();
     formattedDate.setFullYear(formattedDate.getFullYear() - 1); // Subtract one year from the current date
@@ -253,7 +294,7 @@ export function deleteCustomersAPI(customersList) {
 
       // Check if the customer's date is older than one year
       if (date < formattedDate) {
-        const query = stonesCollection
+        const query = customersCollection
           .where("customerId", "==", customerId)
           .where("date", "<", formattedDate);
 
@@ -282,7 +323,10 @@ export function deleteCustomersAPI(customersList) {
           })
           .catch((error) => {
             // Handle the error when querying the database
-            console.log("Error querying the database:", error);
+            console.log(
+              "Error in deleteCustomersCronJobAPI() : querying the database:",
+              error
+            );
           });
       }
     });

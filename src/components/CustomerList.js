@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
-import { getCustomersListAPI, getFabricatorsAPI } from "../actions";
+import {
+  deleteCustomersAPI,
+  getCustomersListAPI,
+  getFabricatorsAPI,
+} from "../actions";
 
 const CustomerList = ({
   employeeName,
@@ -11,6 +15,7 @@ const CustomerList = ({
   getCustomersList,
   fabricators,
   getFabricators,
+  deleteCustomer,
 }) => {
   const [search, setSearch] = useState({
     firstName: "",
@@ -74,6 +79,16 @@ const CustomerList = ({
     history.push(`/customer-selection/${customerId}`);
   };
 
+  const handleDeleteCustomerClick = (customerId) => {
+    const confirmRemove = window.confirm(
+      `Are you sure you want to delete the customer: ${customerId}?`
+    );
+    if (confirmRemove) {
+      const payload = { customerId: customerId, date: null };
+      deleteCustomer(payload);
+    }
+  };
+
   return (
     <AppContainer>
       <NavBar>
@@ -92,7 +107,8 @@ const CustomerList = ({
               <TableHeader>Fabricator</TableHeader>
               <TableHeader>Date Visited</TableHeader>
               <TableHeader>View</TableHeader>
-              <TableHeader>Add Selections</TableHeader>
+              <TableHeader>Selections</TableHeader>
+              <TableHeader>Delete</TableHeader>
             </tr>
             <tr>
               <TableHeader></TableHeader>
@@ -187,7 +203,15 @@ const CustomerList = ({
                         handleCustomerSelectionClick(user.customerId)
                       }
                     >
-                      Add Selections
+                      Selections
+                    </button>{" "}
+                  </TableCell>
+
+                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    <button
+                      onClick={() => handleDeleteCustomerClick(user.customerId)}
+                    >
+                      Delete
                     </button>{" "}
                   </TableCell>
                 </tr>
@@ -261,6 +285,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   getCustomersList: (payload) => dispatch(getCustomersListAPI(payload)),
   getFabricators: () => dispatch(getFabricatorsAPI()),
+  deleteCustomer: (payload) => dispatch(deleteCustomersAPI(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerList);

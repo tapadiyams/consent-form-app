@@ -3,7 +3,7 @@ import styled, { keyframes } from "styled-components";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
-  deleteCustomersAPI,
+  deleteCustomersCronJobAPI,
   getCustomersListAPI,
   getWebsiteCredentialsAPI,
 } from "../actions";
@@ -13,7 +13,7 @@ const EntryPoint = ({
   websiteCredentials,
   setHasWebsiteAccess,
   getCustomers,
-  deleteCustomers,
+  deleteCustomersCronJob,
   customers,
   emailError,
 }) => {
@@ -29,10 +29,10 @@ const EntryPoint = ({
   useEffect(() => {
     async function fetchData() {
       await getCustomers();
-      await deleteCustomers(customers);
+      await deleteCustomersCronJob(customers);
     }
     fetchData();
-  }, [deleteCustomers, customers, getCustomers]);
+  }, [deleteCustomersCronJob, customers, getCustomers]);
 
   const verifyWebsiteCredentials = () => {
     if (!websiteUserName) {
@@ -193,7 +193,7 @@ const mapDispatchToProps = (dispatch) => ({
   getWebsiteCredentials: () => dispatch(getWebsiteCredentialsAPI()),
   getCustomers: () => dispatch(getCustomersListAPI()),
   deleteCustomers: (customersList) =>
-    dispatch(deleteCustomersAPI(customersList)),
+    dispatch(deleteCustomersCronJobAPI(customersList)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EntryPoint);
