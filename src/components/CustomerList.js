@@ -156,6 +156,7 @@ const CustomerList = ({
               </TableHeader>
               <TableHeader></TableHeader>
               <TableHeader></TableHeader>
+              <TableHeader></TableHeader>
             </tr>
           </thead>
           <tbody>
@@ -248,28 +249,35 @@ const NavLink = styled(Link)`
 `;
 
 const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   background-color: white;
   color: black;
-  margin: 100px;
+  padding: 100px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+
+  display: grid;
+  place-items: center;
+
+  // Rather than using grid you can use transform
+  /* position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100%;  */
 `;
 
 const Table = styled.table`
   border: 2px solid forestgreen;
   width: 100%;
-  max-width: 1000px;
-  height: 200px;
+  overflow-x: auto;
+  width: fit-content;
 `;
 
-const TableHeader = styled.th`
-  border-bottom: 1px solid black;
-`;
+const TableHeader = styled.th``;
 
 const TableCell = styled.td`
   text-align: center;
-  padding: 15px;
+  padding: 5px;
   background-color: ${(props) => (props.isEvenRow ? "#B2D3C2" : "transparent")};
 `;
 

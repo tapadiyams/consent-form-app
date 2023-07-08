@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { getCustomersListAPI } from "../actions";
 import { useTranslation } from "react-i18next";
 import Email from "./signUp/Email";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const ExistingCustomer = ({
   getCustomersList,
@@ -23,6 +24,9 @@ const ExistingCustomer = ({
   const [verificationSuccess, setVerificationSuccess] = useState(false);
   const [emailError, setEmailError] = useState("");
 
+  // history
+  const history = useHistory();
+
   /*
    * Define hooks
    */
@@ -38,9 +42,16 @@ const ExistingCustomer = ({
     fetchData(getCustomersList());
   }, [getCustomersList]);
 
+  const handleBack = () => {
+    history.push("/home");
+  };
+
   return (
     <Container>
       <BackgroundImage src="/images/granite-countertop-1080x600.jpg" alt="" />
+      <Navigations>
+        <Button onClick={handleBack}>Back</Button>
+      </Navigations>
       <ContentWrapper>
         <Nav>
           <Title>{t("look_up")}</Title>
@@ -73,6 +84,27 @@ const ExistingCustomer = ({
 };
 
 const Container = styled.div``;
+
+const Navigations = styled.div`
+  display: flex;
+  justify-content: end;
+`;
+
+const Button = styled.button`
+  background-color: green;
+  color: white;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  z-index: 1;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darkgreen;
+  }
+`;
 
 const BackgroundImage = styled.img`
   position: fixed;

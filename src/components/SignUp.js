@@ -16,6 +16,7 @@ import AddressFields from "./signUp/Address";
 import Email from "./signUp/Email";
 import Name from "./signUp/Name";
 import ThirdPartyInfo from "./signUp/ThirdPartyInfo";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const SignUp = ({
   getCustomersList,
@@ -87,6 +88,9 @@ const SignUp = ({
 
   // SignedUp Successfully
   const [showSignedUpModal, setShowSignedUpModal] = useState("close");
+
+  // history
+  const history = useHistory();
 
   /*
    * Define hooks
@@ -334,9 +338,16 @@ const SignUp = ({
     alert(message);
   };
 
+  const handleBack = () => {
+    history.push("/home");
+  };
+
   return (
     <Container>
       <BackgroundImage src="/images/granite-countertop-1080x600.jpg" alt="" />
+      <Navigations>
+        <Button onClick={handleBack}>Back</Button>
+      </Navigations>
       <ContentWrapper>
         <Nav>
           <Title>{t("sign_up_title")}</Title>
@@ -491,6 +502,27 @@ const BackgroundImage = styled.img`
   height: 100%;
   opacity: 0.1;
   object-fit: cover;
+`;
+
+const Navigations = styled.div`
+  display: flex;
+  justify-content: end;
+`;
+
+const Button = styled.button`
+  background-color: green;
+  color: white;
+  padding: 10px 30px;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  z-index: 1;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darkgreen;
+  }
 `;
 
 const ContentWrapper = styled.div`

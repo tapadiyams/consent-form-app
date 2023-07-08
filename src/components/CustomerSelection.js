@@ -30,6 +30,8 @@ const CustomerSelection = ({
   const [selectedThickness, setSelectedThickness] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [isCartVisible, setCartVisible] = useState(false);
+  const [categorySearch, setCategorySearch] = useState("");
+  const [materialSearch, setMaterialSearch] = useState("");
   const history = useHistory();
 
   useEffect(() => {
@@ -131,6 +133,18 @@ const CustomerSelection = ({
     return acc;
   }, {});
 
+  // Filter stones based on category search
+  const filteredCategories = Object.keys(groupedStones).filter((category) =>
+    category.toLowerCase().includes(categorySearch.toLowerCase())
+  );
+
+  // Filter stones based on material search
+  const filteredMaterials =
+    selectedCategory &&
+    groupedStones[selectedCategory].filter((stone) =>
+      stone.material.toLowerCase().includes(materialSearch.toLowerCase())
+    );
+
   return (
     <Container>
       {(employeePermission === "" ||
@@ -138,7 +152,13 @@ const CustomerSelection = ({
         employeePermission === "2") && (
         <>
           <Menu>
-            {Object.entries(groupedStones).map(([category, stones]) => (
+            <SearchInput
+              type="text"
+              placeholder="Search category"
+              value={categorySearch}
+              onChange={(e) => setCategorySearch(e.target.value)}
+            />
+            {filteredCategories.map((category) => (
               <MenuItem
                 key={category}
                 onClick={() => handleCategorySelect(category)}
@@ -151,7 +171,13 @@ const CustomerSelection = ({
 
           {selectedCategory && (
             <Menu>
-              {groupedStones[selectedCategory].map((stone) => (
+              <SearchInput
+                type="text"
+                placeholder="Search material"
+                value={materialSearch}
+                onChange={(e) => setMaterialSearch(e.target.value)}
+              />
+              {filteredMaterials.map((stone) => (
                 <MenuItem
                   key={stone.material}
                   onClick={() => handleMaterialSelect(stone.material)}
@@ -254,6 +280,12 @@ const Menu = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+`;
+
+const SearchInput = styled.input`
+  width: 200px;
+  padding: 8px;
+  margin-bottom: 10px;
 `;
 
 const MenuItem = styled.li`

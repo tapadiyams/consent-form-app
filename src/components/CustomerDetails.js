@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import {
   deleteSelectionsAPI,
+  editCustomerAPI,
   getCustomersListAPI,
   getDesignerOrArchitectsAPI,
   getFabricatorsAPI,
@@ -19,11 +20,15 @@ const CustomerDetails = ({
   kitchenAndBath,
   designerOrArchitect,
   selections,
+
   getCustomersList,
   getFabricator,
   getKitchenAndBath,
   getDesignerOrArchitect,
   getSelections,
+
+  editCustomer,
+
   deleteSelection,
 }) => {
   /**
@@ -100,11 +105,16 @@ const CustomerDetails = ({
     deleteSelection(payload);
   };
 
+  // const handleEmail = (email) => {};
+
+  const handleCustomerEdits = () => {};
+
   return (
     <Container>
       <Navigations>
         <Button onClick={handleBack}>Back</Button>
         <Button onClick={handlePrint}>Print</Button>
+        {/* <Button onClick={handleEmail(customer.email)}>Email</Button> */}
       </Navigations>
       <LogoTitle>
         <Logo src="/images/reliancewhite.png" alt="" />
@@ -149,6 +159,9 @@ const CustomerDetails = ({
           <TableRow>
             <CustomerDetailTableHeader>Address</CustomerDetailTableHeader>
             <TableData>{customer.address}</TableData>
+          </TableRow>
+          <TableRow>
+            <button onClick={handleCustomerEdits}>Edit</button>
           </TableRow>
         </Table>
 
@@ -352,6 +365,8 @@ const Logo = styled.img`
 const CompanyInfo = styled.div`
   display: flex;
   flex-direction: column;
+
+  align-items: center;
 `;
 
 const Title = styled.h2`
@@ -391,6 +406,11 @@ const Button = styled.button`
   margin-bottom: 20px;
   margin-left: 10px;
   z-index: 1;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darkgreen;
+  }
 `;
 
 const CustomerDetailData = styled.div`
@@ -479,6 +499,13 @@ const mapDispatchToProps = (dispatch) => ({
   getDesignerOrArchitect: (customerId) =>
     dispatch(getDesignerOrArchitectsAPI({ customerId })),
   getSelections: (customerId) => dispatch(getSelectionsAPI({ customerId })),
+
+  editCustomer: (customerId) => dispatch(editCustomerAPI({ customerId })),
+  // editFabricator: (customerId) => dispatch(editFabricatorAPI({ customerId })),
+  // editKitchenAndBath: (customerId) =>
+  //   dispatch(editFabricatorAPI({ customerId })),
+  // editDesidnerOrArchitect: (customerId) =>
+  //   dispatch(editFabricatorAPI({ customerId })),
 
   deleteSelection: (payload) => dispatch(deleteSelectionsAPI(payload)),
 });
