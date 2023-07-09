@@ -85,6 +85,10 @@ const CustomerSelection = ({
       await addSelection(selectedItem);
     }
 
+    console.log("Shubham !customer.assistedBy", !customer.assistedBy);
+    console.log("Shubham employeeName", employeeName);
+    console.log("Shubham employeePermission", employeePermission);
+
     if (!customer.assistedBy) {
       await editCustomer({ customerId, employeeName });
     }

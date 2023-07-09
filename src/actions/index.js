@@ -177,6 +177,8 @@ export function getCustomersListAPI() {
 export function editCustomerAPI(payload) {
   const { customerId, assistedBy } = payload;
 
+  console.log("Shubham payload: ", payload);
+
   return (dispatch) => {
     if (assistedBy) {
       // Query the materials collection to find the document with the given material name
