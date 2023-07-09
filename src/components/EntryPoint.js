@@ -11,7 +11,6 @@ import {
 const EntryPoint = ({
   getWebsiteCredentials,
   websiteCredentials,
-  setHasWebsiteAccess,
   getCustomers,
   deleteCustomersCronJob,
   customers,
@@ -20,6 +19,7 @@ const EntryPoint = ({
   const [websiteUserName, setWebsiteUserName] = useState("");
   const [websitePassword, setWebsitePassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
+  const [hasWebsiteAccess, setHasWebsiteAccess] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const EntryPoint = ({
   useEffect(() => {
     async function fetchData() {
       await getCustomers();
-      await deleteCustomersCronJob(customers);
+      // await deleteCustomersCronJob(customers);
     }
     fetchData();
   }, [deleteCustomersCronJob, customers, getCustomers]);
@@ -58,6 +58,8 @@ const EntryPoint = ({
     }
 
     setHasWebsiteAccess(true);
+    //set the hasWebsiteAccess to local storage in your React application.
+    localStorage.setItem("hasWebsiteAccess", hasWebsiteAccess.toString());
     history.push("/home");
   };
 

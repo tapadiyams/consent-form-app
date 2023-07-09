@@ -27,10 +27,8 @@ const languages = [
 ];
 
 function App(props) {
-  const [hasWebsiteAccess, setHasWebsiteAccess] = useState(true);
-
-  const [employeeName, setEmployeeName] = useState("");
-  const [employeePermission, setEmployeePermission] = useState("");
+  // const hasWebsiteAccess = localStorage.getItem("hasWebsiteAccess") === "true";
+  const hasWebsiteAccess = true;
 
   // For Language change
   const currentLanguageCode = cookies.get("i18next") || "en";
@@ -46,7 +44,7 @@ function App(props) {
       <Router>
         <Switch>
           <Route exact path="/">
-            <EntryPoint setHasWebsiteAccess={setHasWebsiteAccess} />
+            <EntryPoint />
           </Route>
           {hasWebsiteAccess && (
             <>
@@ -64,36 +62,20 @@ function App(props) {
                 <ExistingCustomer selectedLanguage={selectedLanguage} />
               </Route>
               <Route path="/customer/:id">
-                <CustomerDetails
-                  employeeName={employeeName}
-                  employeePermission={employeePermission}
-                />
+                <CustomerDetails />
               </Route>
 
               <Route path="/login">
-                <LogIn
-                  setEmployeeName={setEmployeeName}
-                  setEmployeePermission={setEmployeePermission}
-                />
+                <LogIn />
               </Route>
               <Route path="/admin-actions">
-                <AdminActions
-                  employeeName={employeeName}
-                  employeePermission={employeePermission}
-                  setHasWebsiteAccess={setHasWebsiteAccess}
-                />
+                <AdminActions />
               </Route>
               <Route path="/view">
-                <CustomerList
-                  employeeName={employeeName}
-                  employeePermission={employeePermission}
-                />
+                <CustomerList />
               </Route>
               <Route path="/customer-selection/:id">
-                <CustomerSelection
-                  employeeName={employeeName}
-                  employeePermission={employeePermission}
-                />
+                <CustomerSelection />
               </Route>
             </>
           )}

@@ -16,8 +16,7 @@ const CustomerSelection = ({
   addSelection,
   getStonesList,
   stonesList,
-  employeeName,
-  employeePermission,
+  customers,
   editCustomer,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -32,6 +31,13 @@ const CustomerSelection = ({
   const [isCartVisible, setCartVisible] = useState(false);
   const [categorySearch, setCategorySearch] = useState("");
   const [materialSearch, setMaterialSearch] = useState("");
+
+  const employeeName = localStorage.getItem("employeeName") || "";
+
+  const employeePermission = localStorage.getItem("employeePermission") || "";
+
+  console.log("Shubham selection: ", employeeName, employeePermission);
+
   const history = useHistory();
 
   useEffect(() => {
@@ -45,6 +51,9 @@ const CustomerSelection = ({
 
   const { id } = useParams();
   const customerId = parseInt(id, 10);
+  const customer = customers.find(
+    (customer) => customer.customerId === customerId
+  );
 
   const resetCart = () => {
     setCartItems([]);
@@ -75,7 +84,10 @@ const CustomerSelection = ({
     for (const selectedItem of cartItems) {
       await addSelection(selectedItem);
     }
-    await editCustomer({ customerId, employeeName });
+
+    if (!customer.assistedBy) {
+      await editCustomer({ customerId, employeeName });
+    }
 
     history.goBack();
     resetCart();
@@ -147,9 +159,7 @@ const CustomerSelection = ({
 
   return (
     <Container>
-      {(employeePermission === "" ||
-        employeePermission === "1" ||
-        employeePermission === "2") && (
+      {(employeePermission === "1" || employeePermission === "2") && (
         <>
           <Menu>
             <SearchInput

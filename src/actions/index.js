@@ -2,7 +2,6 @@ import db, { auth } from "../firebase";
 import firebase from "firebase/compat/app";
 import {
   GET_EMPLOYEES,
-  SET_EMPLOYEE,
   GET_STONES,
   SET_LOADING_STATUS,
   GET_CUSTOMERS,
@@ -11,7 +10,6 @@ import {
   GET_KITCHEN_AND_BATH,
   GET_DESIGNER_OR_ARCHITECT,
   GET_WEBSITE_CREDENTIALS,
-  SET_EMPLOYEE_PERMISSION,
 } from "./actionType";
 
 /*
@@ -41,17 +39,6 @@ export const getWebsiteCredentials = (websiteCredentials) => ({
 export const setLoading = (status) => ({
   type: SET_LOADING_STATUS,
   status: status,
-});
-
-// Remember, it's a singular employee
-export const setEmployee = (employee) => ({
-  type: SET_EMPLOYEE,
-  employee: employee,
-});
-
-export const setEmployeePermission = (permission) => ({
-  type: SET_EMPLOYEE_PERMISSION,
-  permission: permission,
 });
 
 export const getEmployees = (employeesPayload) => {
@@ -655,23 +642,6 @@ export function addEmployeeAPI(payload) {
       employeeRole: employeeRole,
       employeePermission: employeePermission,
     });
-  };
-}
-
-// TODO [tapadiyams@gmail.com]: Correct the setEmployee action.
-// When a employee logs in then this function will be called.
-export function setEmployeeAPI(payload) {
-  return (dispatch) => {
-    try {
-      dispatch(setEmployee(payload.employeeName));
-      dispatch(setEmployeePermission(payload.employeePermission));
-    } catch (error) {
-      // Handle any errors that occur during the asynchronous task
-      console.error(
-        "Error in setEmployeeAPI. Unable to set the employee and it's permission.",
-        error
-      );
-    }
   };
 }
 

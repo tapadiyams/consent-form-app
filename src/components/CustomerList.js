@@ -9,8 +9,6 @@ import {
 } from "../actions";
 
 const CustomerList = ({
-  employeeName,
-  employeePermission,
   customers,
   getCustomersList,
   fabricators,
@@ -25,6 +23,7 @@ const CustomerList = ({
     date: "",
     fabricator: "",
   });
+
   const history = useHistory();
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const CustomerList = ({
     };
 
     fetchData();
-  }, [getCustomersList, getFabricators, employeeName, employeePermission]);
+  }, [getCustomersList, getFabricators]);
 
   const handleSearchChange = (e, columnName) => {
     setSearch({

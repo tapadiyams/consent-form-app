@@ -7,7 +7,7 @@ import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const menu = ["Employees List", "Stones Actions"];
 
-const AdminActions = ({ employeePermission, setHasWebsiteAccess }) => {
+const AdminActions = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleCategorySelect = (category) => {
@@ -16,8 +16,12 @@ const AdminActions = ({ employeePermission, setHasWebsiteAccess }) => {
 
   const history = useHistory();
 
+  const employeePermission = localStorage.getItem("employeePermission") || "";
+
+  console.log("Shubham adminActions: ", employeePermission);
+
   const handleLogout = () => {
-    setHasWebsiteAccess("false");
+    localStorage.setItem("hasWebsiteAccess", "false");
     history.push("/");
   };
 

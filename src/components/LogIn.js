@@ -2,16 +2,9 @@ import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { getEmployeesListAPI, setEmployeeAPI } from "../actions";
+import { getEmployeesListAPI } from "../actions";
 
-const LogIn = ({
-  getEmployeesList,
-  emailError,
-  employees,
-  setEmployee,
-  setEmployeeName,
-  setEmployeePermission,
-}) => {
+const LogIn = ({ getEmployeesList, emailError, employees }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State for toggling password visibility
@@ -59,17 +52,13 @@ const LogIn = ({
     setIsLoading(true);
 
     // this has to be async operation
-    await setEmployeeName(employee.employeeName);
-    await setEmployeePermission(employee.employeePermission);
+    await localStorage.setItem("employeeName", employee.employeeName);
+    await localStorage.setItem(
+      "employeePermission",
+      employee.employeePermission
+    );
 
-    await delay(1000);
-
-    // TODO [tapadiyams@gmail.com]: Correct the setEmployee action.
-    const employeeData = {
-      employeeName: employee.employeeName,
-      employeePermission: employee.employeePermission,
-    };
-    setEmployee(employeeData);
+    await delay(500);
 
     setIsLoading(false); // Set loading state to false
 
@@ -243,7 +232,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getEmployeesList: () => dispatch(getEmployeesListAPI()),
-  setEmployee: (payload) => dispatch(setEmployeeAPI(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogIn);
