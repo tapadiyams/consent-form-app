@@ -175,12 +175,12 @@ export function getCustomersListAPI() {
 }
 
 export function editCustomerAPI(payload) {
-  const { customerId, assistedBy } = payload;
+  const { customerId, employeeName } = payload;
 
   console.log("Shubham payload: ", payload);
 
   return (dispatch) => {
-    if (assistedBy) {
+    if (employeeName) {
       // Query the materials collection to find the document with the given material name
       const query = customersCollection.where("customerId", "==", customerId);
       query
@@ -204,7 +204,7 @@ export function editCustomerAPI(payload) {
           customerDocRef
             .update({
               // customerId can not be changed
-              assistedBy: assistedBy,
+              assistedBy: employeeName,
             })
             // .then(() => {
             // })
