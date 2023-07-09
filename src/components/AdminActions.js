@@ -18,8 +18,6 @@ const AdminActions = () => {
 
   const employeePermission = localStorage.getItem("employeePermission") || "";
 
-  console.log("Shubham adminActions: ", employeePermission);
-
   const handleLogout = () => {
     localStorage.setItem("hasWebsiteAccess", "false");
     history.push("/");

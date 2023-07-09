@@ -36,8 +36,6 @@ const CustomerSelection = ({
 
   const employeePermission = localStorage.getItem("employeePermission") || "";
 
-  console.log("Shubham selection: ", employeeName, employeePermission);
-
   const history = useHistory();
 
   useEffect(() => {
@@ -84,10 +82,6 @@ const CustomerSelection = ({
     for (const selectedItem of cartItems) {
       await addSelection(selectedItem);
     }
-
-    console.log("Shubham !customer.assistedBy", !customer.assistedBy);
-    console.log("Shubham employeeName", employeeName);
-    console.log("Shubham employeePermission", employeePermission);
 
     if (!customer.assistedBy) {
       await editCustomer({ customerId, employeeName });

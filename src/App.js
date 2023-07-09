@@ -27,8 +27,18 @@ const languages = [
 ];
 
 function App(props) {
-  // const hasWebsiteAccess = localStorage.getItem("hasWebsiteAccess") === "true";
-  const hasWebsiteAccess = true;
+  // Create a difference beetween test env and prod env
+  const isLocalhost = window.location.hostname === "localhost";
+
+  let hasWebsiteAccess;
+  if (isLocalhost) {
+    // For testing, use this
+    hasWebsiteAccess = true;
+  } else {
+    // For production, use this
+
+    hasWebsiteAccess = localStorage.getItem("hasWebsiteAccess") === "true";
+  }
 
   // For Language change
   const currentLanguageCode = cookies.get("i18next") || "en";
