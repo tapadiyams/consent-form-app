@@ -117,7 +117,6 @@ const CustomerDetails = ({
   };
 
   const handleEditSelection = (selectionId, pricing, note) => {
-    console.log("Shubham, customerDetails:", pricing, note);
     setSelectionId(selectionId);
     setOldPricing(pricing);
     setOldNote(note);

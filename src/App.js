@@ -36,7 +36,7 @@ function App(props) {
     hasWebsiteAccess = true;
   } else {
     // For production, use this
-    hasWebsiteAccess = localStorage.getItem("hasWebsiteAccess") === true;
+    hasWebsiteAccess = localStorage.getItem("hasWebsiteAccess");
   }
 
   console.log("Shubham, hasWebsiteAccess: ", hasWebsiteAccess);

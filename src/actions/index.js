@@ -590,8 +590,6 @@ export function getSelectionsAPI(payload) {
 export function editSelectionAPI(payload) {
   const { customerId, selectionId, note, pricing } = payload;
 
-  console.log("Shubham, editSelectionAPI:", payload);
-
   return (dispatch) => {
     // Query the materials collection to find the document with the given material name
     const query = selectionsCollection

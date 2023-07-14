@@ -10,7 +10,6 @@ export const EditSelection = ({
   onSaveChanges,
   onCancel,
 }) => {
-  console.log("Shubham, editSelec:", oldPricing, oldNote);
   const [pricing, setPricing] = useState(oldPricing);
   const [note, setNote] = useState(oldNote);
 
