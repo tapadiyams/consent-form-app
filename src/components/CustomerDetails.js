@@ -320,8 +320,12 @@ const CustomerDetails = ({
               <TableHeader>THICKNESS</TableHeader>
               {showPricing && <TableHeader>PRICING</TableHeader>}
               <TableHeader>NOTES</TableHeader>
-              <TableHeader>EDITS</TableHeader>
-              <TableHeader>REMOVE</TableHeader>
+              {employeePermission === "1" && (
+                <>
+                  <TableHeader>EDITS</TableHeader>
+                  <TableHeader>REMOVE</TableHeader>
+                </>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -354,24 +358,30 @@ const CustomerDetails = ({
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {selection.note}
                   </TableCell>
-                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                    <button
-                      onClick={() =>
-                        handleEditSelection(
-                          selection.selectionId,
-                          selection.pricing,
-                          selection.note
-                        )
-                      }
-                    >
-                      EDIT
-                    </button>
-                  </TableCell>
-                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                    <button onClick={() => handleRemoveSelection(selection)}>
-                      REMOVE
-                    </button>
-                  </TableCell>
+                  {employeePermission === "1" && (
+                    <>
+                      <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                        <button
+                          onClick={() =>
+                            handleEditSelection(
+                              selection.selectionId,
+                              selection.pricing,
+                              selection.note
+                            )
+                          }
+                        >
+                          EDIT
+                        </button>
+                      </TableCell>
+                      <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                        <button
+                          onClick={() => handleRemoveSelection(selection)}
+                        >
+                          REMOVE
+                        </button>
+                      </TableCell>
+                    </>
+                  )}
                 </tr>
               );
             })}
