@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { EditCustomerDetails } from "./customerDetails/EditCustomerDetails";
 import { EditSelection } from "./customerDetails/EditSelection";
-// import emailjs from "@emailjs/browser";
+import emailjs from "@emailjs/browser";
 
 const CustomerDetails = ({
   customers,
@@ -113,42 +113,42 @@ const CustomerDetails = ({
     history.push("/view");
   };
 
-  // const handleEmail = () => {
-  //   // Prepare the email parameters
-  //   const emailParams = {
-  //     receiver_email: customer.email,
-  //     sender_email: "info@reliancestones.com",
-  //     customer_id: customerId,
-  //     customer_name: customer.firstName,
-  //     subject: "Customer Selection Sheet",
-  //     message: "Please find attached the customer selection sheet.",
-  //     attachment: {
-  //       name: `${customer.firstName}'s_CustomerSelectionSheet.pdf`, // Customize the attachment name as needed
-  //       data: "YOUR_BASE64_ENCODED_PDF_DATA", // Replace with the actual base64 encoded data of the printed PDF
-  //     },
-  //   };
+  const handleEmail = () => {
+    // Prepare the email parameters
+    const emailParams = {
+      receiver_email: customer.email,
+      sender_email: "info@reliancestones.com",
+      customer_id: customerId,
+      customer_name: customer.firstName,
+      subject: "Customer Selection Sheet",
+      message: "Please find attached the customer selection sheet.",
+      attachment: {
+        name: `${customer.firstName}'s_CustomerSelectionSheet.pdf`, // Customize the attachment name as needed
+        data: "YOUR_BASE64_ENCODED_PDF_DATA", // Replace with the actual base64 encoded data of the printed PDF
+      },
+    };
 
-  //   // Configure the email service details
-  //   const emailServiceID = "service_1rs8kr6";
-  //   const emailTemplateID = "template_pw6r7cc";
-  //   const emailUserID = "WHKLkddJgyNCF7XpA";
+    // Configure the email service details
+    const emailServiceID = "service_1rs8kr6";
+    const emailTemplateID = "template_pw6r7cc";
+    const emailUserID = "WHKLkddJgyNCF7XpA";
 
-  //   // Send the email
-  //   emailjs
-  //     .send(emailServiceID, emailTemplateID, emailParams, emailUserID)
-  //     .then((response) => {
-  //       console.log(
-  //         "Email for customer selection sheet sent successfully!",
-  //         response.text
-  //       );
-  //     })
-  //     .catch((error) => {
-  //       console.error(
-  //         "Error sending email for customer selection sheet:",
-  //         error
-  //       );
-  //     });
-  // };
+    // Send the email
+    emailjs
+      .send(emailServiceID, emailTemplateID, emailParams, emailUserID)
+      .then((response) => {
+        console.log(
+          "Email for customer selection sheet sent successfully!",
+          response.text
+        );
+      })
+      .catch((error) => {
+        console.error(
+          "Error sending email for customer selection sheet:",
+          error
+        );
+      });
+  };
 
   const handleCustomerEdits = () => {
     setEditCustomerModalOpen(true); // Open the edit modal

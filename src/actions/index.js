@@ -634,19 +634,20 @@ export function editSelectionAPI(payload) {
 }
 
 export function deleteSelectionsAPI(payload) {
+  console.log("Shubham,", payload);
   return () => {
     let query = null;
     if (payload.selectionId) {
       query = selectionsCollection.where(
-        "selectionId",
-        "==",
-        payload.selectionId
-      );
-    } else {
-      query = selectionsCollection.where(
         "customerId",
         "==",
         payload.customerId
+      );
+    } else {
+      query = selectionsCollection.where(
+        "selectionId",
+        "==",
+        payload.selectionId
       );
     }
 
