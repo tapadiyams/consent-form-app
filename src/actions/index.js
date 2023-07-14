@@ -635,26 +635,21 @@ export function editSelectionAPI(payload) {
 
 export function deleteSelectionsAPI(payload) {
   return () => {
-    let query = selectionsCollection.where(
-      "customerId",
-      "==",
-      payload.customerId
-    );
-    if (payload.material) {
-      query = query.where("material", "==", payload.material);
+    let query = null;
+    if (payload.selectionId) {
+      query = selectionsCollection.where(
+        "selectionId",
+        "==",
+        payload.selectionId
+      );
+    } else {
+      query = selectionsCollection.where(
+        "customerId",
+        "==",
+        payload.customerId
+      );
     }
-    if (payload.size) {
-      query = query.where("size", "==", payload.size);
-    }
-    if (payload.thickness) {
-      query = query.where("thickness", "==", payload.thickness);
-    }
-    if (payload.finish) {
-      query = query.where("finish", "==", payload.finish);
-    }
-    if (payload.note) {
-      query = query.where("note", "==", payload.note);
-    }
+
     query
       .get()
       .then((querySnapshot) => {

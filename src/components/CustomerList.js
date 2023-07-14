@@ -88,11 +88,17 @@ const CustomerList = ({
     }
   };
 
+  const handleLogOut = () => {
+    localStorage.setItem("hasWebsiteAccess", false);
+  };
+
   return (
     <AppContainer>
       <NavBar>
         <NavLink to="/admin-actions">Admin Actions</NavLink>
-        <NavLink to="/">Log Out</NavLink>
+        <NavLink to="/" onClick={handleLogOut}>
+          Log Out
+        </NavLink>
       </NavBar>
       <Content>
         <Table>
