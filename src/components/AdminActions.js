@@ -19,7 +19,7 @@ const AdminActions = () => {
   const employeePermission = localStorage.getItem("employeePermission") || "";
 
   const handleLogout = () => {
-    localStorage.setItem("hasWebsiteAccess", "false");
+    localStorage.setItem("hasWebsiteAccess", false);
     history.push("/");
   };
 

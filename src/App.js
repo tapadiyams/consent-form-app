@@ -39,7 +39,6 @@ function App(props) {
     hasWebsiteAccess = localStorage.getItem("hasWebsiteAccess");
   }
 
-  console.log("Shubham, hasWebsiteAccess: ", hasWebsiteAccess);
   // For Language change
   const currentLanguageCode = cookies.get("i18next") || "en";
   const [selectedLanguage, setSelectedLanguage] = useState(

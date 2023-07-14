@@ -40,6 +40,9 @@ const CustomerDetails = ({
    * Define states and constants
    *
    */
+
+  const employeePermission = localStorage.getItem("employeePermission") || "";
+
   const history = useHistory();
 
   const { t } = useTranslation();
@@ -57,6 +60,11 @@ const CustomerDetails = ({
 
   const [isEditCustomerModalOpen, setEditCustomerModalOpen] = useState(false);
   const [isEditSelectionModalOpen, setEditSelectionModalOpen] = useState(false);
+
+  const [showPricing, setShowPricing] = useState(false);
+  const handleTogglePricing = () => {
+    setShowPricing((prevState) => !prevState);
+  };
 
   // Selection changes
   const [selectionId, setSelectionId] = useState("");
@@ -143,6 +151,12 @@ const CustomerDetails = ({
   return (
     <Container>
       <Navigations>
+        {employeePermission === "1" && (
+          // || employeePermission === ""
+          <Button onClick={handleTogglePricing}>
+            {showPricing ? "Hide Pricing" : "Show Pricing"}
+          </Button>
+        )}
         <Button onClick={handleBack}>Back</Button>
         <Button onClick={handlePrint}>Print</Button>
         {/* <Button onClick={handleEmail(customer.email)}>Email</Button> */}
@@ -304,7 +318,7 @@ const CustomerDetails = ({
               <TableHeader>MATERIALS</TableHeader>
               <TableHeader>SIZE</TableHeader>
               <TableHeader>THICKNESS</TableHeader>
-              <TableHeader>PRICING</TableHeader>
+              {showPricing && <TableHeader>PRICING</TableHeader>}
               <TableHeader>NOTES</TableHeader>
               <TableHeader>EDITS</TableHeader>
               <TableHeader>REMOVE</TableHeader>
@@ -332,9 +346,11 @@ const CustomerDetails = ({
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {selection.thickness}
                   </TableCell>
-                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                    {selection.pricing}
-                  </TableCell>
+                  {showPricing && (
+                    <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                      {selection.pricing}
+                    </TableCell>
+                  )}
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {selection.note}
                   </TableCell>
