@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import {
   deleteSelectionsAPI,
   editCustomerAPI,
+  editSelectionAPI,
   getCustomersListAPI,
   getDesignerOrArchitectsAPI,
   getFabricatorsAPI,
@@ -13,6 +14,8 @@ import {
 } from "../actions";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { EditCustomerDetails } from "./customerDetails/EditCustomerDetails";
+import { EditSelection } from "./customerDetails/EditSelection";
 
 const CustomerDetails = ({
   customers,
@@ -28,6 +31,7 @@ const CustomerDetails = ({
   getSelections,
 
   editCustomer,
+  editSelection,
 
   deleteSelection,
 }) => {
@@ -50,6 +54,15 @@ const CustomerDetails = ({
   const customer = customers.find(
     (customer) => customer.customerId === customerId
   );
+
+  const [isEditCustomerModalOpen, setEditCustomerModalOpen] = useState(false);
+  const [isEditSelectionModalOpen, setEditSelectionModalOpen] = useState(false);
+
+  // Selection changes
+  const [selectionId, setSelectionId] = useState("");
+  const [oldPricing, setOldPricing] = useState("");
+  const [oldNote, setOldNote] = useState("");
+
   /**
    *
    * Define hooks
@@ -91,7 +104,30 @@ const CustomerDetails = ({
     history.push("/view");
   };
 
-  // const handleEditSelection = () => {};
+  // const handleEmail = (email) => {};
+
+  const handleCustomerEdits = () => {
+    setEditCustomerModalOpen(true); // Open the edit modal
+  };
+
+  // Function to handle saving changes in the edit modal
+  const handleCustomerSaveChanges = (updatedData) => {
+    editCustomer(updatedData);
+    setEditCustomerModalOpen(false);
+  };
+
+  const handleEditSelection = (selectionId, pricing, note) => {
+    console.log("Shubham, customerDetails:", pricing, note);
+    setSelectionId(selectionId);
+    setOldPricing(pricing);
+    setOldNote(note);
+    setEditSelectionModalOpen(true);
+  };
+
+  const handleSelectionSaveChanges = (updatedData) => {
+    editSelection(updatedData); // Call the editCustomer function with the updated data
+    setEditSelectionModalOpen(false); // Close the edit modal
+  };
 
   const handleRemoveSelection = (selection) => {
     const payload = {
@@ -104,10 +140,6 @@ const CustomerDetails = ({
     };
     deleteSelection(payload);
   };
-
-  // const handleEmail = (email) => {};
-
-  const handleCustomerEdits = () => {};
 
   return (
     <Container>
@@ -164,6 +196,15 @@ const CustomerDetails = ({
             <button onClick={handleCustomerEdits}>Edit</button>
           </TableRow>
         </Table>
+
+        {/* Render the edit modal if isEditCustomerModalOpen is true */}
+        {isEditCustomerModalOpen && (
+          <EditCustomerDetails
+            customer={customer}
+            onSaveChanges={handleCustomerSaveChanges}
+            onCancel={() => setEditCustomerModalOpen(false)}
+          />
+        )}
 
         <CustomerDetailData>
           <Table>
@@ -264,8 +305,9 @@ const CustomerDetails = ({
               <TableHeader>MATERIALS</TableHeader>
               <TableHeader>SIZE</TableHeader>
               <TableHeader>THICKNESS</TableHeader>
+              <TableHeader>PRICING</TableHeader>
               <TableHeader>NOTES</TableHeader>
-              {/* <TableHeader>EDITS</TableHeader> */}
+              <TableHeader>EDITS</TableHeader>
               <TableHeader>REMOVE</TableHeader>
             </tr>
           </thead>
@@ -292,11 +334,24 @@ const CustomerDetails = ({
                     {selection.thickness}
                   </TableCell>
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    {selection.pricing}
+                  </TableCell>
+                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {selection.note}
                   </TableCell>
-                  {/* <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
-                    <button onClick={handleEditSelection}>EDIT</button>
-                  </TableCell> */}
+                  <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
+                    <button
+                      onClick={() =>
+                        handleEditSelection(
+                          selection.selectionId,
+                          selection.pricing,
+                          selection.note
+                        )
+                      }
+                    >
+                      EDIT
+                    </button>
+                  </TableCell>
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     <button onClick={() => handleRemoveSelection(selection)}>
                       REMOVE
@@ -307,6 +362,18 @@ const CustomerDetails = ({
             })}
           </tbody>
         </SelectionTable>
+
+        {/* Render the edit modal if isEditSelectionModalOpen is true */}
+        {isEditSelectionModalOpen && (
+          <EditSelection
+            customerId={customerId}
+            selectionId={selectionId}
+            oldPricing={oldPricing}
+            oldNote={oldNote}
+            onSaveChanges={handleSelectionSaveChanges}
+            onCancel={() => setEditSelectionModalOpen(false)}
+          />
+        )}
 
         <Consent>
           <p dangerouslySetInnerHTML={{ __html: formattedConsentText }}></p>
@@ -507,6 +574,7 @@ const mapDispatchToProps = (dispatch) => ({
   // editDesidnerOrArchitect: (customerId) =>
   //   dispatch(editFabricatorAPI({ customerId })),
 
+  editSelection: (payload) => dispatch(editSelectionAPI(payload)),
   deleteSelection: (payload) => dispatch(deleteSelectionsAPI(payload)),
 });
 

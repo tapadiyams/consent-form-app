@@ -36,10 +36,10 @@ function App(props) {
     hasWebsiteAccess = true;
   } else {
     // For production, use this
-
-    hasWebsiteAccess = localStorage.getItem("hasWebsiteAccess") === "true";
+    hasWebsiteAccess = localStorage.getItem("hasWebsiteAccess") === true;
   }
 
+  console.log("Shubham, hasWebsiteAccess: ", hasWebsiteAccess);
   // For Language change
   const currentLanguageCode = cookies.get("i18next") || "en";
   const [selectedLanguage, setSelectedLanguage] = useState(

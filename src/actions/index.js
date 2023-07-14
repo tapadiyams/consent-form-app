@@ -270,7 +270,7 @@ export function deleteCustomersAPI(payload) {
   };
 }
 
-// Delete the customers dataafter an year along with Fabricators, Selections, etc.
+// Delete the customers data after an year along with Fabricators, Selections, etc.
 export function deleteCustomersCronJobAPI(customersList) {
   return (dispatch) => {
     const formattedDate = new Date();
@@ -547,18 +547,29 @@ export function deleteDesignerOrArchitectsAPI(customerId) {
  *
  */
 export function addSelectionsAPI(payload) {
-  const { category, customerId, material, size, thickness, finish, note } =
-    payload;
+  const {
+    customerId,
+    selectionId,
+    category,
+    material,
+    size,
+    thickness,
+    finish,
+    note,
+    pricing,
+  } = payload;
 
   return (dispatch) => {
     selectionsCollection.add({
       customerId: customerId,
+      selectionId: selectionId,
       category: category,
       material: material,
       size: size,
       thickness: thickness,
       finish: finish,
       note: note,
+      pricing: pricing,
     });
   };
 }
@@ -572,6 +583,54 @@ export function getSelectionsAPI(payload) {
       .onSnapshot((snapshot) => {
         let data = snapshot.docs.map((doc) => doc.data());
         dispatch(getSelections(data));
+      });
+  };
+}
+
+export function editSelectionAPI(payload) {
+  const { customerId, selectionId, note, pricing } = payload;
+
+  console.log("Shubham, editSelectionAPI:", payload);
+
+  return (dispatch) => {
+    // Query the materials collection to find the document with the given material name
+    const query = selectionsCollection
+      .where("customerId", "==", customerId)
+      .where("selectionId", "==", selectionId);
+    query
+      .get()
+      .then((querySnapshot) => {
+        // Check if a matching document exists
+        if (querySnapshot.empty) {
+          console.log(
+            "Error has caused in editSelectionAPI(): querySnapshot is empty."
+          );
+          return;
+        }
+
+        const selectionDocRef = querySnapshot.docs[0].ref;
+        selectionDocRef
+          .update({
+            // customerId and selectionId can not be changed
+            note: note,
+            pricing: pricing,
+          })
+          // .then(() => {
+          // })
+          .catch((error) => {
+            // Dispatch an error action if needed
+            console.log(
+              "Error has caused in editSelectionAPI() while dispatching.",
+              error
+            );
+          });
+      })
+      .catch((error) => {
+        // Handle the error when querying the database
+        console.log(
+          "Error has caused in editSelectionAPI() while querying the database.",
+          error
+        );
       });
   };
 }

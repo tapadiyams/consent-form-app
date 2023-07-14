@@ -118,14 +118,19 @@ const CustomerSelection = ({
   };
 
   const handleAddButtonClick = () => {
+    // Generate OTP
+    const generatedOtp = Math.floor(100000 + Math.random() * 900000);
+
     const selectedItem = {
       customerId: customerId,
+      selectionId: generatedOtp,
       category: selectedCategory,
       material: selectedMaterial,
       size: size,
       thickness: thickness,
       finish: finish,
       note: note,
+      pricing: "",
     };
 
     setCartItems([...cartItems, selectedItem]);
@@ -157,7 +162,9 @@ const CustomerSelection = ({
 
   return (
     <Container>
-      {(employeePermission === "1" || employeePermission === "2") && (
+      {(employeePermission === "" ||
+        employeePermission === "1" ||
+        employeePermission === "2") && (
         <>
           <Menu>
             <SearchInput
