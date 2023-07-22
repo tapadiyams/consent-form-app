@@ -204,8 +204,6 @@ export function editCustomerAPI(payload) {
               // customerId can not be changed
               assistedBy: employeeName,
             })
-            // .then(() => {
-            // })
             .catch((error) => {
               // Dispatch an error action if needed
               console.log(
@@ -360,6 +358,50 @@ export function getFabricatorsAPI(payload) {
   };
 }
 
+export function editFabricatorAPI(payload) {
+  const { customerId, name_, address_, email_, phone_ } = payload;
+
+  return (dispatch) => {
+    let query = fabricatorsCollection.where("customerId", "==", customerId);
+    query
+      .get()
+      .then((querySnapshot) => {
+        // Check if a matching document exists
+        if (querySnapshot.empty) {
+          console.log("editFabricatorAPI(): querySnapshot is empty.");
+
+          dispatch(addFabricatorAPI(payload));
+
+          return;
+        }
+
+        const fabricatorDocRef = querySnapshot.docs[0].ref;
+        fabricatorDocRef
+          .update({
+            // customerId can not be changed
+            fabricatorName: name_,
+            fabricatorAddress: address_,
+            fabricatorEmail: email_,
+            fabricatorPhone: phone_,
+          })
+          .catch((error) => {
+            // Dispatch an error action if needed
+            console.log(
+              "Error has caused in editFabricatorAPI() while dispatching.",
+              error
+            );
+          });
+      })
+      .catch((error) => {
+        // Handle the error when querying the database
+        console.log(
+          "Error has caused in editFabricatorAPI() while querying the database.",
+          error
+        );
+      });
+  };
+}
+
 export function deleteFabricatorsAPI(customerId) {
   return () => {
     const query = fabricatorsCollection.where("customerId", "==", customerId);
@@ -425,6 +467,62 @@ export function getKitchenAndBathsAPI(payload) {
       let data = snapshot.docs.map((doc) => doc.data());
       dispatch(getKitchenAndBath(data));
     });
+  };
+}
+
+export function editKitchenAndBathsAPI(payload) {
+  const { customerId, name_, address_, email_, phone_ } = payload;
+
+  return (dispatch) => {
+    const query = kitchenAndBathsCollection.where(
+      "customerId",
+      "==",
+      customerId
+    );
+
+    query
+      .get()
+      .then((querySnapshot) => {
+        // Check if a matching document exists
+        if (querySnapshot.empty) {
+          console.log("editKitchenAndBathsAPI(): querySnapshot is empty.");
+
+          const payload = {
+            customerId: customerId,
+            kitchenAndBathName: name_,
+            kitchenAndBathEmail: email_,
+            kitchenAndBathPhone: phone_,
+            kitchenAndBathAddress: address_,
+          };
+
+          dispatch(addKitchenAndBathAPI(payload));
+          return;
+        }
+
+        const kitchenDocRef = querySnapshot.docs[0].ref;
+        kitchenDocRef
+          .update({
+            // customerId can not be changed
+            kitchenAndBathName: name_,
+            kitchenAndBathAddress: address_,
+            kitchenAndBathEmail: email_,
+            kitchenAndBathPhone: phone_,
+          })
+          .catch((error) => {
+            // Dispatch an error action if needed
+            console.log(
+              "Error has caused in editKitchenAndBathsAPI() while dispatching.",
+              error
+            );
+          });
+      })
+      .catch((error) => {
+        // Handle the error when querying the database
+        console.log(
+          "Error has caused in editKitchenAndBathsAPI() while querying the database.",
+          error
+        );
+      });
   };
 }
 
@@ -500,6 +598,60 @@ export function getDesignerOrArchitectsAPI(payload) {
       let data = snapshot.docs.map((doc) => doc.data());
       dispatch(getDesignerOrArchitect(data));
     });
+  };
+}
+
+export function editDesignerOrArchitectsAPI(payload) {
+  const { customerId, name_, address_, email_, phone_ } = payload;
+
+  return (dispatch) => {
+    const query = designerOrArchitectsCollection.where(
+      "customerId",
+      "==",
+      customerId
+    );
+    query
+      .get()
+      .then((querySnapshot) => {
+        // Check if a matching document exists
+        if (querySnapshot.empty) {
+          console.log("editDesignerOrArchitectsAPI(): querySnapshot is empty.");
+
+          const payload = {
+            customerId: customerId,
+            designerOrArchitectName: name_,
+            designerOrArchitectEmail: email_,
+            designerOrArchitectPhone: phone_,
+            designerOrArchitectAddress: address_,
+          };
+          dispatch(addDesignerOrArchitectAPI(payload));
+          return;
+        }
+
+        const designerOrArchitectDocRef = querySnapshot.docs[0].ref;
+        designerOrArchitectDocRef
+          .update({
+            // customerId can not be changed
+            designerOrArchitectName: name_,
+            designerOrArchitectAddress: address_,
+            designerOrArchitectEmail: email_,
+            designerOrArchitectPhone: phone_,
+          })
+          .catch((error) => {
+            // Dispatch an error action if needed
+            console.log(
+              "Error has caused in editDesignerOrArchitectsAPI() while dispatching.",
+              error
+            );
+          });
+      })
+      .catch((error) => {
+        // Handle the error when querying the database
+        console.log(
+          "Error has caused in editDesignerOrArchitectsAPI() while querying the database.",
+          error
+        );
+      });
   };
 }
 
@@ -634,10 +786,9 @@ export function editSelectionAPI(payload) {
 }
 
 export function deleteSelectionsAPI(payload) {
-  console.log("Shubham,", payload);
   return () => {
     let query = null;
-    if (payload.selectionId) {
+    if (payload?.selectionId) {
       query = selectionsCollection.where(
         "customerId",
         "==",

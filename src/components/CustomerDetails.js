@@ -5,6 +5,9 @@ import { connect } from "react-redux";
 import {
   deleteSelectionsAPI,
   editCustomerAPI,
+  editDesignerOrArchitectsAPI,
+  editFabricatorAPI,
+  editKitchenAndBathsAPI,
   editSelectionAPI,
   getCustomersListAPI,
   getDesignerOrArchitectsAPI,
@@ -16,7 +19,8 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { EditCustomerDetails } from "./customerDetails/EditCustomerDetails";
 import { EditSelection } from "./customerDetails/EditSelection";
-import emailjs from "@emailjs/browser";
+import { EditThirdPartyDetails } from "./customerDetails/EditThirdPartyDetails";
+// import emailjs from "@emailjs/browser";
 
 const CustomerDetails = ({
   customers,
@@ -32,6 +36,9 @@ const CustomerDetails = ({
   getSelections,
 
   editCustomer,
+  editFabricator,
+  editKitchenAndBath,
+  editDesidnerOrArchitect,
   editSelection,
 
   deleteSelection,
@@ -41,6 +48,8 @@ const CustomerDetails = ({
    * Define states and constants
    *
    */
+
+  const isLocalhost = window.location.hostname === "localhost";
 
   const employeePermission = localStorage.getItem("employeePermission") || "";
 
@@ -61,6 +70,14 @@ const CustomerDetails = ({
 
   const [isEditCustomerModalOpen, setEditCustomerModalOpen] = useState(false);
   const [isEditSelectionModalOpen, setEditSelectionModalOpen] = useState(false);
+  const [isEditFabricatorModalOpen, setEditFabricatorModalOpen] =
+    useState(false);
+  const [isEditKitchenAndBathModalOpen, setEditKitchenAndBathModalOpen] =
+    useState(false);
+  const [
+    isEditDesignerOrArchitectModalOpen,
+    setEditDesignerOrArchitectModalOpen,
+  ] = useState(false);
 
   const [showPricing, setShowPricing] = useState(false);
   const handleTogglePricing = () => {
@@ -113,51 +130,72 @@ const CustomerDetails = ({
     history.push("/view");
   };
 
-  const handleEmail = () => {
-    // Prepare the email parameters
-    const emailParams = {
-      receiver_email: customer.email,
-      sender_email: "info@reliancestones.com",
-      customer_id: customerId,
-      customer_name: customer.firstName,
-      subject: "Customer Selection Sheet",
-      message: "Please find attached the customer selection sheet.",
-      attachment: {
-        name: `${customer.firstName}'s_CustomerSelectionSheet.pdf`, // Customize the attachment name as needed
-        data: "YOUR_BASE64_ENCODED_PDF_DATA", // Replace with the actual base64 encoded data of the printed PDF
-      },
-    };
+  // const handleEmail = () => {
+  //   // Prepare the email parameters
+  //   const emailParams = {
+  //     receiver_email: customer.email,
+  //     sender_email: "info@reliancestones.com",
+  //     customer_id: customerId,
+  //     customer_name: customer.firstName,
+  //     subject: "Customer Selection Sheet",
+  //     message: "Please find attached the customer selection sheet.",
+  //     attachment: {
+  //       name: `${customer.firstName}'s_CustomerSelectionSheet.pdf`, // Customize the attachment name as needed
+  //       data: "YOUR_BASE64_ENCODED_PDF_DATA", // Replace with the actual base64 encoded data of the printed PDF
+  //     },
+  //   };
 
-    // Configure the email service details
-    const emailServiceID = "service_1rs8kr6";
-    const emailTemplateID = "template_pw6r7cc";
-    const emailUserID = "WHKLkddJgyNCF7XpA";
+  //   // Configure the email service details
+  //   const emailServiceID = "service_1rs8kr6";
+  //   const emailTemplateID = "template_pw6r7cc";
+  //   const emailUserID = "WHKLkddJgyNCF7XpA";
 
-    // Send the email
-    emailjs
-      .send(emailServiceID, emailTemplateID, emailParams, emailUserID)
-      .then((response) => {
-        console.log(
-          "Email for customer selection sheet sent successfully!",
-          response.text
-        );
-      })
-      .catch((error) => {
-        console.error(
-          "Error sending email for customer selection sheet:",
-          error
-        );
-      });
-  };
+  //   // Send the email
+  //   emailjs
+  //     .send(emailServiceID, emailTemplateID, emailParams, emailUserID)
+  //     .then((response) => {
+  //       console.log(
+  //         "Email for customer selection sheet sent successfully!",
+  //         response.text
+  //       );
+  //     })
+  //     .catch((error) => {
+  //       console.error(
+  //         "Error sending email for customer selection sheet:",
+  //         error
+  //       );
+  //     });
+  // };
 
   const handleCustomerEdits = () => {
     setEditCustomerModalOpen(true); // Open the edit modal
   };
-
   // Function to handle saving changes in the edit modal
   const handleCustomerSaveChanges = (updatedData) => {
     editCustomer(updatedData);
     setEditCustomerModalOpen(false);
+  };
+
+  const handleFabricatorEdits = () => {
+    setEditFabricatorModalOpen(true); // Open the edit modal
+  };
+  const handleKitchenAndBathEdits = () => {
+    setEditKitchenAndBathModalOpen(true); // Open the edit modal
+  };
+  const handleDesignerOrArchitectEdits = () => {
+    setEditDesignerOrArchitectModalOpen(true); // Open the edit modal
+  };
+  const handleFabricatorSaveChanges = (updatedData) => {
+    editFabricator(updatedData);
+    setEditFabricatorModalOpen(false);
+  };
+  const handleKitchenAndBathSaveChanges = (updatedData) => {
+    editKitchenAndBath(updatedData);
+    setEditKitchenAndBathModalOpen(false);
+  };
+  const handleDesidnerOrArchitectSaveChanges = (updatedData) => {
+    editDesidnerOrArchitect(updatedData);
+    setEditDesignerOrArchitectModalOpen(false);
   };
 
   const handleEditSelection = (selectionId, pricing, note) => {
@@ -168,8 +206,8 @@ const CustomerDetails = ({
   };
 
   const handleSelectionSaveChanges = (updatedData) => {
-    editSelection(updatedData); // Call the editCustomer function with the updated data
-    setEditSelectionModalOpen(false); // Close the edit modal
+    editSelection(updatedData);
+    setEditSelectionModalOpen(false);
   };
 
   const handleRemoveSelection = (selection) => {
@@ -181,9 +219,9 @@ const CustomerDetails = ({
   };
 
   return (
-    <Container>
+    <Container id="pdf-content">
       <Navigations>
-        {employeePermission === "1" && (
+        {isLocalhost && employeePermission === "1" && (
           // || employeePermission === ""
           <Button onClick={handleTogglePricing}>
             {showPricing ? "Hide Pricing" : "Show Pricing"}
@@ -277,7 +315,24 @@ const CustomerDetails = ({
                 {fabricator && fabricator[0]?.fabricatorPhone}
               </TableData>
             </TableRow>
+            <TableRow>
+              <button onClick={handleFabricatorEdits}>Edit</button>
+            </TableRow>
           </Table>
+
+          {/* Render the edit modal if isEditFabricatorModalOpen is true */}
+          {isEditFabricatorModalOpen && (
+            <EditThirdPartyDetails
+              thirdParty="FABRICATOR INFO"
+              customerId={customerId}
+              name={fabricator && fabricator[0]?.fabricatorName}
+              address={fabricator && fabricator[0]?.fabricatorAddress}
+              email={fabricator && fabricator[0]?.fabricatorEmail}
+              phone={fabricator && fabricator[0]?.fabricatorPhone}
+              onSaveChanges={handleFabricatorSaveChanges}
+              onCancel={() => setEditFabricatorModalOpen(false)}
+            />
+          )}
 
           <Table>
             <TableRow>
@@ -306,7 +361,26 @@ const CustomerDetails = ({
                 {kitchenAndBath && kitchenAndBath[0]?.kitchenAndBathPhone}
               </TableData>
             </TableRow>
+            <TableRow>
+              <button onClick={handleKitchenAndBathEdits}>Edit</button>
+            </TableRow>
           </Table>
+
+          {/* Render the edit modal if isEditKitchenAndBathModalOpen is true */}
+          {isEditKitchenAndBathModalOpen && (
+            <EditThirdPartyDetails
+              thirdParty="KITCHEN AND BATH INFO"
+              customerId={customerId}
+              name={kitchenAndBath && kitchenAndBath[0]?.kitchenAndBathName}
+              address={
+                kitchenAndBath && kitchenAndBath[0]?.kitchenAndBathAddress
+              }
+              email={kitchenAndBath && kitchenAndBath[0]?.kitchenAndBathEmail}
+              phone={kitchenAndBath && kitchenAndBath[0]?.kitchenAndBathPhone}
+              onSaveChanges={handleKitchenAndBathSaveChanges}
+              onCancel={() => setEditKitchenAndBathModalOpen(false)}
+            />
+          )}
 
           <Table>
             <TableRow>
@@ -339,7 +413,36 @@ const CustomerDetails = ({
                   designerOrArchitect[0]?.designerOrArchitectPhone}
               </TableData>
             </TableRow>
+            <TableRow>
+              <button onClick={handleDesignerOrArchitectEdits}>Edit</button>
+            </TableRow>
           </Table>
+
+          {/* Render the edit modal if isEditDesignerOrArchitectModalOpen is true */}
+          {isEditDesignerOrArchitectModalOpen && (
+            <EditThirdPartyDetails
+              thirdParty="DESIGNER / ARCHITECT INFO"
+              customerId={customerId}
+              name={
+                designerOrArchitect &&
+                designerOrArchitect[0]?.designerOrArchitectName
+              }
+              address={
+                designerOrArchitect &&
+                designerOrArchitect[0]?.designerOrArchitectAddress
+              }
+              email={
+                designerOrArchitect &&
+                designerOrArchitect[0]?.designerOrArchitectEmail
+              }
+              phone={
+                designerOrArchitect &&
+                designerOrArchitect[0]?.designerOrArchitectPhone
+              }
+              onSaveChanges={handleDesidnerOrArchitectSaveChanges}
+              onCancel={() => setEditDesignerOrArchitectModalOpen(false)}
+            />
+          )}
         </CustomerDetailData>
 
         <SelectionTable>
@@ -352,7 +455,7 @@ const CustomerDetails = ({
               <TableHeader>THICKNESS</TableHeader>
               {showPricing && <TableHeader>PRICING</TableHeader>}
               <TableHeader>NOTES</TableHeader>
-              {employeePermission === "1" && (
+              {isLocalhost && employeePermission === "1" && (
                 <>
                   <TableHeader>EDITS</TableHeader>
                   <TableHeader>REMOVE</TableHeader>
@@ -390,7 +493,7 @@ const CustomerDetails = ({
                   <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                     {selection.note}
                   </TableCell>
-                  {employeePermission === "1" && (
+                  {isLocalhost && employeePermission === "1" && (
                     <>
                       <TableCell rowNumber={rowNumber} isEvenRow={isEvenRow}>
                         <button
@@ -582,7 +685,7 @@ const SelectionTable = styled.table`
 
 const Consent = styled.div`
   width: 80%;
-  padding: 10px;
+  padding: 2px;
 
   p {
     font-size: small;
@@ -624,12 +727,11 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(getDesignerOrArchitectsAPI({ customerId })),
   getSelections: (customerId) => dispatch(getSelectionsAPI({ customerId })),
 
-  editCustomer: (customerId) => dispatch(editCustomerAPI({ customerId })),
-  // editFabricator: (customerId) => dispatch(editFabricatorAPI({ customerId })),
-  // editKitchenAndBath: (customerId) =>
-  //   dispatch(editFabricatorAPI({ customerId })),
-  // editDesidnerOrArchitect: (customerId) =>
-  //   dispatch(editFabricatorAPI({ customerId })),
+  editCustomer: (payload) => dispatch(editCustomerAPI(payload)),
+  editFabricator: (payload) => dispatch(editFabricatorAPI(payload)),
+  editKitchenAndBath: (payload) => dispatch(editKitchenAndBathsAPI(payload)),
+  editDesidnerOrArchitect: (payload) =>
+    dispatch(editDesignerOrArchitectsAPI(payload)),
 
   editSelection: (payload) => dispatch(editSelectionAPI(payload)),
   deleteSelection: (payload) => dispatch(deleteSelectionsAPI(payload)),
